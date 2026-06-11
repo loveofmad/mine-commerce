@@ -16,18 +16,22 @@
         <el-button type="primary" style="margin-left: 12px" @click="loadData">搜索</el-button>
       </div>
       <el-table :data="tableData" v-loading="loading" stripe>
-        <el-table-column prop="id" label="订单号" width="100" />
-        <el-table-column prop="userId" label="用户ID" width="80" />
-        <el-table-column prop="totalAmount" label="订单金额" width="120">
+        <el-table-column prop="id" label="ID" width="60" />
+        <el-table-column prop="orderNo" label="订单号" width="160" />
+        <el-table-column prop="userId" label="用户ID" width="70" />
+        <el-table-column prop="totalAmount" label="订单金额" width="90">
           <template #default="{ row }">¥{{ row.totalAmount }}</template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="payAmount" label="实付" width="80">
+          <template #default="{ row }">¥{{ row.payAmount }}</template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" width="70">
           <template #default="{ row }">
             <el-tag :type="orderStatusType(row.status)">{{ orderStatusLabel(row.status) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="170" />
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column prop="createTime" label="创建时间" width="150" />
+        <el-table-column label="操作" width="150" fixed="right">
           <template #default="{ row }">
             <el-button v-if="row.status === 1" link type="primary" @click="handleShip(row)">发货</el-button>
             <el-button link type="primary" @click="handleDetail(row)">详情</el-button>

@@ -8,22 +8,22 @@
         </div>
       </template>
       <el-table :data="tableData" v-loading="loading" stripe>
-        <el-table-column prop="id" label="ID" width="80" />
+        <el-table-column prop="id" label="ID" width="60" />
         <el-table-column prop="name" label="优惠券名称" />
-        <el-table-column prop="type" label="类型" width="100">
+        <el-table-column prop="type" label="类型" width="80">
           <template #default="{ row }">
-            <el-tag>{{ row.type === 1 ? '满减券' : '折扣券' }}</el-tag>
+            <el-tag :type="row.type === 0 ? 'success' : 'primary'">{{ row.type === 0 ? '满减' : '折扣' }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="value" label="面值/折扣" width="100">
-          <template #default="{ row }">{{ row.type === 1 ? `¥${row.value}` : `${row.value}折` }}</template>
+        <el-table-column prop="amount" label="面值" width="80">
+          <template #default="{ row }">¥{{ row.amount }}</template>
         </el-table-column>
-        <el-table-column prop="minAmount" label="最低消费" width="100">
+        <el-table-column prop="minAmount" label="最低消费" width="90">
           <template #default="{ row }">¥{{ row.minAmount }}</template>
         </el-table-column>
-        <el-table-column prop="total" label="发行量" width="80" />
-        <el-table-column prop="used" label="已使用" width="80" />
-        <el-table-column prop="status" label="状态" width="80">
+        <el-table-column prop="total" label="发行量" width="70" />
+        <el-table-column prop="used" label="已领取" width="70" />
+        <el-table-column prop="status" label="状态" width="70">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'info'">{{ row.status === 1 ? '启用' : '禁用' }}</el-tag>
           </template>

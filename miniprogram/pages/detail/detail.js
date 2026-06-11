@@ -21,7 +21,17 @@ Page({
   async loadProduct(id) {
     try {
       const product = await getProductDetail(id)
-      const images = product.images ? product.images.split(',') : [product.mainImage]
+      let images = [product.mainImage]
+      if (product.images) {
+        try {
+          const parsed = JSON.parse(product.images)
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            images = parsed
+          }
+        } catch (e) {
+          images = product.images.split(',').filter(i => i)
+        }
+      }
       this.setData({
         product: { ...product, priceText: formatPrice(product.price) },
         images

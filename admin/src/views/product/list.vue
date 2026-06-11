@@ -15,19 +15,25 @@
         <el-button type="primary" style="margin-left: 12px" @click="loadData">搜索</el-button>
       </div>
       <el-table :data="tableData" v-loading="loading" stripe>
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="name" label="商品名称" show-overflow-tooltip />
-        <el-table-column prop="categoryName" label="分类" width="120" />
-        <el-table-column prop="price" label="价格" width="100">
+        <el-table-column prop="id" label="ID" width="60" />
+        <el-table-column label="图片" width="70">
+          <template #default="{ row }">
+            <el-image :src="row.mainImage" style="width:50px;height:50px" fit="cover" v-if="row.mainImage" />
+            <span v-else style="color:#999">无图</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="title" label="商品名称" show-overflow-tooltip />
+        <el-table-column prop="price" label="价格" width="90">
           <template #default="{ row }">¥{{ row.price }}</template>
         </el-table-column>
-        <el-table-column prop="stock" label="库存" width="80" />
-        <el-table-column prop="status" label="状态" width="80">
+        <el-table-column prop="stock" label="库存" width="70" />
+        <el-table-column prop="sales" label="销量" width="70" />
+        <el-table-column prop="status" label="状态" width="70">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'info'">{{ row.status === 1 ? '上架' : '下架' }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="160" fixed="right">
+        <el-table-column label="操作" width="130" fixed="right">
           <template #default="{ row }">
             <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
             <el-button link type="danger" @click="handleDelete(row)">删除</el-button>
