@@ -62,7 +62,7 @@ const query = reactive({ pageNum: 1, pageSize: 10 })
 async function loadData() {
   loading.value = true
   try {
-    const res = await request.get('/coupon/available')
+    const res = await request.get('/api/coupon/available')
     tableData.value = Array.isArray(res.data) ? res.data : (res.data?.list || [])
     total.value = tableData.value.length
   } catch {
@@ -75,7 +75,7 @@ async function loadData() {
 async function handleDelete(row) {
   await ElMessageBox.confirm('确定删除该优惠券吗？', '提示', { type: 'warning' })
   try {
-    await request.delete(`/coupon/${row.id}`)
+    await request.delete(`/api/coupon/${row.id}`)
     ElMessage.success('删除成功')
     loadData()
   } catch {}

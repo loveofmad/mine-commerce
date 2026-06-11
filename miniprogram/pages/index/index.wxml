@@ -1,0 +1,50 @@
+<view class="page-index">
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="onSearchTap">
+    <view class="search-input">
+      <image class="search-icon" src="/static/icon-search.png" />
+      <text class="search-placeholder">搜索土特产</text>
+    </view>
+  </view>
+
+  <!-- 轮播图 -->
+  <swiper class="banner-swiper" indicator-dots autoplay circular interval="3000">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image class="banner-image" src="{{item.imageUrl}}" mode="aspectFill" bindtap="onBannerTap" data-id="{{item.id}}" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 分类导航 -->
+  <view class="category-nav">
+    <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
+      <image class="category-icon" src="{{item.icon}}" />
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 推荐商品 -->
+  <view class="section">
+    <view class="section-title">推荐商品</view>
+    <view class="product-grid">
+      <view class="product-card" wx:for="{{productList}}" wx:key="id" bindtap="onProductTap" data-id="{{item.id}}">
+        <image class="product-image" src="{{item.mainImage}}" mode="aspectFill" />
+        <view class="product-info">
+          <text class="product-title text-ellipsis">{{item.title}}</text>
+          <text class="product-subtitle text-ellipsis text-gray text-small">{{item.subtitle}}</text>
+          <view class="product-price-row">
+            <text class="price">¥{{item.priceText}}</text>
+            <text class="text-gray text-small">已售{{item.sales || 0}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载提示 -->
+  <view class="loading-tip" wx:if="{{loading}}">
+    <text class="text-gray">加载中...</text>
+  </view>
+  <view class="loading-tip" wx:if="{{!hasMore && productList.length > 0}}">
+    <text class="text-gray">没有更多了</text>
+  </view>
+</view>

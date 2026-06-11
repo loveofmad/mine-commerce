@@ -1,0 +1,67 @@
+<view class="page-order">
+  <!-- 收货地址 -->
+  <view class="address-section" bindtap="onAddressTap">
+    <image class="address-icon" src="/static/icon-location.png" />
+    <view class="address-content">
+      <view wx:if="{{address}}">
+        <view class="address-info">
+          <text class="address-name">{{address.name}}</text>
+          <text class="address-phone">{{address.phone}}</text>
+        </view>
+        <text class="address-detail">{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</text>
+      </view>
+      <view wx:else class="address-empty">
+        <text>请选择收货地址</text>
+      </view>
+    </view>
+    <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="order-items">
+    <view class="order-item" wx:for="{{items}}" wx:key="skuId">
+      <image class="item-image" src="{{item.skuImage}}" mode="aspectFill" />
+      <view class="item-info">
+        <text class="item-title text-ellipsis">{{item.spuName}}</text>
+        <text class="item-sku text-gray text-small">{{item.skuTitle}}</text>
+        <view class="item-bottom">
+          <text class="price">¥{{item.priceText}}</text>
+          <text class="text-gray">x{{item.quantity}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="remark-section">
+    <text class="remark-label">备注</text>
+    <input class="remark-input" placeholder="选填：给卖家留言" value="{{remark}}" bindinput="onRemarkInput" />
+  </view>
+
+  <!-- 订单金额 -->
+  <view class="amount-section">
+    <view class="amount-row">
+      <text>商品金额</text>
+      <text class="price">¥{{totalAmount}}</text>
+    </view>
+    <view class="amount-row">
+      <text>运费</text>
+      <text>免运费</text>
+    </view>
+    <view class="amount-row total">
+      <text>合计</text>
+      <text class="price">¥{{totalAmount}}</text>
+    </view>
+  </view>
+
+  <!-- 底部提交栏 -->
+  <view class="bottom-bar">
+    <view class="total-price">
+      <text>合计：</text>
+      <text class="price">¥{{totalAmount}}</text>
+    </view>
+    <view class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="onSubmitOrder">
+      {{submitting ? '提交中...' : '提交订单'}}
+    </view>
+  </view>
+</view>

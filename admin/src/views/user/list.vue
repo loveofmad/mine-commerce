@@ -49,8 +49,8 @@ const query = reactive({ keyword: '', pageNum: 1, pageSize: 10 })
 async function loadData() {
   loading.value = true
   try {
-    const res = await request.get('/user/list', { params: query })
-    tableData.value = res.data?.list || []
+    const res = await request.get('/admin/user/list', { params: query })
+    tableData.value = res.data?.records || []
     total.value = res.data?.total || 0
   } catch {
     tableData.value = []

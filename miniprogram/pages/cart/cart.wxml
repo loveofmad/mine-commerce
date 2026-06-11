@@ -1,0 +1,48 @@
+<view class="page-cart">
+  <!-- 空购物车 -->
+  <view class="empty-tip" wx:if="{{cartList.length === 0}}">
+    <image class="empty-icon" src="/static/icon-cart-empty.png" />
+    <text>购物车空空如也</text>
+    <view class="btn-primary empty-btn" bindtap="goHome">去逛逛</view>
+  </view>
+
+  <!-- 购物车列表 -->
+  <view class="cart-list" wx:if="{{cartList.length > 0}}">
+    <view class="cart-item" wx:for="{{cartList}}" wx:key="id">
+      <view class="item-check" bindtap="onCheckTap" data-index="{{index}}">
+        <image class="check-icon" src="{{item.checked ? '/static/icon-check-active.png' : '/static/icon-check.png'}}" />
+      </view>
+      <image class="item-image" src="{{item.skuImage}}" mode="aspectFill" />
+      <view class="item-info">
+        <text class="item-title text-ellipsis">{{item.spuName}}</text>
+        <text class="item-sku text-gray text-small">{{item.skuTitle}}</text>
+        <view class="item-bottom">
+          <text class="price">¥{{item.priceText}}</text>
+          <view class="quantity-picker">
+            <view class="qty-btn" bindtap="onQuantityMinus" data-index="{{index}}">-</view>
+            <text class="qty-value">{{item.quantity}}</text>
+            <view class="qty-btn" bindtap="onQuantityPlus" data-index="{{index}}">+</view>
+          </view>
+        </view>
+      </view>
+      <view class="item-delete" bindtap="onDeleteTap" data-index="{{index}}" wx:if="{{isEdit}}">
+        <text class="text-danger">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部结算栏 -->
+  <view class="bottom-bar" wx:if="{{cartList.length > 0}}">
+    <view class="check-all" bindtap="onCheckAllTap">
+      <image class="check-icon" src="{{allChecked ? '/static/icon-check-active.png' : '/static/icon-check.png'}}" />
+      <text>全选</text>
+    </view>
+    <view class="total-info">
+      <text>合计：</text>
+      <text class="price">¥{{totalPrice}}</text>
+    </view>
+    <view class="checkout-btn {{totalCount === 0 ? 'disabled' : ''}}" bindtap="onCheckout">
+      结算({{totalCount}})
+    </view>
+  </view>
+</view>

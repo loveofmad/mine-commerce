@@ -1,0 +1,162 @@
+.page-detail {
+  padding-bottom: 120rpx;
+}
+
+.detail-swiper {
+  width: 100%;
+  height: 750rpx;
+}
+
+.detail-image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-indicator {
+  position: absolute;
+  right: 30rpx;
+  bottom: 30rpx;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.detail-info {
+  background-color: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.detail-info .price {
+  font-size: 44rpx;
+}
+
+.detail-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.detail-subtitle {
+  font-size: 28rpx;
+  display: block;
+}
+
+.detail-section {
+  background-color: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.sku-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.sku-item {
+  padding: 14rpx 30rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.sku-item.active {
+  border-color: #ff6600;
+  color: #ff6600;
+  background-color: #fff5f0;
+}
+
+.quantity-picker {
+  display: flex;
+  align-items: center;
+}
+
+.qty-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 36rpx;
+  color: #333;
+}
+
+.qty-value {
+  width: 100rpx;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.detail-content {
+  width: 100%;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100rpx;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  border-top: 1rpx solid #eee;
+  z-index: 100;
+}
+
+.bar-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120rpx;
+}
+
+.icon-text {
+  font-size: 36rpx;
+}
+
+.bar-label {
+  font-size: 20rpx;
+  color: #666;
+}
+
+.bar-btn {
+  flex: 1;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #fff;
+  border-radius: 36rpx;
+  margin: 0 10rpx;
+}
+
+.bar-btn-cart {
+  background-color: #ff9500;
+}
+
+.bar-btn-buy {
+  background-color: #ff4d4f;
+}

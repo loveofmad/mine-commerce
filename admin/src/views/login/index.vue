@@ -45,7 +45,7 @@ async function handleLogin() {
   if (!valid) return
   loading.value = true
   try {
-    const res = await request.post('/user/login', null, {
+    const res = await request.post('/admin/auth/login', null, {
       params: { username: form.username, password: form.password }
     })
     userStore.setToken(res.data?.token || 'admin-token')

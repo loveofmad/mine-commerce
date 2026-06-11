@@ -1,0 +1,58 @@
+<view class="page-detail" wx:if="{{product}}">
+  <!-- 商品图片轮播 -->
+  <swiper class="detail-swiper" indicator-dots bindchange="onSwiperChange">
+    <swiper-item wx:for="{{images}}" wx:key="*this">
+      <image class="detail-image" src="{{item}}" mode="aspectFill" bindtap="onImageTap" data-index="{{index}}" />
+    </swiper-item>
+  </swiper>
+  <view class="image-indicator">
+    <text>{{currentImage + 1}}/{{images.length}}</text>
+  </view>
+
+  <!-- 商品信息 -->
+  <view class="detail-info">
+    <view class="price-row">
+      <text class="price">¥{{product.priceText}}</text>
+      <text class="text-gray text-small">已售{{product.sales || 0}}</text>
+    </view>
+    <text class="detail-title">{{product.title}}</text>
+    <text class="detail-subtitle text-gray">{{product.subtitle}}</text>
+  </view>
+
+  <!-- 规格选择 -->
+  <view class="detail-section" wx:if="{{skuList.length > 0}}">
+    <view class="section-title">选择规格</view>
+    <view class="sku-list">
+      <view class="sku-item {{selectedSku && selectedSku.id === item.id ? 'active' : ''}}"
+            wx:for="{{skuList}}" wx:key="id" bindtap="onSkuTap" data-index="{{index}}">
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数量选择 -->
+  <view class="detail-section">
+    <view class="section-title">数量</view>
+    <view class="quantity-picker">
+      <view class="qty-btn" bindtap="onQuantityMinus">-</view>
+      <text class="qty-value">{{quantity}}</text>
+      <view class="qty-btn" bindtap="onQuantityPlus">+</view>
+    </view>
+  </view>
+
+  <!-- 商品详情 -->
+  <view class="detail-section" wx:if="{{product.detail}}">
+    <view class="section-title">商品详情</view>
+    <rich-text class="detail-content" nodes="{{product.detail}}" />
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="bar-icon" bindtap="onGoCart">
+      <text class="icon-text">&#x1F6D2;</text>
+      <text class="bar-label">购物车</text>
+    </view>
+    <view class="bar-btn bar-btn-cart" bindtap="onAddToCart">加入购物车</view>
+    <view class="bar-btn bar-btn-buy" bindtap="onBuyNow">立即购买</view>
+  </view>
+</view>

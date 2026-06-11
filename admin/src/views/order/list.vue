@@ -72,8 +72,8 @@ function orderStatusLabel(status) {
 async function loadData() {
   loading.value = true
   try {
-    const res = await request.get('/order/list/0', { params: query })
-    tableData.value = res.data?.list || []
+    const res = await request.get('/admin/order/list', { params: query })
+    tableData.value = res.data?.records || []
     total.value = res.data?.total || 0
   } catch {
     tableData.value = []
@@ -85,7 +85,7 @@ async function loadData() {
 async function handleShip(row) {
   await ElMessageBox.confirm('确认发货？', '提示', { type: 'info' })
   try {
-    await request.put(`/order/${row.id}/confirm`)
+    await request.put(`/admin/order/${row.id}/deliver`)
     ElMessage.success('发货成功')
     loadData()
   } catch {}
@@ -94,7 +94,7 @@ async function handleShip(row) {
 async function handleCancel(row) {
   await ElMessageBox.confirm('确认取消订单？', '提示', { type: 'warning' })
   try {
-    await request.put(`/order/${row.id}/cancel`)
+    await request.delete(`/admin/order/${row.id}`)
     ElMessage.success('已取消')
     loadData()
   } catch {}

@@ -62,8 +62,8 @@ const query = reactive({ keyword: '', categoryId: '', pageNum: 1, pageSize: 10 }
 async function loadData() {
   loading.value = true
   try {
-    const res = await request.get('/product/list', { params: query })
-    tableData.value = res.data?.list || []
+    const res = await request.get('/admin/product/spu/list', { params: query })
+    tableData.value = res.data?.records || []
     total.value = res.data?.total || 0
   } catch {
     tableData.value = []
@@ -75,7 +75,7 @@ async function loadData() {
 async function handleDelete(row) {
   await ElMessageBox.confirm('确定删除该商品吗？', '提示', { type: 'warning' })
   try {
-    await request.delete(`/product/${row.id}`)
+    await request.delete(`/admin/product/spu/${row.id}`)
     ElMessage.success('删除成功')
     loadData()
   } catch {}
