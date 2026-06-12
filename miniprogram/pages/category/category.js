@@ -16,21 +16,19 @@ Page({
 
   onLoad() {
     this.loadCategories()
+    this.loadProducts()
   },
 
   onShow() {
     const app = getApp()
     const selectedId = app.globalData.selectedCategoryId
     if (selectedId !== undefined && selectedId !== null) {
-      this.setData({
-        currentCategoryId: selectedId,
-        pageNum: 1,
-        productList: [],
-        hasMore: true
-      })
+      this.setData({ currentCategoryId: selectedId })
+      this.data.currentCategoryId = selectedId
+      this.data.pageNum = 1
+      this.data.productList = []
+      this.data.hasMore = true
       app.globalData.selectedCategoryId = null
-      setTimeout(() => { this.loadProducts() }, 100)
-    } else {
       this.loadProducts()
     }
   },
