@@ -1,15 +1,10 @@
-const { getUserInfo, login, register } = require('../../api/user')
+const { getUserInfo, wxLogin } = require('../../api/user')
 const { setUserInfo, clearUserInfo } = require('../../utils/util')
 
 Page({
   data: {
     userInfo: null,
-    isLoggedIn: false,
-    showLogin: false,
-    loginType: 'login',
-    username: '',
-    password: '',
-    phone: ''
+    isLoggedIn: false
   },
 
   onShow() {
@@ -33,68 +28,27 @@ Page({
     }
   },
 
-  onLoginTap() {
-    this.setData({ showLogin: true, loginType: 'login' })
-  },
-
-  onRegisterTap() {
-    this.setData({ showLogin: true, loginType: 'register' })
-  },
-
-  onCloseLogin() {
-    this.setData({ showLogin: false })
-  },
-
-  onSwitchType() {
-    this.setData({
-      loginType: this.data.loginType === 'login' ? 'register' : 'login'
-    })
-  },
-
-  onUsernameInput(e) {
-    this.setData({ username: e.detail.value })
-  },
-
-  onPasswordInput(e) {
-    this.setData({ password: e.detail.value })
-  },
-
-  onPhoneInput(e) {
-    this.setData({ phone: e.detail.value })
-  },
-
-  async onSubmitLogin() {
-    const { username, password, phone, loginType } = this.data
-    if (!username || !password) {
-      wx.showToast({ title: '请填写用户名和密码', icon: 'none' })
-      return
-    }
+  async onLoginTap() {
     try {
-      let user
-      if (loginType === 'login') {
-        user = await login(username, password)
-      } else {
-        if (!phone) {
-          wx.showToast({ title: '请填写手机号', icon: 'none' })
-          return
-        }
-        user = await register(username, password, phone)
-      }
+      wx.showLoading({ title: '登录中...' })
+      const loginRes = await new Promise((resolve, reject) => {
+        wx.login({ success: resolve, fail: reject })
+      })
+      const user = await wxLogin(loginRes.code)
       const app = getApp()
       app.globalData.userId = user.id
       app.globalData.userInfo = user
       setUserInfo(user)
       this.setData({
         isLoggedIn: true,
-        userInfo: user,
-        showLogin: false,
-        username: '',
-        password: '',
-        phone: ''
+        userInfo: user
       })
+      wx.hideLoading()
       wx.showToast({ title: '登录成功', icon: 'success' })
     } catch (e) {
-      wx.showToast({ title: '操作失败', icon: 'none' })
+      wx.hideLoading()
+      wx.showToast({ title: '登录失败', icon: 'none' })
+      console.error('登录失败:', e)
     }
   },
 

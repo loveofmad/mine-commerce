@@ -16,6 +16,32 @@ import java.time.LocalDateTime;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override
+    public User wxLogin(String code) {
+        // 使用code作为openid（简化版，实际需要调用微信API获取openid）
+        String openid = "wx_" + code;
+        
+        // 查找或创建用户
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, openid);
+        User user = getOne(wrapper);
+        
+        if (user == null) {
+            // 创建新用户
+            user = new User();
+            user.setUsername(openid);
+            user.setPassword("");
+            user.setNickname("微信用户" + openid.substring(openid.length() - 6));
+            user.setStatus(1);
+            user.setCreateTime(LocalDateTime.now());
+            user.setUpdateTime(LocalDateTime.now());
+            user.setDeleted(0);
+            save(user);
+        }
+        
+        return user;
+    }
+
+    @Override
     public User register(String username, String password, String phone) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUsername, username);

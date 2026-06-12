@@ -6,6 +6,8 @@ import com.mine.model.entity.User;
 
 public interface UserService extends IService<User> {
 
+    User wxLogin(String code);
+
     User register(String username, String password, String phone);
 
     User login(String username, String password);

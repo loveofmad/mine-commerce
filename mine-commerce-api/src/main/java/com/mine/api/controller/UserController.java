@@ -16,19 +16,11 @@ public class UserController {
 
     private final UserService userService;
 
-    @ApiOperation("用户注册")
-    @PostMapping("/register")
-    public Result<User> register(@RequestParam String username,
-                                 @RequestParam String password,
-                                 @RequestParam String phone) {
-        return Result.success(userService.register(username, password, phone));
-    }
-
-    @ApiOperation("用户登录")
-    @PostMapping("/login")
-    public Result<User> login(@RequestParam String username,
-                              @RequestParam String password) {
-        return Result.success(userService.login(username, password));
+    @ApiOperation("微信登录")
+    @PostMapping("/wx-login")
+    public Result<User> wxLogin(@RequestBody java.util.Map<String, String> params) {
+        String code = params.get("code");
+        return Result.success(userService.wxLogin(code));
     }
 
     @ApiOperation("获取用户信息")

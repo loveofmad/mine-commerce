@@ -5,20 +5,20 @@
       <image class="user-avatar" src="{{userInfo.avatar || '/static/default-avatar.png'}}" mode="aspectFill" />
       <view class="user-info">
         <text class="user-name">{{userInfo.nickname || userInfo.username}}</text>
-        <text class="user-phone text-gray text-small">{{userInfo.phone || ''}}</text>
+        <text class="user-phone text-gray text-small">ID: {{userInfo.id}}</text>
       </view>
     </view>
     <view class="login-prompt" wx:else bindtap="onLoginTap">
       <image class="user-avatar" src="/static/default-avatar.png" mode="aspectFill" />
       <view class="user-info">
-        <text class="user-name">点击登录</text>
-        <text class="text-gray text-small">登录后享受更多服务</text>
+        <text class="user-name">微信一键登录</text>
+        <text class="text-gray text-small">点击头像快速登录</text>
       </view>
     </view>
   </view>
 
   <!-- 订单入口 -->
-  <view class="order-section">
+  <view class="order-section" wx:if="{{isLoggedIn}}">
     <view class="section-header">
       <text class="section-title">我的订单</text>
       <view class="section-right" bindtap="onOrderTap" data-status="">
@@ -73,20 +73,5 @@
   <!-- 退出登录 -->
   <view class="logout-section" wx:if="{{isLoggedIn}}">
     <view class="logout-btn" bindtap="onLogout">退出登录</view>
-  </view>
-
-  <!-- 登录弹窗 -->
-  <view class="login-mask" wx:if="{{showLogin}}" bindtap="onCloseLogin" />
-  <view class="login-popup" wx:if="{{showLogin}}">
-    <view class="login-title">{{loginType === 'login' ? '登录' : '注册'}}</view>
-    <input class="login-input" placeholder="请输入用户名" value="{{username}}" bindinput="onUsernameInput" />
-    <input class="login-input" placeholder="请输入密码" password value="{{password}}" bindinput="onPasswordInput" />
-    <input class="login-input" wx:if="{{loginType === 'register'}}" placeholder="请输入手机号" value="{{phone}}" bindinput="onPhoneInput" />
-    <view class="login-submit" bindtap="onSubmitLogin">
-      {{loginType === 'login' ? '登录' : '注册'}}
-    </view>
-    <view class="login-switch" bindtap="onSwitchType">
-      {{loginType === 'login' ? '没有账号？去注册' : '已有账号？去登录'}}
-    </view>
   </view>
 </view>
