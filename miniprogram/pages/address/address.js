@@ -145,7 +145,10 @@ Page({
 
   onProvinceTap(e) {
     const name = e.currentTarget.dataset.name
+    console.log('选择省份:', name)
+    console.log('省份数据:', this.data.provinces)
     const cities = this.getCurrentCities()
+    console.log('城市列表:', cities)
     this.setData({ selectedProvince: name, currentStep: 1, currentCities: cities, currentDistricts: [] })
   },
 
