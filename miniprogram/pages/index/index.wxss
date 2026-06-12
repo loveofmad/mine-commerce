@@ -54,11 +54,18 @@
   background-color: #fff;
 }
 
+.category-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
 .category-icon {
   width: 80rpx;
   height: 80rpx;
-  margin-bottom: 10rpx;
-  pointer-events: none;
 }
 
 .category-name {
