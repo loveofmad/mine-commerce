@@ -10,6 +10,7 @@ import com.mine.service.BannerService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> implements BannerService {
@@ -19,6 +20,14 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         LambdaQueryWrapper<Banner> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByAsc(Banner::getSort);
         return page(new Page<>(pageNum, pageSize), wrapper);
+    }
+
+    @Override
+    public List<Banner> listActiveBanners() {
+        LambdaQueryWrapper<Banner> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Banner::getStatus, 1)
+               .orderByAsc(Banner::getSort);
+        return list(wrapper);
     }
 
     @Override

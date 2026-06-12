@@ -1,14 +1,11 @@
 const { getProductList } = require('../../api/product')
 const { getCategoryList } = require('../../api/category')
+const { getBannerList } = require('../../api/banner')
 const { formatPrice } = require('../../utils/util')
 
 Page({
   data: {
-    banners: [
-      { id: 1, imageUrl: '/static/banner1.png', title: '精选土特产' },
-      { id: 2, imageUrl: '/static/banner2.png', title: '新鲜水果' },
-      { id: 3, imageUrl: '/static/banner3.png', title: '地道美味' }
-    ],
+    banners: [],
     categories: [],
     productList: [],
     pageNum: 1,
@@ -18,8 +15,33 @@ Page({
   },
 
   onLoad() {
+    this.loadBanners()
     this.loadCategories()
     this.loadProducts()
+  },
+
+  async loadBanners() {
+    try {
+      const res = await getBannerList()
+      const list = res || []
+      const baseUrl = getApp().globalData.baseUrl
+      const banners = list.map(item => ({
+        id: item.id,
+        imageUrl: item.image && item.image.startsWith('/') ? baseUrl + item.image : item.image,
+        url: item.url,
+        title: item.title
+      }))
+      this.setData({ banners })
+    } catch (e) {
+      console.error('加载轮播图失败', e)
+      this.setData({
+        banners: [
+          { id: 1, imageUrl: '/static/banner1.png', title: '精选土特产' },
+          { id: 2, imageUrl: '/static/banner2.png', title: '新鲜水果' },
+          { id: 3, imageUrl: '/static/banner3.png', title: '地道美味' }
+        ]
+      })
+    }
   },
 
   async loadCategories() {
@@ -86,9 +108,14 @@ Page({
   },
 
   onBannerTap(e) {
-    const id = e.currentTarget.dataset.id
-    if (id) {
-      wx.navigateTo({ url: `/pages/detail/detail?id=${id}` })
+    const index = e.currentTarget.dataset.index
+    const banner = this.data.banners[index]
+    if (!banner) return
+    if (banner.url && banner.url.includes('product')) {
+      const productId = banner.url.split('=').pop()
+      wx.navigateTo({ url: `/pages/detail/detail?id=${productId}` })
+    } else if (banner.url) {
+      wx.navigateTo({ url: banner.url })
     }
   },
 
