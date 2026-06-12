@@ -22,10 +22,18 @@ Page({
     const app = getApp()
     const selectedId = app.globalData.selectedCategoryId
     if (selectedId !== undefined && selectedId !== null) {
-      this.setData({ currentCategoryId: selectedId, pageNum: 1, productList: [], hasMore: true })
+      this.setData({
+        currentCategoryId: selectedId,
+        pageNum: 1,
+        productList: [],
+        hasMore: true
+      }, () => {
+        this.loadProducts()
+      })
       app.globalData.selectedCategoryId = null
+    } else {
+      this.loadProducts()
     }
-    this.loadProducts()
   },
 
   async loadCategories() {
