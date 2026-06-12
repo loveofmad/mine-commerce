@@ -10,6 +10,6 @@ App({
     userInfo: null,
     userId: null,
     // 开发工具使用 localhost，真机/模拟器使用电脑IP
-    baseUrl: 'http://localhost:8080'
+    baseUrl: 'http://172.18.56.201:8080'
   }
 })
