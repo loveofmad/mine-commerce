@@ -14,7 +14,10 @@ Page({
     loading: false
   },
 
-  onLoad() {
+  onLoad(options) {
+    if (options.id) {
+      this.setData({ currentCategoryId: parseInt(options.id) })
+    }
     this.loadCategories()
     this.loadProducts()
   },
