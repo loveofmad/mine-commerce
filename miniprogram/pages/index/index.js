@@ -93,11 +93,9 @@ Page({
   },
 
   onCategoryTap(e) {
-    console.log('====== 分类被点击了 ======')
-    console.log('点击的事件对象:', e)
     const id = e.currentTarget.dataset.id
-    console.log('点击的分类ID:', id)
-    wx.navigateTo({ url: `/pages/category/category?id=${id}` })
+    getApp().globalData.selectedCategoryId = id
+    wx.switchTab({ url: '/pages/category/category' })
   },
 
   onProductTap(e) {

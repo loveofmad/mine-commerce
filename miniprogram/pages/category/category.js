@@ -14,13 +14,17 @@ Page({
     loading: false
   },
 
-  onLoad(options) {
-    console.log('分类页onLoad, options:', options)
-    if (options.id) {
-      this.setData({ currentCategoryId: parseInt(options.id) })
-      console.log('设置currentCategoryId:', parseInt(options.id))
-    }
+  onLoad() {
     this.loadCategories()
+  },
+
+  onShow() {
+    const app = getApp()
+    const selectedId = app.globalData.selectedCategoryId
+    if (selectedId !== undefined && selectedId !== null) {
+      this.setData({ currentCategoryId: selectedId, pageNum: 1, productList: [], hasMore: true })
+      app.globalData.selectedCategoryId = null
+    }
     this.loadProducts()
   },
 
