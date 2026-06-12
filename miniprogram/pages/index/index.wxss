@@ -50,6 +50,7 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 20rpx;
+  padding: 10rpx 0;
 }
 
 .category-icon {
