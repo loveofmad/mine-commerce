@@ -68,7 +68,7 @@ Page({
 
   onOrderTap(e) {
     const status = e.currentTarget.dataset.status || ''
-    wx.navigateTo({ url: `/pages/user/user?tab=order&status=${status}` })
+    wx.navigateTo({ url: `/pages/order/list?status=${status}` })
   },
 
   onMenuItemTap(e) {

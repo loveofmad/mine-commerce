@@ -5,6 +5,8 @@
     "pages/detail/detail",
     "pages/cart/cart",
     "pages/order/order",
+    "pages/order/list",
+    "pages/order/detail",
     "pages/user/user",
     "pages/address/address"
   ],
