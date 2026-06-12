@@ -57,6 +57,7 @@
   width: 80rpx;
   height: 80rpx;
   margin-bottom: 10rpx;
+  pointer-events: none;
 }
 
 .category-name {
