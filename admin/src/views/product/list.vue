@@ -275,7 +275,7 @@ async function handleSubmit() {
   submitLoading.value = true
   try {
     if (editingId.value) {
-      await request.put(`/admin/product/spu/${editingId.value}`, form)
+      await request.put('/admin/product/spu', { ...form, id: editingId.value })
       ElMessage.success('修改成功')
     } else {
       await request.post('/admin/product/spu', form)
