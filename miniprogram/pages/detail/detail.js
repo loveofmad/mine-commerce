@@ -21,19 +21,22 @@ Page({
   async loadProduct(id) {
     try {
       const product = await getProductDetail(id)
-      let images = [product.mainImage]
+      const app = getApp()
+      const baseUrl = app.globalData.baseUrl
+      const fixImage = (img) => img && img.startsWith('/') ? baseUrl + img : img
+      let images = [fixImage(product.mainImage)]
       if (product.images) {
         try {
           const parsed = JSON.parse(product.images)
           if (Array.isArray(parsed) && parsed.length > 0) {
-            images = parsed
+            images = parsed.map(fixImage)
           }
         } catch (e) {
-          images = product.images.split(',').filter(i => i)
+          images = product.images.split(',').filter(i => i).map(fixImage)
         }
       }
       this.setData({
-        product: { ...product, priceText: formatPrice(product.price) },
+        product: { ...product, mainImage: fixImage(product.mainImage), priceText: formatPrice(product.price) },
         images
       })
       wx.setNavigationBarTitle({ title: product.title })

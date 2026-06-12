@@ -21,8 +21,11 @@ Page({
   async loadCart() {
     try {
       const list = await getCartList(getApp().globalData.userId)
+      const baseUrl = getApp().globalData.baseUrl
+      const fixImage = (img) => img && img.startsWith('/') ? baseUrl + img : img
       const cartList = list.map(item => ({
         ...item,
+        skuImage: fixImage(item.skuImage),
         priceText: formatPrice(item.price)
       }))
       this.setData({ cartList })

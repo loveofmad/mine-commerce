@@ -43,8 +43,11 @@ spring:
         min-idle: 0
   sql:
     init:
-      mode: always
-      schema-locations: classpath:schema.sql
+      mode: never
+  mvc:
+    static-path-pattern: /upload/**
+  resources:
+    static-locations: file:C:/mine-upload/
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml

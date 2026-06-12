@@ -48,10 +48,13 @@ Page({
       })
       console.log('API返回:', res)
       const list = res.records || []
+      const app = getApp()
+      const baseUrl = app.globalData.baseUrl
       console.log('商品列表:', list)
       this.setData({
         productList: [...this.data.productList, ...list.map(item => ({
           ...item,
+          mainImage: item.mainImage && item.mainImage.startsWith('/') ? baseUrl + item.mainImage : item.mainImage,
           priceText: formatPrice(item.price)
         }))],
         pageNum: this.data.pageNum + 1,
