@@ -110,7 +110,7 @@ Page({
       const order = await createOrder(app.globalData.userId, 0, orderItems, null, addressInfo)
       wx.showToast({ title: '下单成功', icon: 'success' })
       setTimeout(() => {
-        wx.redirectTo({ url: `/pages/order/order?id=${order.id}&status=1` })
+        wx.redirectTo({ url: `/pages/order/detail?id=${order.id}` })
       }, 1500)
     } catch (e) {
       wx.showToast({ title: '下单失败', icon: 'none' })
