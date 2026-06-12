@@ -65,6 +65,9 @@ knife4j:
     description: 企业级土特产商城微信小程序接口文档
     version: 1.0.0
 
+upload:
+  path: C:/mine-upload/
+
 wx:
   mini:
     app-id: your-app-id
