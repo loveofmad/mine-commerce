@@ -21,7 +21,7 @@
       <text class="category-name">{{item.name}}</text>
     </view>
     <view class="category-item" bindtap="onViewAllCategory">
-      <image class="category-icon" src="/static/icon-arrow-right.png" mode="aspectFit" />
+      <image class="category-icon" src="/static/icon-more.png" mode="aspectFit" />
       <text class="category-name">全部分类</text>
     </view>
   </view>
