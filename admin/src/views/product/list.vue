@@ -1,88 +1,159 @@
 <template>
   <div class="product-list">
-    <el-card>
+    <el-card shadow="never">
       <template #header>
         <div class="card-header">
-          <span>商品管理</span>
-          <el-button type="primary" @click="handleAdd">新增商品</el-button>
+          <span class="page-title">商品管理</span>
+          <el-button type="primary" @click="handleAdd">
+            <el-icon><Plus /></el-icon>新增商品
+          </el-button>
         </div>
       </template>
+
+      <!-- 搜索栏 -->
       <div class="filter-bar">
-        <el-input v-model="query.keyword" placeholder="搜索商品名称" clearable style="width:200px" @clear="loadData" @keyup.enter="loadData" />
-        <el-select v-model="query.categoryId" placeholder="商品分类" clearable style="width:140px;margin-left:12px" @change="loadData">
+        <el-input v-model="query.keyword" placeholder="搜索商品名称" clearable style="width: 240px" @clear="loadData" @keyup.enter="loadData">
+          <template #prefix><el-icon><Search /></el-icon></template>
+        </el-input>
+        <el-select v-model="query.categoryId" placeholder="商品分类" clearable style="width: 160px; margin-left: 12px" @change="loadData">
           <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
         </el-select>
-        <el-button type="primary" style="margin-left:12px" @click="loadData">搜索</el-button>
+        <el-button type="primary" style="margin-left: 12px" @click="loadData">
+          <el-icon><Search /></el-icon>搜索
+        </el-button>
+        <el-button @click="resetQuery">重置</el-button>
       </div>
-      <el-table :data="tableData" v-loading="loading" stripe>
-        <el-table-column prop="id" label="ID" width="60" />
-        <el-table-column label="图片" width="70">
+
+      <!-- 数据表格 -->
+      <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" row-class-name="table-row">
+        <el-table-column label="商品信息" min-width="320">
           <template #default="{ row }">
-            <el-image :src="row.mainImage" style="width:50px;height:50px" fit="cover" v-if="row.mainImage" :preview-src-list="[row.mainImage]" />
-            <span v-else style="color:#999">无图</span>
+            <div class="product-info-cell">
+              <el-image 
+                :src="row.mainImage" 
+                style="width: 64px; height: 64px; border-radius: 8px; flex-shrink: 0" 
+                fit="cover"
+                v-if="row.mainImage"
+              >
+                <template #error>
+                  <div class="image-error">无图</div>
+                </template>
+              </el-image>
+              <div v-else class="image-placeholder">无图</div>
+              <div class="product-text">
+                <div class="product-name">{{ row.title }}</div>
+                <div class="product-subtitle">{{ row.subtitle || '暂无副标题' }}</div>
+              </div>
+            </div>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="商品名称" show-overflow-tooltip />
-        <el-table-column prop="subtitle" label="副标题" show-overflow-tooltip />
-        <el-table-column prop="price" label="价格" width="90">
-          <template #default="{ row }">¥{{ row.price }}</template>
-        </el-table-column>
-        <el-table-column prop="stock" label="库存" width="70" />
-        <el-table-column prop="sales" label="销量" width="70" />
-        <el-table-column prop="status" label="状态" width="70">
+
+        <el-table-column label="价格" width="120" align="center">
           <template #default="{ row }">
-            <el-tag :type="row.status === 1 ? 'success' : 'info'">{{ row.status === 1 ? '上架' : '下架' }}</el-tag>
+            <span class="price-text">¥{{ row.price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="130" fixed="right">
+
+        <el-table-column label="库存" width="100" align="center">
           <template #default="{ row }">
-            <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
-            <el-button link type="danger" @click="handleDelete(row)">删除</el-button>
+            <span :class="{ 'text-danger': row.stock < 10 }">{{ row.stock }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="销量" width="100" align="center">
+          <template #default="{ row }">
+            <span class="text-gray">{{ row.sales || 0 }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="状态" width="100" align="center">
+          <template #default="{ row }">
+            <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">
+              {{ row.status === 1 ? '上架' : '下架' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" width="150" align="center" fixed="right">
+          <template #default="{ row }">
+            <el-button type="primary" link size="small" @click="handleEdit(row)">
+              <el-icon><Edit /></el-icon>编辑
+            </el-button>
+            <el-button type="danger" link size="small" @click="handleDelete(row)">
+              <el-icon><Delete /></el-icon>删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination v-model:current-page="query.pageNum" v-model:page-size="query.pageSize" :total="total" :page-sizes="[10,20,50]" layout="total, sizes, prev, pager, next" style="margin-top:16px;justify-content:flex-end" @size-change="loadData" @current-change="loadData" />
+
+      <!-- 分页 -->
+      <div class="pagination-wrapper">
+        <el-pagination
+          v-model:current-page="query.pageNum"
+          v-model:page-size="query.pageSize"
+          :total="total"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+          @size-change="loadData"
+          @current-change="loadData"
+        />
+      </div>
     </el-card>
 
     <!-- 新增/编辑对话框 -->
-    <el-dialog v-model="dialogVisible" :title="editingId ? '编辑商品' : '新增商品'" width="650px" @close="resetForm">
-      <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
+    <el-dialog 
+      v-model="dialogVisible" 
+      :title="editingId ? '编辑商品' : '新增商品'" 
+      width="650px"
+      :close-on-click-modal="false"
+      @close="resetForm"
+    >
+      <el-form :model="form" :rules="rules" ref="formRef" label-width="100px" class="product-form">
         <el-form-item label="商品名称" prop="title">
-          <el-input v-model="form.title" placeholder="请输入商品名称" />
+          <el-input v-model="form.title" placeholder="请输入商品名称" maxlength="50" show-word-limit />
         </el-form-item>
         <el-form-item label="副标题">
-          <el-input v-model="form.subtitle" placeholder="请输入副标题" />
+          <el-input v-model="form.subtitle" placeholder="请输入副标题（选填）" maxlength="100" show-word-limit />
         </el-form-item>
         <el-form-item label="商品分类" prop="categoryId">
-          <el-select v-model="form.categoryId" placeholder="请选择分类" style="width:100%">
+          <el-select v-model="form.categoryId" placeholder="请选择分类" style="width: 100%">
             <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="商品价格" prop="price">
-          <el-input-number v-model="form.price" :min="0" :precision="2" style="width:100%" />
-        </el-form-item>
-        <el-form-item label="库存" prop="stock">
-          <el-input-number v-model="form.stock" :min="0" style="width:100%" />
-        </el-form-item>
-        <el-form-item label="主图">
-          <div style="width:100%">
-            <el-tabs v-model="imageTab">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="商品价格" prop="price">
+              <el-input-number v-model="form.price" :min="0" :precision="2" style="width: 100%" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="库存" prop="stock">
+              <el-input-number v-model="form.stock" :min="0" style="width: 100%" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="商品主图">
+          <div class="image-upload-area">
+            <el-tabs v-model="imageTab" class="image-tabs">
               <el-tab-pane label="图片URL" name="url">
                 <el-input v-model="form.mainImage" placeholder="请输入图片URL地址" />
               </el-tab-pane>
               <el-tab-pane label="本地上传" name="upload">
                 <el-upload action="/api/upload" :on-success="handleUploadSuccess" :show-file-list="false" accept="image/*">
-                  <el-button size="small">选择图片</el-button>
+                  <el-button size="small" type="primary">选择图片</el-button>
                 </el-upload>
               </el-tab-pane>
             </el-tabs>
-            <el-image v-if="form.mainImage" :src="form.mainImage" style="width:100px;height:100px;margin-top:8px" fit="cover" />
+            <div class="image-preview" v-if="form.mainImage">
+              <el-image :src="form.mainImage" style="width: 120px; height: 120px; border-radius: 8px" fit="cover" />
+            </div>
           </div>
         </el-form-item>
         <el-form-item label="商品详情">
-          <el-input v-model="form.detail" type="textarea" :rows="4" placeholder="请输入商品详情" />
+          <el-input v-model="form.detail" type="textarea" :rows="4" placeholder="请输入商品详情（选填）" />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="商品状态">
           <el-switch v-model="form.status" :active-value="1" :inactive-value="0" active-text="上架" inactive-text="下架" />
         </el-form-item>
       </el-form>
@@ -95,8 +166,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { Plus, Search, Edit, Delete } from '@element-plus/icons-vue'
 import request from '@/utils/request'
 
 const loading = ref(false)
@@ -131,6 +203,13 @@ async function loadCategories() {
   try { const res = await request.get('/api/category/list'); categories.value = res.data || [] } catch {}
 }
 
+function resetQuery() {
+  query.keyword = ''
+  query.categoryId = ''
+  query.pageNum = 1
+  loadData()
+}
+
 function resetForm() {
   editingId.value = null
   Object.assign(form, { title: '', subtitle: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
@@ -141,7 +220,16 @@ function handleAdd() { resetForm(); dialogVisible.value = true }
 
 function handleEdit(row) {
   editingId.value = row.id
-  Object.assign(form, { title: row.title, subtitle: row.subtitle || '', categoryId: row.categoryId, price: row.price, stock: row.stock, mainImage: row.mainImage || '', detail: row.detail || '', status: row.status })
+  Object.assign(form, {
+    title: row.title,
+    subtitle: row.subtitle || '',
+    categoryId: row.categoryId,
+    price: row.price,
+    stock: row.stock,
+    mainImage: row.mainImage || '',
+    detail: row.detail || '',
+    status: row.status
+  })
   dialogVisible.value = true
 }
 
@@ -153,9 +241,15 @@ async function handleSubmit() {
   await formRef.value.validate()
   submitLoading.value = true
   try {
-    if (editingId.value) { await request.put(`/admin/product/spu/${editingId.value}`, form); ElMessage.success('修改成功') }
-    else { await request.post('/admin/product/spu', form); ElMessage.success('添加成功') }
-    dialogVisible.value = false; loadData()
+    if (editingId.value) {
+      await request.put(`/admin/product/spu/${editingId.value}`, form)
+      ElMessage.success('修改成功')
+    } else {
+      await request.post('/admin/product/spu', form)
+      ElMessage.success('添加成功')
+    }
+    dialogVisible.value = false
+    loadData()
   } catch {} finally { submitLoading.value = false }
 }
 
@@ -168,6 +262,134 @@ onMounted(() => { loadData(); loadCategories() })
 </script>
 
 <style scoped>
-.card-header { display: flex; justify-content: space-between; align-items: center; }
-.filter-bar { display: flex; align-items: center; margin-bottom: 16px; }
+.product-list {
+  padding: 0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.product-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.image-placeholder, .image-error {
+  width: 64px;
+  height: 64px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #c0c4cc;
+  font-size: 12px;
+}
+
+.product-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #303133;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-subtitle {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price-text {
+  color: #f56c6c;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.text-danger {
+  color: #f56c6c;
+  font-weight: 500;
+}
+
+.text-gray {
+  color: #909399;
+}
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ebeef5;
+}
+
+.product-form :deep(.el-form-item__label) {
+  font-weight: 500;
+}
+
+.image-upload-area {
+  width: 100%;
+}
+
+.image-tabs {
+  margin-bottom: 12px;
+}
+
+.image-preview {
+  margin-top: 12px;
+  padding: 8px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+:deep(.el-table) {
+  border-radius: 8px;
+}
+
+:deep(.el-table th) {
+  background-color: #f5f7fa;
+  color: #303133;
+  font-weight: 600;
+}
+
+:deep(.el-table td) {
+  padding: 12px 0;
+}
+
+:deep(.el-card__header) {
+  padding: 20px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+:deep(.el-card__body) {
+  padding: 20px;
+}
 </style>
