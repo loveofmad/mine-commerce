@@ -82,7 +82,7 @@
     <scroll-view class="region-list" scroll-y>
       <!-- 省份列表 -->
       <view wx:if="{{currentStep === 0}}">
-        <view class="region-item {{selectedProvince === item.name ? 'active' : ''}}" wx:for="{{getProvinces()}}" wx:key="name" bindtap="onProvinceTap" data-name="{{item.name}}">
+        <view class="region-item {{selectedProvince === item.name ? 'active' : ''}}" wx:for="{{regionList}}" wx:key="name" bindtap="onProvinceTap" data-name="{{item.name}}">
           <text>{{item.name}}</text>
         </view>
       </view>

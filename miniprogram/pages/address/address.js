@@ -14,6 +14,7 @@ Page({
     selectedDistrict: '',
     currentCities: [],
     currentDistricts: [],
+    regionList: [],
     form: {
       name: '',
       phone: '',
@@ -123,7 +124,16 @@ Page({
   },
 
   onChooseRegion() {
-    this.setData({ showRegionPicker: true, currentStep: 0, selectedProvince: '', selectedCity: '', selectedDistrict: '' })
+    this.setData({
+      showRegionPicker: true,
+      currentStep: 0,
+      selectedProvince: '',
+      selectedCity: '',
+      selectedDistrict: '',
+      regionList: this.data.provinces,
+      currentCities: [],
+      currentDistricts: []
+    })
   },
 
   getProvinces() {
@@ -147,11 +157,10 @@ Page({
   onProvinceTap(e) {
     const name = e.currentTarget.dataset.name
     const cities = this.getCities(name)
-    console.log('选择省份:', name, '城市数量:', cities.length)
     this.setData({
       selectedProvince: name,
       currentStep: 1,
-      currentCities: cities,
+      regionList: cities,
       currentDistricts: [],
       selectedCity: '',
       selectedDistrict: ''
@@ -161,11 +170,10 @@ Page({
   onCityTap(e) {
     const name = e.currentTarget.dataset.name
     const districts = this.getDistricts(this.data.selectedProvince, name)
-    console.log('选择城市:', name, '区县数量:', districts.length)
     this.setData({
       selectedCity: name,
       currentStep: 2,
-      currentDistricts: districts,
+      regionList: districts,
       selectedDistrict: ''
     })
   },
