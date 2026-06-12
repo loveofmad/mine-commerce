@@ -25,8 +25,8 @@
       </div>
 
       <!-- 数据表格 -->
-      <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" row-class-name="table-row">
-        <el-table-column label="商品信息" width="360">
+      <el-table :data="tableData" v-loading="loading" stripe border style="width: 100%" row-class-name="table-row">
+        <el-table-column label="商品信息" min-width="300">
           <template #default="{ row }">
             <div class="product-info-cell">
               <el-image 
@@ -48,25 +48,25 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="价格" width="110" align="center">
+        <el-table-column label="价格" min-width="120" align="center">
           <template #default="{ row }">
             <span class="price-text">¥{{ row.price }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="库存" width="90" align="center">
+        <el-table-column label="库存" min-width="100" align="center">
           <template #default="{ row }">
             <span :class="{ 'text-danger': row.stock < 10 }">{{ row.stock }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="销量" width="90" align="center">
+        <el-table-column label="销量" min-width="100" align="center">
           <template #default="{ row }">
             <span class="text-gray">{{ row.sales || 0 }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="状态" width="90" align="center">
+        <el-table-column label="状态" min-width="100" align="center">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">
               {{ row.status === 1 ? '上架' : '下架' }}
@@ -74,7 +74,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="140" align="center" fixed="right">
+        <el-table-column label="操作" min-width="150" align="center" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link size="small" @click="handleEdit(row)">
               <el-icon><Edit /></el-icon>编辑
@@ -371,7 +371,16 @@ onMounted(() => { loadData(); loadCategories() })
 }
 
 :deep(.el-table) {
+  width: 100% !important;
   border-radius: 8px;
+}
+
+:deep(.el-table__body-wrapper) {
+  width: 100%;
+}
+
+:deep(.el-table__header-wrapper) {
+  width: 100%;
 }
 
 :deep(.el-table th) {
