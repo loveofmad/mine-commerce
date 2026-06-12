@@ -104,5 +104,9 @@ Page({
 
   onSearchTap() {
     wx.navigateTo({ url: '/pages/category/category' })
+  },
+
+  onViewAllCategory() {
+    wx.navigateTo({ url: '/pages/category/category' })
   }
 })
