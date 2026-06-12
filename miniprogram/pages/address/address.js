@@ -126,18 +126,19 @@ Page({
     this.setData({ showRegionPicker: true, currentStep: 0, selectedProvince: '', selectedCity: '', selectedDistrict: '' })
   },
 
-  getCurrentCities() {
-    const province = this.data.selectedProvince
-    const found = this.data.provinces.find(p => p.name === province)
+  getProvinces() {
+    return this.data.provinces || []
+  },
+
+  getCities(provinceName) {
+    const found = this.data.provinces.find(p => p.name === provinceName)
     return found ? found.cities : []
   },
 
-  getCurrentDistricts() {
-    const province = this.data.selectedProvince
-    const city = this.data.selectedCity
-    const found = this.data.provinces.find(p => p.name === province)
+  getDistricts(provinceName, cityName) {
+    const found = this.data.provinces.find(p => p.name === provinceName)
     if (found) {
-      const cityObj = found.cities.find(c => c.name === city)
+      const cityObj = found.cities.find(c => c.name === cityName)
       return cityObj ? cityObj.districts : []
     }
     return []
@@ -145,17 +146,28 @@ Page({
 
   onProvinceTap(e) {
     const name = e.currentTarget.dataset.name
-    console.log('选择省份:', name)
-    console.log('省份数据:', this.data.provinces)
-    const cities = this.getCurrentCities()
-    console.log('城市列表:', cities)
-    this.setData({ selectedProvince: name, currentStep: 1, currentCities: cities, currentDistricts: [] })
+    const cities = this.getCities(name)
+    console.log('选择省份:', name, '城市数量:', cities.length)
+    this.setData({
+      selectedProvince: name,
+      currentStep: 1,
+      currentCities: cities,
+      currentDistricts: [],
+      selectedCity: '',
+      selectedDistrict: ''
+    })
   },
 
   onCityTap(e) {
     const name = e.currentTarget.dataset.name
-    const districts = this.getCurrentDistricts()
-    this.setData({ selectedCity: name, currentStep: 2, currentDistricts: districts })
+    const districts = this.getDistricts(this.data.selectedProvince, name)
+    console.log('选择城市:', name, '区县数量:', districts.length)
+    this.setData({
+      selectedCity: name,
+      currentStep: 2,
+      currentDistricts: districts,
+      selectedDistrict: ''
+    })
   },
 
   onDistrictTap(e) {
