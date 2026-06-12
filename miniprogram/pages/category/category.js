@@ -15,8 +15,10 @@ Page({
   },
 
   onLoad(options) {
+    console.log('分类页onLoad, options:', options)
     if (options.id) {
       this.setData({ currentCategoryId: parseInt(options.id) })
+      console.log('设置currentCategoryId:', parseInt(options.id))
     }
     this.loadCategories()
     this.loadProducts()
