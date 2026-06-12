@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface OrderService extends IService<Order> {
 
-    Order createOrder(Long userId, Long addressId, List<OrderItem> items, Long couponId);
+    Order createOrder(Long userId, Long addressId, List<OrderItem> items, Long couponId,
+                      String receiverName, String receiverPhone, String receiverAddress);
 
     Order getOrderDetail(Long id);
 

@@ -27,7 +27,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     @Transactional
-    public Order createOrder(Long userId, Long addressId, List<OrderItem> items, Long couponId) {
+    public Order createOrder(Long userId, Long addressId, List<OrderItem> items, Long couponId,
+                            String receiverName, String receiverPhone, String receiverAddress) {
         if (items == null || items.isEmpty()) {
             throw new BusinessException("订单商品不能为空");
         }
@@ -46,6 +47,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setPayAmount(totalAmount);
         order.setFreightAmount(BigDecimal.ZERO);
         order.setDiscountAmount(BigDecimal.ZERO);
+        order.setReceiverName(receiverName);
+        order.setReceiverPhone(receiverPhone);
+        order.setReceiverAddress(receiverAddress);
         order.setStatus(0);
         order.setCreateTime(LocalDateTime.now());
         order.setUpdateTime(LocalDateTime.now());

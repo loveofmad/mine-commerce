@@ -99,8 +99,15 @@ Page({
       quantity: item.quantity
     }))
 
+    // 保存地址信息到订单
+    const addressInfo = {
+      receiverName: this.data.address.name,
+      receiverPhone: this.data.address.phone,
+      receiverAddress: this.data.address.province + this.data.address.city + this.data.address.district + this.data.address.detail
+    }
+
     try {
-      const order = await createOrder(app.globalData.userId, 0, orderItems)
+      const order = await createOrder(app.globalData.userId, 0, orderItems, null, addressInfo)
       wx.showToast({ title: '下单成功', icon: 'success' })
       setTimeout(() => {
         wx.redirectTo({ url: `/pages/order/order?id=${order.id}&status=1` })

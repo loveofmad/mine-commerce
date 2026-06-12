@@ -1,8 +1,13 @@
 const { get, post, put, del } = require('./request')
 
-const createOrder = (userId, addressId, orderItems, couponId) => {
+const createOrder = (userId, addressId, orderItems, couponId, addressInfo) => {
   const params = { userId, addressId }
   if (couponId) params.couponId = couponId
+  if (addressInfo) {
+    params.receiverName = addressInfo.receiverName
+    params.receiverPhone = addressInfo.receiverPhone
+    params.receiverAddress = addressInfo.receiverAddress
+  }
   return post('/api/order', orderItems, params)
 }
 

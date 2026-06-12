@@ -25,8 +25,11 @@ public class OrderController {
     public Result<Order> createOrder(@RequestParam Long userId,
                                      @RequestParam Long addressId,
                                      @RequestBody List<OrderItem> items,
-                                     @RequestParam(required = false) Long couponId) {
-        return Result.success(orderService.createOrder(userId, addressId, items, couponId));
+                                     @RequestParam(required = false) Long couponId,
+                                     @RequestParam(required = false) String receiverName,
+                                     @RequestParam(required = false) String receiverPhone,
+                                     @RequestParam(required = false) String receiverAddress) {
+        return Result.success(orderService.createOrder(userId, addressId, items, couponId, receiverName, receiverPhone, receiverAddress));
     }
 
     @ApiOperation("获取订单详情")
