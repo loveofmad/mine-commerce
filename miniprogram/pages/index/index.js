@@ -94,8 +94,7 @@ Page({
 
   onCategoryTap(e) {
     const id = e.currentTarget.dataset.id
-    getApp().globalData.selectedCategoryId = id
-    wx.switchTab({ url: '/pages/category/category' })
+    wx.navigateTo({ url: `/pages/category/category?id=${id}` })
   },
 
   onProductTap(e) {

@@ -14,23 +14,12 @@ Page({
     loading: false
   },
 
-  onLoad() {
+  onLoad(options) {
+    if (options.id) {
+      this.setData({ currentCategoryId: parseInt(options.id) })
+    }
     this.loadCategories()
     this.loadProducts()
-  },
-
-  onShow() {
-    const app = getApp()
-    const selectedId = app.globalData.selectedCategoryId
-    if (selectedId !== undefined && selectedId !== null) {
-      this.setData({ currentCategoryId: selectedId })
-      this.data.currentCategoryId = selectedId
-      this.data.pageNum = 1
-      this.data.productList = []
-      this.data.hasMore = true
-      app.globalData.selectedCategoryId = null
-      this.loadProducts()
-    }
   },
 
   async loadCategories() {
