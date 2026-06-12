@@ -50,7 +50,7 @@
           <el-input v-model="form.title" placeholder="请输入商品名称" />
         </el-form-item>
         <el-form-item label="副标题">
-          <el-input v-model="form.subTitle" placeholder="请输入副标题" />
+          <el-input v-model="form.subtitle" placeholder="请输入副标题" />
         </el-form-item>
         <el-form-item label="商品分类" prop="categoryId">
           <el-select v-model="form.categoryId" placeholder="请选择分类" style="width:100%">
@@ -109,7 +109,7 @@ const formRef = ref(null)
 const imageTab = ref('url')
 const query = reactive({ keyword: '', categoryId: '', pageNum: 1, pageSize: 10 })
 
-const form = reactive({ title: '', subTitle: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
+const form = reactive({ title: '', subtitle: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
 const rules = {
   title: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
   categoryId: [{ required: true, message: '请选择分类', trigger: 'change' }],
@@ -132,7 +132,7 @@ async function loadCategories() {
 
 function resetForm() {
   editingId.value = null
-  Object.assign(form, { title: '', subTitle: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
+  Object.assign(form, { title: '', subtitle: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
   imageTab.value = 'url'
 }
 
@@ -140,7 +140,7 @@ function handleAdd() { resetForm(); dialogVisible.value = true }
 
 function handleEdit(row) {
   editingId.value = row.id
-  Object.assign(form, { title: row.title, subTitle: row.subTitle || '', categoryId: row.categoryId, price: row.price, stock: row.stock, mainImage: row.mainImage || '', detail: row.detail || '', status: row.status })
+  Object.assign(form, { title: row.title, subtitle: row.subtitle || '', categoryId: row.categoryId, price: row.price, stock: row.stock, mainImage: row.mainImage || '', detail: row.detail || '', status: row.status })
   dialogVisible.value = true
 }
 
