@@ -28,39 +28,25 @@ Page({
     }
   },
 
-  async onLoginTap() {
-    try {
-      wx.showLoading({ title: '登录中...' })
-      
-      // 尝试获取微信code，模拟器可能失败
-      let code = 'dev_code_' + Date.now() // 开发环境使用模拟code
-      try {
-        const loginRes = await new Promise((resolve, reject) => {
-          wx.login({ success: resolve, fail: reject })
-        })
-        if (loginRes.code) {
-          code = loginRes.code
+  onLoginTap() {
+    wx.showModal({
+      title: '提示',
+      content: '是否使用默认账号登录？',
+      success: (res) => {
+        if (res.confirm) {
+          // 使用默认账号登录
+          const app = getApp()
+          app.globalData.userId = 1
+          app.globalData.userInfo = { id: 1, username: 'user1', nickname: '测试用户1', phone: '13800138001' }
+          setUserInfo(app.globalData.userInfo)
+          this.setData({
+            isLoggedIn: true,
+            userInfo: app.globalData.userInfo
+          })
+          wx.showToast({ title: '登录成功', icon: 'success' })
         }
-      } catch (e) {
-        console.log('wx.login失败，使用模拟code:', e)
       }
-      
-      const user = await wxLogin(code)
-      const app = getApp()
-      app.globalData.userId = user.id
-      app.globalData.userInfo = user
-      setUserInfo(user)
-      this.setData({
-        isLoggedIn: true,
-        userInfo: user
-      })
-      wx.hideLoading()
-      wx.showToast({ title: '登录成功', icon: 'success' })
-    } catch (e) {
-      wx.hideLoading()
-      wx.showToast({ title: '登录失败', icon: 'none' })
-      console.error('登录失败:', e)
-    }
+    })
   },
 
   onLogout() {
