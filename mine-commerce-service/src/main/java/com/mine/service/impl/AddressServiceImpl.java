@@ -33,6 +33,16 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
 
     @Override
     public boolean addAddress(Address address) {
+        // 检查地址是否重复（姓名+手机号+详细地址相同）
+        LambdaQueryWrapper<Address> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Address::getUserId, address.getUserId())
+               .eq(Address::getName, address.getName())
+               .eq(Address::getPhone, address.getPhone())
+               .eq(Address::getDetail, address.getDetail());
+        if (count(wrapper) > 0) {
+            throw new BusinessException("该地址已存在，请勿重复添加");
+        }
+        
         address.setCreateTime(LocalDateTime.now());
         address.setUpdateTime(LocalDateTime.now());
         address.setDeleted(0);

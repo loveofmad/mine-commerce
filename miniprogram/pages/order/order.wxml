@@ -1,6 +1,6 @@
 <view class="page-order">
   <!-- 收货地址 -->
-  <view class="address-section" bindtap="onAddressTap">
+  <view class="address-section" bindtap="showAddressPicker">
     <image class="address-icon" src="/static/icon-location.png" />
     <view class="address-content">
       <view wx:if="{{address}}">
@@ -15,6 +15,33 @@
       </view>
     </view>
     <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+  </view>
+
+  <!-- 地址选择弹窗 -->
+  <view class="address-picker-mask" wx:if="{{showAddressPicker}}" bindtap="closeAddressPicker" />
+  <view class="address-picker" wx:if="{{showAddressPicker}}">
+    <view class="picker-header">
+      <text class="picker-title">选择收货地址</text>
+      <text class="picker-add" bindtap="goToAddAddress">+ 新增地址</text>
+    </view>
+    <scroll-view class="picker-list" scroll-y>
+      <view class="picker-item" wx:for="{{addressList}}" wx:key="id" bindtap="selectAddress" data-address="{{item}}">
+        <view class="picker-address-info">
+          <view class="picker-address-header">
+            <text class="picker-address-name">{{item.name}}</text>
+            <text class="picker-address-phone">{{item.phone}}</text>
+            <view class="picker-default-tag" wx:if="{{item.isDefault}}">默认</view>
+          </view>
+          <text class="picker-address-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</text>
+        </view>
+      </view>
+      <view class="picker-empty" wx:if="{{addressList.length === 0}}">
+        <text>暂无收货地址，请新增</text>
+      </view>
+    </scroll-view>
+    <view class="picker-footer" bindtap="closeAddressPicker">
+      <text>关闭</text>
+    </view>
   </view>
 
   <!-- 商品列表 -->

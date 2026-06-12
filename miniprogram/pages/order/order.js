@@ -1,4 +1,5 @@
 const { createOrder } = require('../../api/order')
+const { getAddressList } = require('../../api/address')
 const { formatPrice } = require('../../utils/util')
 
 Page({
@@ -7,7 +8,9 @@ Page({
     address: null,
     remark: '',
     totalAmount: '0.00',
-    submitting: false
+    submitting: false,
+    showAddressPicker: false,
+    addressList: []
   },
 
   onLoad(options) {
@@ -34,21 +37,39 @@ Page({
     }
   },
 
-  onAddressTap() {
-    wx.chooseAddress({
-      success: (res) => {
-        const address = {
-          name: res.userName,
-          phone: res.telNumber,
-          province: res.provinceName,
-          city: res.cityName,
-          district: res.countyName,
-          detail: res.detailInfo
-        }
-        this.setData({ address })
-        wx.setStorageSync('defaultAddress', address)
-      }
-    })
+  showAddressPicker() {
+    const app = getApp()
+    if (!app.globalData.userId) {
+      wx.showToast({ title: '请先登录', icon: 'none' })
+      return
+    }
+    this.loadAddressList()
+    this.setData({ showAddressPicker: true })
+  },
+
+  closeAddressPicker() {
+    this.setData({ showAddressPicker: false })
+  },
+
+  async loadAddressList() {
+    const app = getApp()
+    try {
+      const res = await getAddressList(app.globalData.userId)
+      this.setData({ addressList: res || [] })
+    } catch (e) {
+      console.error('加载地址失败', e)
+    }
+  },
+
+  selectAddress(e) {
+    const address = e.currentTarget.dataset.address
+    this.setData({ address, showAddressPicker: false })
+    wx.setStorageSync('defaultAddress', address)
+  },
+
+  goToAddAddress() {
+    this.setData({ showAddressPicker: false })
+    wx.navigateTo({ url: '/pages/address/address' })
   },
 
   onRemarkInput(e) {
