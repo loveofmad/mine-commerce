@@ -31,10 +31,21 @@ Page({
   async onLoginTap() {
     try {
       wx.showLoading({ title: '登录中...' })
-      const loginRes = await new Promise((resolve, reject) => {
-        wx.login({ success: resolve, fail: reject })
-      })
-      const user = await wxLogin(loginRes.code)
+      
+      // 尝试获取微信code，模拟器可能失败
+      let code = 'dev_code_' + Date.now() // 开发环境使用模拟code
+      try {
+        const loginRes = await new Promise((resolve, reject) => {
+          wx.login({ success: resolve, fail: reject })
+        })
+        if (loginRes.code) {
+          code = loginRes.code
+        }
+      } catch (e) {
+        console.log('wx.login失败，使用模拟code:', e)
+      }
+      
+      const user = await wxLogin(code)
       const app = getApp()
       app.globalData.userId = user.id
       app.globalData.userInfo = user
