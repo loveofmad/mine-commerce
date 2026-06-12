@@ -140,7 +140,14 @@
                 <el-input v-model="form.mainImage" placeholder="请输入图片URL地址" />
               </el-tab-pane>
               <el-tab-pane label="本地上传" name="upload">
-                <el-upload action="/api/upload" :on-success="handleUploadSuccess" :show-file-list="false" accept="image/*">
+                <el-upload 
+                  action="/api/upload" 
+                  :on-success="handleUploadSuccess" 
+                  :on-error="handleUploadError"
+                  :before-upload="beforeUpload"
+                  :show-file-list="false" 
+                  accept="image/*"
+                >
                   <el-button size="small" type="primary">选择图片</el-button>
                 </el-upload>
               </el-tab-pane>
@@ -233,8 +240,34 @@ function handleEdit(row) {
   dialogVisible.value = true
 }
 
-function handleUploadSuccess(res) {
-  if (res.code === 200) { form.mainImage = res.data; ElMessage.success('上传成功') }
+function beforeUpload(file) {
+  const isImage = file.type.startsWith('image/')
+  const isLt2M = file.size / 1024 / 1024 < 2
+
+  if (!isImage) {
+    ElMessage.error('只能上传图片文件!')
+    return false
+  }
+  if (!isLt2M) {
+    ElMessage.error('图片大小不能超过 2MB!')
+    return false
+  }
+  return true
+}
+
+function handleUploadSuccess(response) {
+  console.log('上传响应:', response)
+  if (response.code === 200) {
+    form.mainImage = response.data
+    ElMessage.success('上传成功')
+  } else {
+    ElMessage.error(response.message || '上传失败')
+  }
+}
+
+function handleUploadError(error) {
+  console.error('上传错误:', error)
+  ElMessage.error('上传失败，请重试')
 }
 
 async function handleSubmit() {
