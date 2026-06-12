@@ -23,6 +23,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="title" label="商品名称" show-overflow-tooltip />
+        <el-table-column prop="subtitle" label="副标题" show-overflow-tooltip />
         <el-table-column prop="price" label="价格" width="90">
           <template #default="{ row }">¥{{ row.price }}</template>
         </el-table-column>
