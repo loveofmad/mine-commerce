@@ -83,20 +83,25 @@ Page({
 
   async onAddToCart() {
     if (!checkLogin()) return
-    if (!this.data.selectedSku) {
+    const app = getApp()
+    const product = this.data.product
+    
+    // 如果有SKU列表，需要选择规格
+    if (this.data.skuList.length > 0 && !this.data.selectedSku) {
       wx.showToast({ title: '请选择规格', icon: 'none' })
       return
     }
-    const app = getApp()
-    const sku = this.data.selectedSku
+    
+    const sku = this.data.selectedSku || { id: 0, title: product.title, price: product.price, image: product.mainImage }
+    
     try {
       await addToCart({
         userId: app.globalData.userId,
-        spuId: this.data.product.id,
+        spuId: product.id,
         skuId: sku.id,
-        spuName: this.data.product.title,
+        spuName: product.title,
         skuTitle: sku.title,
-        skuImage: sku.image || this.data.product.mainImage,
+        skuImage: sku.image || product.mainImage,
         price: sku.price,
         quantity: this.data.quantity,
         checked: 1
@@ -109,17 +114,22 @@ Page({
 
   onBuyNow() {
     if (!checkLogin()) return
-    if (!this.data.selectedSku) {
+    const product = this.data.product
+    
+    // 如果有SKU列表，需要选择规格
+    if (this.data.skuList.length > 0 && !this.data.selectedSku) {
       wx.showToast({ title: '请选择规格', icon: 'none' })
       return
     }
-    const sku = this.data.selectedSku
+    
+    const sku = this.data.selectedSku || { id: 0, title: product.title, price: product.price, image: product.mainImage }
+    
     const items = [{
-      spuId: this.data.product.id,
+      spuId: product.id,
       skuId: sku.id,
-      spuName: this.data.product.title,
+      spuName: product.title,
       skuTitle: sku.title,
-      skuImage: sku.image || this.data.product.mainImage,
+      skuImage: sku.image || product.mainImage,
       price: sku.price,
       quantity: this.data.quantity
     }]

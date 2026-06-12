@@ -133,6 +133,9 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-form-item label="规格属性">
+          <el-input v-model="form.spec" placeholder="如：重量5斤、颜色红色等（选填）" />
+        </el-form-item>
         <el-form-item label="商品主图">
           <div class="image-upload-area">
             <el-tabs v-model="imageTab" class="image-tabs">
@@ -189,7 +192,7 @@ const formRef = ref(null)
 const imageTab = ref('url')
 const query = reactive({ keyword: '', categoryId: '', pageNum: 1, pageSize: 10 })
 
-const form = reactive({ title: '', subtitle: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
+const form = reactive({ title: '', subtitle: '', spec: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
 const rules = {
   title: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
   categoryId: [{ required: true, message: '请选择分类', trigger: 'change' }],
@@ -219,7 +222,7 @@ function resetQuery() {
 
 function resetForm() {
   editingId.value = null
-  Object.assign(form, { title: '', subtitle: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
+  Object.assign(form, { title: '', subtitle: '', spec: '', categoryId: null, price: 0, stock: 0, mainImage: '', detail: '', status: 1 })
   imageTab.value = 'url'
 }
 
@@ -230,6 +233,7 @@ function handleEdit(row) {
   Object.assign(form, {
     title: row.title,
     subtitle: row.subtitle || '',
+    spec: row.spec || '',
     categoryId: row.categoryId,
     price: row.price,
     stock: row.stock,
