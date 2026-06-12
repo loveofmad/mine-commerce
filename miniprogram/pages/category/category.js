@@ -27,10 +27,9 @@ Page({
         pageNum: 1,
         productList: [],
         hasMore: true
-      }, () => {
-        this.loadProducts()
       })
       app.globalData.selectedCategoryId = null
+      setTimeout(() => { this.loadProducts() }, 100)
     } else {
       this.loadProducts()
     }
