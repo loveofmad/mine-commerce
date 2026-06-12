@@ -29,8 +29,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 创建新用户
             user = new User();
             user.setUsername(openid);
-            user.setPassword("");
-            user.setNickname("微信用户" + openid.substring(openid.length() - 6));
+            user.setPassword("wx_login"); // 微信登录用户设置默认密码
+            user.setNickname("微信用户" + openid.substring(Math.max(0, openid.length() - 6)));
             user.setStatus(1);
             user.setCreateTime(LocalDateTime.now());
             user.setUpdateTime(LocalDateTime.now());
