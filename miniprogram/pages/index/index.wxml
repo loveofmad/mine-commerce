@@ -16,10 +16,8 @@
 
   <!-- 分类导航 -->
   <view class="category-nav">
-    <view class="category-item" wx:for="{{categories}}" wx:key="id" data-id="{{item.id}}" bindtap="onCategoryTap">
-      <view class="category-icon-wrap" data-id="{{item.id}}" bindtap="onCategoryTap">
-        <image class="category-icon" src="{{item.icon}}" mode="aspectFit" />
-      </view>
+    <view class="category-item" wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
+      <image class="category-icon" src="{{item.icon}}" mode="aspectFit" />
       <text class="category-name">{{item.name}}</text>
     </view>
   </view>
