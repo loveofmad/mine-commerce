@@ -24,7 +24,9 @@ Page({
 
   async loadCategories() {
     try {
+      console.log('首页开始加载分类...')
       const res = await getCategoryList()
+      console.log('首页分类API返回:', res)
       const list = res || []
       const baseUrl = getApp().globalData.baseUrl
       const categories = []
@@ -35,9 +37,10 @@ Page({
           icon: item.icon && item.icon.startsWith('/') ? baseUrl + item.icon : item.icon
         })
       })
+      console.log('首页最终分类列表:', categories)
       this.setData({ categories })
     } catch (e) {
-      console.error('加载分类失败', e)
+      console.error('首页加载分类失败', e)
     }
   },
 
