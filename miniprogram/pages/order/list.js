@@ -1,4 +1,4 @@
-const { getOrderList, cancelOrder, payOrder, confirmOrder } = require('../../api/order')
+const { getOrderList, getOrderItems, cancelOrder, payOrder, confirmOrder } = require('../../api/order')
 const { formatPrice } = require('../../utils/util')
 
 Page({
@@ -34,13 +34,30 @@ Page({
         params.status = this.data.currentTab
       }
       const res = await getOrderList(app.globalData.userId, params)
-      const list = (res.records || []).map(item => ({
-        ...item,
-        totalAmountText: formatPrice(item.totalAmount),
-        payAmountText: formatPrice(item.payAmount)
+      const list = res.records || []
+      
+      // 加载每个订单的商品信息
+      const ordersWithItems = await Promise.all(list.map(async (order) => {
+        try {
+          const items = await getOrderItems(order.id)
+          return {
+            ...order,
+            totalAmountText: formatPrice(order.totalAmount),
+            payAmountText: formatPrice(order.payAmount),
+            items: items || []
+          }
+        } catch (e) {
+          return {
+            ...order,
+            totalAmountText: formatPrice(order.totalAmount),
+            payAmountText: formatPrice(order.payAmount),
+            items: []
+          }
+        }
       }))
+      
       this.setData({
-        orderList: this.data.pageNum === 1 ? list : [...this.data.orderList, ...list],
+        orderList: this.data.pageNum === 1 ? ordersWithItems : [...this.data.orderList, ...ordersWithItems],
         hasMore: list.length >= this.data.pageSize
       })
     } catch (e) {

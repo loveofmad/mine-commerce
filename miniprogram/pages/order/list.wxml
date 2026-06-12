@@ -20,6 +20,19 @@
           <text class="order-amount">订单金额：¥{{item.totalAmountText}}</text>
           <text class="order-time">{{item.createTime}}</text>
         </view>
+        <view class="order-goods" wx:if="{{item.items && item.items.length > 0}}">
+          <view class="goods-item" wx:for="{{item.items}}" wx:key="id" wx:for-item="goods">
+            <image class="goods-image" src="{{goods.skuImage}}" mode="aspectFill" />
+            <view class="goods-info">
+              <text class="goods-name">{{goods.spuName}}</text>
+              <text class="goods-sku text-gray text-small">{{goods.skuTitle}}</text>
+              <view class="goods-bottom">
+                <text class="goods-price">¥{{goods.price}}</text>
+                <text class="goods-qty">x{{goods.quantity}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
       </view>
       <view class="order-actions">
         <view class="action-btn cancel" wx:if="{{item.status === 0}}" bindtap="onCancelOrder" data-id="{{item.id}}">取消订单</view>
