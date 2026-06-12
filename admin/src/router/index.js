@@ -42,6 +42,18 @@ const routes = [
         name: 'CouponList',
         component: () => import('@/views/coupon/list.vue'),
         meta: { title: '优惠券管理', icon: 'Ticket' }
+      },
+      {
+        path: 'banner',
+        name: 'BannerList',
+        component: () => import('@/views/banner/list.vue'),
+        meta: { title: '轮播图管理', icon: 'Picture' }
+      },
+      {
+        path: 'category',
+        name: 'CategoryList',
+        component: () => import('@/views/category/list.vue'),
+        meta: { title: '分类管理', icon: 'Menu' }
       }
     ]
   }

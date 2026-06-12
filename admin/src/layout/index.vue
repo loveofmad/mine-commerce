@@ -66,6 +66,8 @@ const isCollapse = ref(false)
 const menuItems = [
   { path: '/dashboard', title: '仪表盘', icon: 'Odometer' },
   { path: '/product', title: '商品管理', icon: 'Goods' },
+  { path: '/category', title: '分类管理', icon: 'Menu' },
+  { path: '/banner', title: '轮播图管理', icon: 'Picture' },
   { path: '/order', title: '订单管理', icon: 'List' },
   { path: '/user', title: '用户管理', icon: 'User' },
   { path: '/coupon', title: '优惠券管理', icon: 'Ticket' }
