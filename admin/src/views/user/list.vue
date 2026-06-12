@@ -118,7 +118,7 @@ function handleAvatarUpload(res) { if (res.code === 200) { form.avatar = res.dat
 async function handleSubmit() {
   await formRef.value.validate()
   submitLoading.value = true
-  try { await request.put(`/admin/user/${editingId.value}`, form); ElMessage.success('修改成功'); dialogVisible.value = false; loadData() }
+  try { await request.put('/admin/user', { ...form, id: editingId.value }); ElMessage.success('修改成功'); dialogVisible.value = false; loadData() }
   catch {} finally { submitLoading.value = false }
 }
 

@@ -29,4 +29,23 @@ public class CouponController {
     public Result<Coupon> getCoupon(@PathVariable Long id) {
         return Result.success(couponService.getCouponById(id));
     }
+
+    @ApiOperation("添加优惠券")
+    @PostMapping
+    public Result<Boolean> addCoupon(@RequestBody Coupon coupon) {
+        return Result.success(couponService.addCoupon(coupon));
+    }
+
+    @ApiOperation("更新优惠券")
+    @PutMapping("/{id}")
+    public Result<Boolean> updateCoupon(@PathVariable Long id, @RequestBody Coupon coupon) {
+        coupon.setId(id);
+        return Result.success(couponService.updateCoupon(coupon));
+    }
+
+    @ApiOperation("删除优惠券")
+    @DeleteMapping("/{id}")
+    public Result<Boolean> deleteCoupon(@PathVariable Long id) {
+        return Result.success(couponService.deleteCoupon(id));
+    }
 }
