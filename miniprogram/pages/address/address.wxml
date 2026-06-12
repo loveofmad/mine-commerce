@@ -66,4 +66,38 @@
       <view class="edit-btn confirm" bindtap="onSubmit">确定</view>
     </view>
   </view>
+
+  <!-- 省市区选择器 -->
+  <view class="region-mask" wx:if="{{showRegionPicker}}" bindtap="onCloseRegionPicker" />
+  <view class="region-picker" wx:if="{{showRegionPicker}}">
+    <view class="region-header">
+      <text class="region-title">选择地区</text>
+      <text class="region-close" bindtap="onCloseRegionPicker">关闭</text>
+    </view>
+    <view class="region-tabs">
+      <text class="region-tab {{currentStep === 0 ? 'active' : ''}}" bindtap="onChooseRegion">请选择</text>
+      <text class="region-tab {{currentStep === 1 ? 'active' : ''}}" wx:if="{{selectedProvince}}" bindtap="onChooseRegion">{{selectedProvince}}</text>
+      <text class="region-tab {{currentStep === 2 ? 'active' : ''}}" wx:if="{{selectedCity}}">{{selectedCity}}</text>
+    </view>
+    <scroll-view class="region-list" scroll-y>
+      <!-- 省份列表 -->
+      <view wx:if="{{currentStep === 0}}">
+        <view class="region-item {{selectedProvince === item.name ? 'active' : ''}}" wx:for="{{regions.provinces}}" wx:key="name" bindtap="onProvinceTap" data-name="{{item.name}}">
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+      <!-- 城市列表 -->
+      <view wx:if="{{currentStep === 1}}">
+        <view class="region-item {{selectedCity === item.name ? 'active' : ''}}" wx:for="{{currentCities}}" wx:key="name" bindtap="onCityTap" data-name="{{item.name}}">
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+      <!-- 区县列表 -->
+      <view wx:if="{{currentStep === 2}}">
+        <view class="region-item {{selectedDistrict === item ? 'active' : ''}}" wx:for="{{currentDistricts}}" wx:key="*this" bindtap="onDistrictTap" data-name="{{item}}">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
 </view>
