@@ -45,11 +45,16 @@
       </view>
       <view class="form-item">
         <text class="form-label">手机号</text>
-        <input class="form-input" placeholder="请输入手机号" value="{{form.phone}}" bindinput="onPhoneInput" />
+        <input class="form-input" type="number" placeholder="请输入11位手机号" value="{{form.phone}}" bindinput="onPhoneInput" maxlength="11" />
+      </view>
+      <view class="form-item" bindtap="onChooseRegion">
+        <text class="form-label">所在地区</text>
+        <text class="form-input region-text">{{form.province || '请选择省'}} {{form.city || '请选择市'}} {{form.district || '请选择区'}}</text>
+        <image class="arrow-icon" src="/static/icon-arrow-right.png" />
       </view>
       <view class="form-item">
         <text class="form-label">详细地址</text>
-        <input class="form-input" placeholder="请输入详细地址" value="{{form.detail}}" bindinput="onDetailInput" />
+        <input class="form-input" placeholder="楼栋号、门牌号等" value="{{form.detail}}" bindinput="onDetailInput" />
       </view>
       <view class="form-item">
         <text class="form-label">设为默认</text>

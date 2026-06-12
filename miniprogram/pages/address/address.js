@@ -85,13 +85,30 @@ Page({
   },
 
   onChooseRegion() {
+    const that = this
     wx.chooseLocation({
       success: (res) => {
-        this.setData({
-          'form.province': res.address || '',
-          'form.city': '',
-          'form.district': '',
-          'form.detail': res.name || ''
+        // 解析地址获取省市区
+        const address = res.address || ''
+        let province = ''
+        let city = ''
+        let district = ''
+        
+        // 简单解析地址（实际项目中可以使用更精确的解析）
+        if (address) {
+          const parts = address.split(/省|市|区|县/)
+          if (parts.length >= 3) {
+            province = parts[0] + '省'
+            city = parts[1] + '市'
+            district = parts[2] + '区'
+          }
+        }
+        
+        that.setData({
+          'form.province': province,
+          'form.city': city,
+          'form.district': district,
+          'form.detail': res.name || address
         })
       }
     })
@@ -109,6 +126,12 @@ Page({
     }
     if (!form.phone) {
       wx.showToast({ title: '请输入手机号', icon: 'none' })
+      return
+    }
+    // 验证手机号格式
+    const phoneReg = /^1[3-9]\d{9}$/
+    if (!phoneReg.test(form.phone)) {
+      wx.showToast({ title: '请输入正确的手机号', icon: 'none' })
       return
     }
     if (!form.detail) {
