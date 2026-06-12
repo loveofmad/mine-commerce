@@ -1,16 +1,10 @@
 const { getProductList } = require('../../api/product')
+const { getCategoryList } = require('../../api/category')
 const { formatPrice } = require('../../utils/util')
 
 Page({
   data: {
-    categories: [
-      { id: 0, name: '全部', icon: '/static/icon-fruit.png' },
-      { id: 1, name: '水果', icon: '/static/icon-fruit.png' },
-      { id: 2, name: '坚果', icon: '/static/icon-nuts.png' },
-      { id: 3, name: '茶叶', icon: '/static/icon-tea.png' },
-      { id: 4, name: '蜂蜜', icon: '/static/icon-honey.png' },
-      { id: 5, name: '特产礼盒', icon: '/static/icon-gift.png' }
-    ],
+    categories: [{ id: 0, name: '全部', icon: '/static/icon-fruit.png' }],
     currentCategoryId: 0,
     productList: [],
     keyword: '',
@@ -21,7 +15,27 @@ Page({
   },
 
   onLoad() {
+    this.loadCategories()
     this.loadProducts()
+  },
+
+  async loadCategories() {
+    try {
+      const res = await getCategoryList()
+      const list = res || []
+      const baseUrl = getApp().globalData.baseUrl
+      const categories = [{ id: 0, name: '全部', icon: '/static/icon-fruit.png' }]
+      list.forEach(item => {
+        categories.push({
+          id: item.id,
+          name: item.name,
+          icon: item.icon && item.icon.startsWith('/') ? baseUrl + item.icon : item.icon
+        })
+      })
+      this.setData({ categories })
+    } catch (e) {
+      console.error('加载分类失败', e)
+    }
   },
 
   onPullDownRefresh() {
