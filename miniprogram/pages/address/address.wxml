@@ -1,0 +1,64 @@
+<view class="page-address">
+  <!-- 地址列表 -->
+  <view class="address-list" wx:if="{{addressList.length > 0}}">
+    <view class="address-item" wx:for="{{addressList}}" wx:key="id">
+      <view class="address-info" bindtap="onSelectTap" data-address="{{item}}">
+        <view class="address-header">
+          <text class="address-name">{{item.name}}</text>
+          <text class="address-phone">{{item.phone}}</text>
+          <view class="default-tag" wx:if="{{item.isDefault}}">默认</view>
+        </view>
+        <text class="address-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</text>
+      </view>
+      <view class="address-actions">
+        <view class="action-btn" bindtap="onEditTap" data-address="{{item}}">
+          <image class="action-icon" src="/static/icon-settings.png" />
+          <text>编辑</text>
+        </view>
+        <view class="action-btn delete" bindtap="onDeleteTap" data-id="{{item.id}}">
+          <image class="action-icon" src="/static/icon-delete.png" />
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-tip" wx:if="{{!loading && addressList.length === 0}}">
+    <image class="empty-icon" src="/static/icon-location.png" />
+    <text>暂无收货地址</text>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-btn" bindtap="onAddTap">
+    <text>+ 新增收货地址</text>
+  </view>
+
+  <!-- 编辑弹窗 -->
+  <view class="edit-mask" wx:if="{{showEdit}}" bindtap="onCloseEdit" />
+  <view class="edit-popup" wx:if="{{showEdit}}">
+    <view class="edit-title">{{editType === 'add' ? '新增地址' : '编辑地址'}}</view>
+    <view class="edit-form">
+      <view class="form-item">
+        <text class="form-label">收货人</text>
+        <input class="form-input" placeholder="请输入收货人姓名" value="{{form.name}}" bindinput="onNameInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">手机号</text>
+        <input class="form-input" placeholder="请输入手机号" value="{{form.phone}}" bindinput="onPhoneInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">详细地址</text>
+        <input class="form-input" placeholder="请输入详细地址" value="{{form.detail}}" bindinput="onDetailInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">设为默认</text>
+        <switch checked="{{form.isDefault}}" bindchange="onDefaultChange" />
+      </view>
+    </view>
+    <view class="edit-footer">
+      <view class="edit-btn cancel" bindtap="onCloseEdit">取消</view>
+      <view class="edit-btn confirm" bindtap="onSubmit">确定</view>
+    </view>
+  </view>
+</view>

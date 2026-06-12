@@ -48,7 +48,7 @@
 
   <!-- 功能入口 -->
   <view class="menu-section">
-    <view class="menu-item" bindtap="onMenuItemTap" data-url="">
+    <view class="menu-item" bindtap="onMenuItemTap" data-url="/pages/address/address">
       <image class="menu-icon" src="/static/icon-location.png" />
       <text class="menu-text">收货地址</text>
       <image class="arrow-icon" src="/static/icon-arrow-right.png" />
