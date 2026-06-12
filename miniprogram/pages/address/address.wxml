@@ -88,13 +88,13 @@
       </view>
       <!-- 城市列表 -->
       <view wx:if="{{currentStep === 1}}">
-        <view class="region-item {{selectedCity === item.name ? 'active' : ''}}" wx:for="{{currentCities}}" wx:key="name" bindtap="onCityTap" data-name="{{item.name}}">
+        <view class="region-item {{selectedCity === item.name ? 'active' : ''}}" wx:for="{{regionList}}" wx:key="name" bindtap="onCityTap" data-name="{{item.name}}">
           <text>{{item.name}}</text>
         </view>
       </view>
       <!-- 区县列表 -->
       <view wx:if="{{currentStep === 2}}">
-        <view class="region-item {{selectedDistrict === item ? 'active' : ''}}" wx:for="{{currentDistricts}}" wx:key="*this" bindtap="onDistrictTap" data-name="{{item}}">
+        <view class="region-item {{selectedDistrict === item ? 'active' : ''}}" wx:for="{{regionList}}" wx:key="*this" bindtap="onDistrictTap" data-name="{{item}}">
           <text>{{item}}</text>
         </view>
       </view>
