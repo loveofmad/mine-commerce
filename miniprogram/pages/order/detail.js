@@ -96,5 +96,10 @@ Page({
   getStatusText(status) {
     const map = { 0: '待付款', 1: '待发货', 2: '待收货', 3: '已完成', 4: '已取消' }
     return map[status] || '未知'
+  },
+
+  onProductTap(e) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: `/pages/detail/detail?id=${id}` })
   }
 })

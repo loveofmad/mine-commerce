@@ -1,19 +1,30 @@
 <view class="page-user">
   <!-- 用户信息区域 -->
   <view class="user-header">
-    <view class="user-avatar-wrap" wx:if="{{isLoggedIn}}">
-      <image class="user-avatar" src="{{userInfo.avatar || '/static/default-avatar.png'}}" mode="aspectFill" />
+    <view class="header-bg">
+      <view class="bg-circle circle-1"></view>
+      <view class="bg-circle circle-2"></view>
+    </view>
+    <view class="user-content" wx:if="{{isLoggedIn}}">
+      <view class="user-avatar-wrap">
+        <image class="user-avatar" src="{{userInfo.avatar || '/static/default-avatar.png'}}" mode="aspectFill" />
+      </view>
       <view class="user-info">
         <text class="user-name">{{userInfo.nickname || userInfo.username}}</text>
-        <text class="user-phone text-gray text-small">ID: {{userInfo.id}}</text>
+        <view class="user-id-wrap">
+          <text class="user-id">ID: {{userInfo.id}}</text>
+        </view>
       </view>
     </view>
-    <view class="login-prompt" wx:else bindtap="onLoginTap">
-      <image class="user-avatar" src="/static/default-avatar.png" mode="aspectFill" />
+    <view class="user-content login-content" wx:else bindtap="onLoginTap">
+      <view class="user-avatar-wrap">
+        <view class="avatar-placeholder">👤</view>
+      </view>
       <view class="user-info">
         <text class="user-name">微信一键登录</text>
-        <text class="text-gray text-small">点击头像快速登录</text>
+        <text class="login-tip">点击头像快速登录</text>
       </view>
+      <view class="login-arrow">›</view>
     </view>
   </view>
 
@@ -22,26 +33,34 @@
     <view class="section-header">
       <text class="section-title">我的订单</text>
       <view class="section-right" bindtap="onOrderTap" data-status="">
-        <text class="text-gray text-small">全部订单</text>
-        <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+        <text class="section-more">全部订单</text>
+        <text class="section-arrow">›</text>
       </view>
     </view>
     <view class="order-nav">
       <view class="order-nav-item" bindtap="onOrderTap" data-status="0">
-        <image class="nav-icon" src="/static/icon-order-payment.png" />
-        <text>待付款</text>
+        <view class="nav-icon-wrap" style="background: rgba(255,102,0,0.1)">
+          <text class="nav-emoji">💳</text>
+        </view>
+        <text class="nav-text">待付款</text>
       </view>
       <view class="order-nav-item" bindtap="onOrderTap" data-status="1">
-        <image class="nav-icon" src="/static/icon-order-shipping.png" />
-        <text>待发货</text>
+        <view class="nav-icon-wrap" style="background: rgba(64,158,255,0.1)">
+          <text class="nav-emoji">📦</text>
+        </view>
+        <text class="nav-text">待发货</text>
       </view>
       <view class="order-nav-item" bindtap="onOrderTap" data-status="2">
-        <image class="nav-icon" src="/static/icon-order-delivery.png" />
-        <text>待收货</text>
+        <view class="nav-icon-wrap" style="background: rgba(103,194,58,0.1)">
+          <text class="nav-emoji">🚚</text>
+        </view>
+        <text class="nav-text">待收货</text>
       </view>
       <view class="order-nav-item" bindtap="onOrderTap" data-status="3">
-        <image class="nav-icon" src="/static/icon-order-completed.png" />
-        <text>已完成</text>
+        <view class="nav-icon-wrap" style="background: rgba(230,162,60,0.1)">
+          <text class="nav-emoji">✅</text>
+        </view>
+        <text class="nav-text">已完成</text>
       </view>
     </view>
   </view>
@@ -49,24 +68,32 @@
   <!-- 功能入口 -->
   <view class="menu-section">
     <view class="menu-item" bindtap="onMenuItemTap" data-url="/pages/address/address">
-      <image class="menu-icon" src="/static/icon-location.png" />
+      <view class="menu-icon-wrap" style="background: rgba(255,102,0,0.1)">
+        <text class="menu-emoji">📍</text>
+      </view>
       <text class="menu-text">收货地址</text>
-      <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+      <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item" bindtap="onMenuItemTap" data-url="">
-      <image class="menu-icon" src="/static/icon-coupon.png" />
+      <view class="menu-icon-wrap" style="background: rgba(255,102,0,0.1)">
+        <text class="menu-emoji">🎫</text>
+      </view>
       <text class="menu-text">优惠券</text>
-      <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+      <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item" bindtap="onMenuItemTap" data-url="">
-      <image class="menu-icon" src="/static/icon-help.png" />
+      <view class="menu-icon-wrap" style="background: rgba(64,158,255,0.1)">
+        <text class="menu-emoji">❓</text>
+      </view>
       <text class="menu-text">帮助中心</text>
-      <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+      <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item" bindtap="onMenuItemTap" data-url="">
-      <image class="menu-icon" src="/static/icon-settings.png" />
+      <view class="menu-icon-wrap" style="background: rgba(103,194,58,0.1)">
+        <text class="menu-emoji">⚙️</text>
+      </view>
       <text class="menu-text">设置</text>
-      <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+      <text class="menu-arrow">›</text>
     </view>
   </view>
 

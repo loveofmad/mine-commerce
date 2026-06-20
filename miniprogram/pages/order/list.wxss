@@ -20,8 +20,8 @@
 }
 
 .order-tab.active {
-  color: #ff6600;
-  border-bottom: 4rpx solid #ff6600;
+  color: #E07A5F;
+  border-bottom: 4rpx solid #E07A5F;
 }
 
 .order-scroll {
@@ -54,7 +54,7 @@
   font-weight: bold;
 }
 
-.status-0 { color: #ff6600; }
+.status-0 { color: #E07A5F; }
 .status-1 { color: #409eff; }
 .status-2 { color: #67c23a; }
 .status-3 { color: #909399; }
@@ -155,7 +155,7 @@
 }
 
 .action-btn.pay {
-  background-color: #ff6600;
+  background-color: #E07A5F;
   color: #fff;
 }
 

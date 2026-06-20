@@ -7,6 +7,8 @@ Page({
   data: {
     banners: [],
     categories: [],
+    visibleCategories: [],
+    categoryExpanded: false,
     productList: [],
     pageNum: 1,
     pageSize: 10,
@@ -46,24 +48,28 @@ Page({
 
   async loadCategories() {
     try {
-      console.log('首页开始加载分类...')
       const res = await getCategoryList()
-      console.log('首页分类API返回:', res)
-      const list = res || []
-      const baseUrl = getApp().globalData.baseUrl
-      const categories = []
-      list.forEach(item => {
-        categories.push({
-          id: item.id,
-          name: item.name,
-          icon: item.icon && item.icon.startsWith('/') ? baseUrl + item.icon : item.icon
-        })
+      const list = Array.isArray(res) ? res : []
+      const categories = list.map(item => ({
+        id: item.id,
+        name: item.name,
+        icon: item.icon || '📦'
+      }))
+      this.setData({
+        categories,
+        visibleCategories: categories.slice(0, 4)
       })
-      console.log('首页最终分类列表:', categories)
-      this.setData({ categories })
     } catch (e) {
       console.error('首页加载分类失败', e)
     }
+  },
+
+  toggleCategoryExpand() {
+    const expanded = !this.data.categoryExpanded
+    this.setData({
+      categoryExpanded: expanded,
+      visibleCategories: expanded ? this.data.categories : this.data.categories.slice(0, 4)
+    })
   },
 
   onPullDownRefresh() {

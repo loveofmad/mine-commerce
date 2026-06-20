@@ -1,7 +1,3 @@
-const app = getApp()
-
-const BASE_URL = app.globalData.baseUrl
-
 const buildUrl = (url, params) => {
   if (!params || Object.keys(params).length === 0) return url
   const query = Object.entries(params)
@@ -12,7 +8,8 @@ const buildUrl = (url, params) => {
 }
 
 const request = (url, method = 'GET', data = {}, params = {}, header = {}) => {
-  const fullUrl = BASE_URL + buildUrl(url, params)
+  const baseUrl = getApp().globalData.baseUrl
+  const fullUrl = baseUrl + buildUrl(url, params)
   console.log('请求URL:', fullUrl)
   return new Promise((resolve, reject) => {
     wx.request({

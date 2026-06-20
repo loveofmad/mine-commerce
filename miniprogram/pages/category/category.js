@@ -26,15 +26,13 @@ Page({
     try {
       console.log('开始加载分类...')
       const res = await getCategoryList()
-      console.log('分类API返回:', res)
       const list = res || []
-      const baseUrl = getApp().globalData.baseUrl
-      const categories = [{ id: 0, name: '全部', icon: '/static/icon-fruit.png' }]
+      const categories = [{ id: 0, name: '全部', icon: '📋' }]
       list.forEach(item => {
         categories.push({
           id: item.id,
           name: item.name,
-          icon: item.icon && item.icon.startsWith('/') ? baseUrl + item.icon : item.icon
+          icon: item.icon || '📦'
         })
       })
       console.log('最终分类列表:', categories)
@@ -71,9 +69,12 @@ Page({
       }
       const res = await getProductList(params)
       const list = res.records || []
+      const baseUrl = getApp().globalData.baseUrl
+      const fixImage = (img) => img && img.startsWith('/') ? baseUrl + img : img
       this.setData({
         productList: [...this.data.productList, ...list.map(item => ({
           ...item,
+          mainImage: fixImage(item.mainImage),
           priceText: formatPrice(item.price)
         }))],
         pageNum: this.data.pageNum + 1,

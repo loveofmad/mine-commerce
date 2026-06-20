@@ -1,7 +1,17 @@
 <template>
   <div class="login-container">
+    <div class="login-bg">
+      <div class="bg-gradient"></div>
+      <div class="bg-shape shape-1"></div>
+      <div class="bg-shape shape-2"></div>
+      <div class="bg-shape shape-3"></div>
+    </div>
     <div class="login-card">
-      <h2 class="login-title">土特产商城后台管理系统</h2>
+      <div class="login-header">
+        <div class="logo-icon">M</div>
+        <h2 class="login-title">土特产商城</h2>
+        <p class="login-subtitle">后台管理系统</p>
+      </div>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="0" size="large">
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名" :prefix-icon="User" />
@@ -10,9 +20,12 @@
           <el-input v-model="form.password" type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password @keyup.enter="handleLogin" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="loading" style="width: 100%" @click="handleLogin">登 录</el-button>
+          <el-button type="primary" :loading="loading" class="login-btn" @click="handleLogin">登 录</el-button>
         </el-form-item>
       </el-form>
+      <div class="login-footer">
+        <span>默认账号: admin / admin123</span>
+      </div>
     </div>
   </div>
 </template>
@@ -69,19 +82,116 @@ async function handleLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
 }
-.login-card {
+
+.login-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+}
+
+.bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(74, 144, 164, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(224, 122, 95, 0.1) 0%, transparent 40%);
+}
+
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.06;
+}
+
+.shape-1 {
+  width: 600px;
+  height: 600px;
+  background: #4A90A4;
+  top: -200px;
+  right: -100px;
+}
+
+.shape-2 {
   width: 400px;
-  padding: 40px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  height: 400px;
+  background: #6BB0C4;
+  bottom: -150px;
+  left: -100px;
 }
-.login-title {
+
+.shape-3 {
+  width: 300px;
+  height: 300px;
+  background: #E07A5F;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-card {
+  width: 420px;
+  padding: 48px 40px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 10;
+}
+
+.login-header {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 22px;
+  margin-bottom: 40px;
+}
+
+.logo-icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #4A90A4 0%, #6BB0C4 100%);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 24px rgba(74, 144, 164, 0.35);
+}
+
+.login-title {
+  margin: 0 0 6px 0;
+  color: #1F2937;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.login-subtitle {
+  margin: 0;
+  color: #9CA3AF;
+  font-size: 15px;
+}
+
+.login-btn {
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4A90A4 0%, #6BB0C4 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(74, 144, 164, 0.35);
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #3A7A8E 0%, #5BA0B4 100%);
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 24px;
+  color: #9CA3AF;
+  font-size: 13px;
 }
 </style>

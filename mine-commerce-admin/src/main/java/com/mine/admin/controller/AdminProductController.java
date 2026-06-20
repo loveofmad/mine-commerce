@@ -38,7 +38,7 @@ public class AdminProductController {
 
     @ApiOperation("添加商品")
     @PostMapping("/spu")
-    public Result<Boolean> addSpu(@RequestBody Spu spu) {
+    public Result<Long> addSpu(@RequestBody Spu spu) {
         return Result.success(productService.addSpu(spu));
     }
 

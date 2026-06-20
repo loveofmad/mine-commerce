@@ -1,13 +1,35 @@
 page {
-  background-color: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f5f7fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   font-size: 28rpx;
   color: #333;
   box-sizing: border-box;
+  line-height: 1.5;
 }
 
 view, text, image {
   box-sizing: border-box;
+}
+
+/* 主题色变量 - 清新青蓝 + 珊瑚橘强调色 */
+page {
+  --primary-color: #4A90A4;
+  --primary-light: #6BB0C4;
+  --primary-dark: #3A7A8E;
+  --primary-bg: rgba(74, 144, 164, 0.08);
+  --accent-color: #E07A5F;
+  --accent-light: #E8967E;
+  --accent-dark: #C46A52;
+  --success-color: #52A88C;
+  --warning-color: #D4A853;
+  --danger-color: #D4726A;
+  --text-color: #2C3E50;
+  --text-secondary: #5D6D7E;
+  --text-gray: #95A5A6;
+  --bg-color: #F0F4F8;
+  --card-bg: #FFFFFF;
+  --border-color: #E8ECF1;
+  --shadow: 0 2rpx 12rpx rgba(74, 144, 164, 0.08);
 }
 
 .container {
@@ -42,11 +64,11 @@ view, text, image {
 }
 
 .text-danger {
-  color: #ff4d4f;
+  color: var(--danger-color);
 }
 
 .text-gray {
-  color: #999;
+  color: var(--text-gray);
 }
 
 .text-small {
@@ -54,27 +76,30 @@ view, text, image {
 }
 
 .price {
-  color: #ff4d4f;
-  font-weight: bold;
+  color: var(--accent-color);
+  font-weight: 600;
 }
 
 .btn-primary {
-  background-color: #ff6600;
+  background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
   color: #fff;
   border: none;
-  border-radius: 10rpx;
-  padding: 20rpx 40rpx;
+  border-radius: 44rpx;
+  padding: 24rpx 60rpx;
   font-size: 30rpx;
+  font-weight: 500;
   text-align: center;
+  box-shadow: 0 4rpx 16rpx rgba(224, 122, 95, 0.3);
 }
 
 .btn-primary:active {
-  opacity: 0.8;
+  opacity: 0.9;
+  transform: scale(0.98);
 }
 
 .divider {
   height: 1rpx;
-  background-color: #eee;
+  background-color: var(--border-color);
   margin: 20rpx 0;
 }
 
@@ -84,11 +109,32 @@ view, text, image {
   align-items: center;
   justify-content: center;
   padding: 200rpx 0;
-  color: #999;
+  color: var(--text-gray);
 }
 
 .empty-tip image {
   width: 200rpx;
   height: 200rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: 30rpx;
+  opacity: 0.6;
+}
+
+/* 卡片样式 */
+.card {
+  background: var(--card-bg);
+  border-radius: 24rpx;
+  margin: 20rpx 24rpx;
+  padding: 30rpx;
+  box-shadow: var(--shadow);
+}
+
+/* 分割线 */
+.section-divider {
+  height: 20rpx;
+  background: var(--bg-color);
+}
+
+/* 安全区域 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
 }

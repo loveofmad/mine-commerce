@@ -15,7 +15,7 @@ public interface ProductService extends IService<Spu> {
 
     List<Sku> listSkuBySpuId(Long spuId);
 
-    boolean addSpu(Spu spu);
+    Long addSpu(Spu spu);
 
     boolean updateSpu(Spu spu);
 

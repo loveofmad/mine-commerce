@@ -8,7 +8,7 @@
   color: #fff;
 }
 
-.status-bg-0 { background: linear-gradient(135deg, #ff6600, #ff9500); }
+.status-bg-0 { background: linear-gradient(135deg, #E07A5F, #E8967E); }
 .status-bg-1 { background: linear-gradient(135deg, #409eff, #66b1ff); }
 .status-bg-2 { background: linear-gradient(135deg, #67c23a, #85ce61); }
 .status-bg-3 { background: linear-gradient(135deg, #909399, #b1b3b8); }
@@ -143,7 +143,7 @@
 }
 
 .info-value.price {
-  color: #ff6600;
+  color: #E07A5F;
   font-weight: bold;
   font-size: 28rpx;
 }
@@ -173,7 +173,7 @@
 }
 
 .action-btn.pay {
-  background-color: #ff6600;
+  background-color: #E07A5F;
   color: #fff;
 }
 

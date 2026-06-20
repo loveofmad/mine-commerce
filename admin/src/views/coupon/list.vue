@@ -1,10 +1,12 @@
 <template>
   <div class="coupon-list">
-    <el-card>
+    <el-card shadow="never">
       <template #header>
         <div class="card-header">
-          <span>优惠券管理</span>
-          <el-button type="primary" @click="handleAdd">新增优惠券</el-button>
+          <span class="page-title">优惠券管理</span>
+          <el-button type="primary" @click="handleAdd">
+            <el-icon><Plus /></el-icon>新增优惠券
+          </el-button>
         </div>
       </template>
       <el-table :data="tableData" v-loading="loading" stripe>
@@ -28,10 +30,10 @@
             <el-tag :type="row.status === 1 ? 'success' : 'info'">{{ row.status === 1 ? '启用' : '禁用' }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="130" fixed="right">
+        <el-table-column label="操作" width="150" align="center" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
-            <el-button link type="danger" @click="handleDelete(row)">删除</el-button>
+            <el-button size="small" @click="handleEdit(row)">编辑</el-button>
+            <el-button size="small" type="danger" plain @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -126,4 +128,5 @@ onMounted(() => loadData())
 
 <style scoped>
 .card-header { display: flex; justify-content: space-between; align-items: center; }
+.page-title { font-size: 20px; font-weight: 700; color: var(--text-primary); }
 </style>

@@ -1,8 +1,9 @@
 const { get, post, put, del } = require('./request')
 
-const createOrder = (userId, addressId, orderItems, couponId, addressInfo) => {
+const createOrder = (userId, addressId, orderItems, couponId, addressInfo, remark) => {
   const params = { userId, addressId }
   if (couponId) params.couponId = couponId
+  if (remark) params.remark = remark
   if (addressInfo) {
     params.receiverName = addressInfo.receiverName
     params.receiverPhone = addressInfo.receiverPhone

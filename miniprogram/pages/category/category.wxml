@@ -9,7 +9,7 @@
     <scroll-view class="category-sidebar" scroll-y>
       <view class="sidebar-item {{currentCategoryId === item.id ? 'active' : ''}}"
             wx:for="{{categories}}" wx:key="id" bindtap="onCategoryTap" data-id="{{item.id}}">
-        <image class="sidebar-icon" src="{{item.icon}}" />
+        <text class="sidebar-emoji">{{item.icon}}</text>
         <text>{{item.name}}</text>
       </view>
     </scroll-view>

@@ -24,7 +24,7 @@
   <view class="info-section">
     <view class="section-title">商品信息</view>
     <view class="goods-list">
-      <view class="goods-item" wx:for="{{orderItems}}" wx:key="id">
+      <view class="goods-item" wx:for="{{orderItems}}" wx:key="id" bindtap="onProductTap" data-id="{{item.spuId}}">
         <image class="goods-image" src="{{item.skuImage}}" mode="aspectFill" />
         <view class="goods-info">
           <text class="goods-name">{{item.spuName}}</text>

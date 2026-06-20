@@ -35,7 +35,7 @@
 }
 
 .default-tag {
-  background-color: #ff6600;
+  background-color: #E07A5F;
   color: #fff;
   font-size: 20rpx;
   padding: 4rpx 12rpx;
@@ -94,7 +94,7 @@
   bottom: 30rpx;
   left: 30rpx;
   right: 30rpx;
-  background-color: #ff6600;
+  background-color: #E07A5F;
   color: #fff;
   text-align: center;
   padding: 24rpx;
@@ -182,7 +182,7 @@
 }
 
 .edit-btn.confirm {
-  background-color: #ff6600;
+  background-color: #E07A5F;
   color: #fff;
 }
 
@@ -226,7 +226,7 @@
 
 .region-close {
   font-size: 28rpx;
-  color: #ff6600;
+  color: #E07A5F;
 }
 
 .region-tabs {
@@ -243,8 +243,8 @@
 }
 
 .region-tab.active {
-  color: #ff6600;
-  border-bottom: 4rpx solid #ff6600;
+  color: #E07A5F;
+  border-bottom: 4rpx solid #E07A5F;
 }
 
 .region-list {
@@ -261,5 +261,5 @@
 }
 
 .region-item.active {
-  color: #ff6600;
+  color: #E07A5F;
 }

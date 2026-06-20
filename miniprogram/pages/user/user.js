@@ -20,6 +20,10 @@ Page({
   async loadUserInfo(userId) {
     try {
       const user = await getUserInfo(userId)
+      const baseUrl = getApp().globalData.baseUrl
+      if (user.avatar && user.avatar.startsWith('/')) {
+        user.avatar = baseUrl + user.avatar
+      }
       this.setData({ userInfo: user })
       getApp().globalData.userInfo = user
       setUserInfo(user)
@@ -34,15 +38,17 @@ Page({
       content: '是否使用默认账号登录？',
       success: (res) => {
         if (res.confirm) {
-          // 使用默认账号登录
           const app = getApp()
+          const baseUrl = app.globalData.baseUrl
+          const userInfo = { id: 1, username: 'user1', nickname: '测试用户1', phone: '13800138001' }
           app.globalData.userId = 1
-          app.globalData.userInfo = { id: 1, username: 'user1', nickname: '测试用户1', phone: '13800138001' }
-          setUserInfo(app.globalData.userInfo)
+          app.globalData.userInfo = userInfo
+          setUserInfo(userInfo)
           this.setData({
             isLoggedIn: true,
-            userInfo: app.globalData.userInfo
+            userInfo
           })
+          this.loadUserInfo(1)
           wx.showToast({ title: '登录成功', icon: 'success' })
         }
       }

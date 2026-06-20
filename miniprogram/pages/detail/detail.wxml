@@ -1,18 +1,20 @@
 <view class="page-detail" wx:if="{{product}}">
   <!-- 商品图片轮播 -->
-  <swiper class="detail-swiper" indicator-dots bindchange="onSwiperChange">
-    <swiper-item wx:for="{{images}}" wx:key="*this">
-      <image class="detail-image" src="{{item}}" mode="aspectFill" bindtap="onImageTap" data-index="{{index}}" />
-    </swiper-item>
-  </swiper>
-  <view class="image-indicator">
-    <text>{{currentImage + 1}}/{{images.length}}</text>
+  <view class="swiper-wrapper">
+    <swiper class="detail-swiper" indicator-dots autoplay circular interval="3000" bindchange="onSwiperChange">
+      <swiper-item wx:for="{{images}}" wx:key="*this">
+        <image class="detail-image" src="{{item}}" mode="aspectFill" bindtap="onImageTap" data-index="{{index}}" />
+      </swiper-item>
+    </swiper>
+    <view class="image-indicator">
+      <text>{{currentImage + 1}}/{{images.length}}</text>
+    </view>
   </view>
 
   <!-- 商品信息 -->
   <view class="detail-info">
     <view class="price-row">
-      <text class="price">¥{{product.priceText}}</text>
+      <text class="price">¥{{displayPrice}}</text>
       <text class="text-gray text-small">已售{{product.sales || 0}}</text>
     </view>
     <text class="detail-title">{{product.title}}</text>
@@ -55,7 +57,7 @@
   <!-- 底部操作栏 -->
   <view class="bottom-bar">
     <view class="bar-icon" bindtap="onGoCart">
-      <text class="icon-text">&#x1F6D2;</text>
+      <image class="bar-icon-img" src="/static/icon-cart.png" />
       <text class="bar-label">购物车</text>
     </view>
     <view class="bar-btn bar-btn-cart" bindtap="onAddToCart">加入购物车</view>

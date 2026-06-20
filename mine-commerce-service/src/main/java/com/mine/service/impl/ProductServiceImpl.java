@@ -54,11 +54,12 @@ public class ProductServiceImpl extends ServiceImpl<SpuMapper, Spu> implements P
     }
 
     @Override
-    public boolean addSpu(Spu spu) {
+    public Long addSpu(Spu spu) {
         spu.setCreateTime(LocalDateTime.now());
         spu.setUpdateTime(LocalDateTime.now());
         spu.setDeleted(0);
-        return save(spu);
+        save(spu);
+        return spu.getId();
     }
 
     @Override

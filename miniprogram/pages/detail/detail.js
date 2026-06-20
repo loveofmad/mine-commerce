@@ -9,7 +9,9 @@ Page({
     selectedSku: null,
     quantity: 1,
     currentImage: 0,
-    images: []
+    images: [],
+    displayPrice: '',
+    displayStock: 0
   },
 
   onLoad(options) {
@@ -29,10 +31,11 @@ Page({
         try {
           const parsed = JSON.parse(product.images)
           if (Array.isArray(parsed) && parsed.length > 0) {
-            images = parsed.map(fixImage)
+            images = [fixImage(product.mainImage), ...parsed.filter(img => img && img !== product.mainImage).map(fixImage)]
           }
         } catch (e) {
-          images = product.images.split(',').filter(i => i).map(fixImage)
+          const extraImages = product.images.split(',').filter(i => i && i !== product.mainImage)
+          images = [fixImage(product.mainImage), ...extraImages.map(fixImage)]
         }
       }
       this.setData({
@@ -42,9 +45,12 @@ Page({
       wx.setNavigationBarTitle({ title: product.title })
 
       const skuList = await getSkuList(id)
+      const firstSku = skuList.length > 0 ? skuList[0] : null
       this.setData({
         skuList: skuList.map(sku => ({ ...sku, priceText: formatPrice(sku.price) })),
-        selectedSku: skuList.length > 0 ? skuList[0] : null
+        selectedSku: firstSku,
+        displayPrice: firstSku ? formatPrice(firstSku.price) : formatPrice(product.price),
+        displayStock: firstSku ? firstSku.stock : product.stock
       })
     } catch (e) {
       wx.showToast({ title: '加载失败', icon: 'none' })
@@ -65,7 +71,12 @@ Page({
 
   onSkuTap(e) {
     const index = e.currentTarget.dataset.index
-    this.setData({ selectedSku: this.data.skuList[index] })
+    const sku = this.data.skuList[index]
+    this.setData({
+      selectedSku: sku,
+      displayPrice: formatPrice(sku.price),
+      displayStock: sku.stock
+    })
   },
 
   onQuantityMinus() {
@@ -75,8 +86,11 @@ Page({
   },
 
   onQuantityPlus() {
-    const maxStock = this.data.selectedSku ? this.data.selectedSku.stock : 99
-    if (this.data.quantity < maxStock) {
+    if (this.data.displayStock <= 0) {
+      wx.showToast({ title: '库存不足', icon: 'none' })
+      return
+    }
+    if (this.data.quantity < this.data.displayStock) {
       this.setData({ quantity: this.data.quantity + 1 })
     }
   },
@@ -85,14 +99,29 @@ Page({
     if (!checkLogin()) return
     const app = getApp()
     const product = this.data.product
+    const baseUrl = app.globalData.baseUrl
     
     // 如果有SKU列表，需要选择规格
     if (this.data.skuList.length > 0 && !this.data.selectedSku) {
       wx.showToast({ title: '请选择规格', icon: 'none' })
       return
     }
-    
+
+    // 检查库存
+    if (this.data.displayStock <= 0) {
+      wx.showToast({ title: '库存不足，无法购买', icon: 'none' })
+      return
+    }
+
     const sku = this.data.selectedSku || { id: 0, title: product.title, price: product.price, image: product.mainImage }
+    
+    // 处理图片URL：相对路径拼接baseUrl
+    const fixImageUrl = (url) => {
+      if (!url) return ''
+      if (url.startsWith('http')) return url
+      if (url.startsWith('/')) return baseUrl + url
+      return url
+    }
     
     try {
       await addToCart({
@@ -101,7 +130,7 @@ Page({
         skuId: sku.id,
         spuName: product.title,
         skuTitle: sku.title,
-        skuImage: sku.image || product.mainImage,
+        skuImage: fixImageUrl(sku.image || product.mainImage),
         price: sku.price,
         quantity: this.data.quantity,
         checked: 1
@@ -114,22 +143,38 @@ Page({
 
   onBuyNow() {
     if (!checkLogin()) return
+    const app = getApp()
     const product = this.data.product
+    const baseUrl = app.globalData.baseUrl
     
     // 如果有SKU列表，需要选择规格
     if (this.data.skuList.length > 0 && !this.data.selectedSku) {
       wx.showToast({ title: '请选择规格', icon: 'none' })
       return
     }
+
+    // 检查库存
+    if (this.data.displayStock <= 0) {
+      wx.showToast({ title: '库存不足，无法购买', icon: 'none' })
+      return
+    }
     
     const sku = this.data.selectedSku || { id: 0, title: product.title, price: product.price, image: product.mainImage }
+    
+    // 处理图片URL：相对路径拼接baseUrl
+    const fixImageUrl = (url) => {
+      if (!url) return ''
+      if (url.startsWith('http')) return url
+      if (url.startsWith('/')) return baseUrl + url
+      return url
+    }
     
     const items = [{
       spuId: product.id,
       skuId: sku.id,
       spuName: product.title,
       skuTitle: sku.title,
-      skuImage: sku.image || product.mainImage,
+      skuImage: fixImageUrl(sku.image || product.mainImage),
       price: sku.price,
       quantity: this.data.quantity
     }]

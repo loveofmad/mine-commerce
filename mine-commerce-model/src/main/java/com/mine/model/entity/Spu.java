@@ -20,8 +20,6 @@ public class Spu implements Serializable {
 
     private String subtitle;
 
-    private String spec;
-
     private String mainImage;
 
     private String images;

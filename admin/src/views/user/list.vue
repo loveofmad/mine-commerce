@@ -1,9 +1,9 @@
 <template>
   <div class="user-list">
-    <el-card>
+    <el-card shadow="never">
       <template #header>
         <div class="card-header">
-          <span>用户管理</span>
+          <span class="page-title">用户管理</span>
         </div>
       </template>
       <div class="filter-bar">
@@ -31,10 +31,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="注册时间" width="150" />
-        <el-table-column label="操作" width="130" fixed="right">
+        <el-table-column label="操作" width="150" align="center" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
-            <el-button link type="danger" @click="handleDelete(row)">删除</el-button>
+            <el-button size="small" @click="handleEdit(row)">编辑</el-button>
+            <el-button size="small" type="danger" plain @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -137,5 +137,6 @@ onMounted(() => loadData())
 
 <style scoped>
 .card-header { display: flex; justify-content: space-between; align-items: center; }
+.page-title { font-size: 20px; font-weight: 700; color: var(--text-primary); }
 .filter-bar { display: flex; align-items: center; margin-bottom: 16px; }
 </style>

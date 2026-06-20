@@ -21,7 +21,7 @@
           <text class="order-time">{{item.createTime}}</text>
         </view>
         <view class="order-goods" wx:if="{{item.items && item.items.length > 0}}">
-          <view class="goods-item" wx:for="{{item.items}}" wx:key="id" wx:for-item="goods">
+          <view class="goods-item" wx:for="{{item.items}}" wx:key="id" wx:for-item="goods" bindtap="onProductTap" data-id="{{goods.spuId}}">
             <image class="goods-image" src="{{goods.skuImage}}" mode="aspectFill" />
             <view class="goods-info">
               <text class="goods-name">{{goods.spuName}}</text>

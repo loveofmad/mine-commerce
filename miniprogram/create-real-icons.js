@@ -65,14 +65,14 @@ function createSquareIcon(filename, bgColor, iconText) {
 
 // TabBar图标 - 使用圆形+文字
 const tabBarIcons = [
-  { name: 'tab-home.png', bg: '#CCCCCC', text: '首' },
-  { name: 'tab-home-active.png', bg: '#FF6600', text: '首' },
-  { name: 'tab-category.png', bg: '#CCCCCC', text: '分' },
-  { name: 'tab-category-active.png', bg: '#FF6600', text: '分' },
-  { name: 'tab-cart.png', bg: '#CCCCCC', text: '购' },
-  { name: 'tab-cart-active.png', bg: '#FF6600', text: '购' },
-  { name: 'tab-user.png', bg: '#CCCCCC', text: '我' },
-  { name: 'tab-user-active.png', bg: '#FF6600', text: '我' },
+  { name: 'tab-home.png', bg: '#B8C9D4', text: '首' },
+  { name: 'tab-home-active.png', bg: '#E07A5F', text: '首' },
+  { name: 'tab-category.png', bg: '#B8C9D4', text: '分' },
+  { name: 'tab-category-active.png', bg: '#E07A5F', text: '分' },
+  { name: 'tab-cart.png', bg: '#B8C9D4', text: '购' },
+  { name: 'tab-cart-active.png', bg: '#E07A5F', text: '购' },
+  { name: 'tab-user.png', bg: '#B8C9D4', text: '我' },
+  { name: 'tab-user-active.png', bg: '#E07A5F', text: '我' },
 ];
 
 // 分类图标 - 使用圆形+emoji
@@ -86,25 +86,26 @@ const categoryIcons = [
 
 // 功能图标 - 使用方形
 const functionIcons = [
-  { name: 'icon-search.png', bg: '#999999', text: '搜' },
+  { name: 'icon-search.png', bg: '#95A5A6', text: '搜' },
   { name: 'icon-arrow-right.png', bg: 'transparent', text: '>' },
-  { name: 'icon-check.png', bg: '#DCDFE6', text: '✓' },
-  { name: 'icon-check-active.png', bg: '#FF6600', text: '✓' },
-  { name: 'icon-cart-empty.png', bg: '#F5F5F5', text: '🛒' },
-  { name: 'icon-delete.png', bg: '#F56C6C', text: '×' },
-  { name: 'icon-plus.png', bg: '#FF6600', text: '+' },
-  { name: 'icon-minus.png', bg: '#909399', text: '-' },
-  { name: 'icon-location.png', bg: '#E6A23C', text: '📍' },
-  { name: 'icon-phone.png', bg: '#409EFF', text: '📞' },
-  { name: 'icon-user.png', bg: '#909399', text: '👤' },
-  { name: 'icon-order-payment.png', bg: '#FF6600', text: '💰' },
-  { name: 'icon-order-shipping.png', bg: '#409EFF', text: '📦' },
-  { name: 'icon-order-delivery.png', bg: '#67C23A', text: '🚚' },
-  { name: 'icon-order-completed.png', bg: '#909399', text: '✅' },
-  { name: 'icon-address.png', bg: '#E6A23C', text: '📍' },
-  { name: 'icon-coupon.png', bg: '#F56C6C', text: '🎫' },
-  { name: 'icon-help.png', bg: '#909399', text: '❓' },
-  { name: 'icon-settings.png', bg: '#606266', text: '⚙' },
+  { name: 'icon-check.png', bg: '#D4DDE4', text: '✓' },
+  { name: 'icon-check-active.png', bg: '#E07A5F', text: '✓' },
+  { name: 'icon-cart.png', bg: '#5D6D7E', text: '🛒' },
+  { name: 'icon-cart-empty.png', bg: '#F0F4F8', text: '🛒' },
+  { name: 'icon-delete.png', bg: '#D4726A', text: '×' },
+  { name: 'icon-plus.png', bg: '#E07A5F', text: '+' },
+  { name: 'icon-minus.png', bg: '#95A5A6', text: '-' },
+  { name: 'icon-location.png', bg: '#E07A5F', text: '📍' },
+  { name: 'icon-phone.png', bg: '#4A90A4', text: '📞' },
+  { name: 'icon-user.png', bg: '#95A5A6', text: '👤' },
+  { name: 'icon-order-payment.png', bg: '#E07A5F', text: '💰' },
+  { name: 'icon-order-shipping.png', bg: '#52A88C', text: '📦' },
+  { name: 'icon-order-delivery.png', bg: '#4A90A4', text: '🚚' },
+  { name: 'icon-order-completed.png', bg: '#52A88C', text: '✅' },
+  { name: 'icon-address.png', bg: '#E07A5F', text: '📍' },
+  { name: 'icon-coupon.png', bg: '#E07A5F', text: '🎫' },
+  { name: 'icon-help.png', bg: '#95A5A6', text: '❓' },
+  { name: 'icon-settings.png', bg: '#5D6D7E', text: '⚙' },
 ];
 
 // 生成所有图标
@@ -171,8 +172,8 @@ console.log('\nGenerating default avatar...');
 createDefaultAvatar();
 
 console.log('\nGenerating banners...');
-createBanner('banner1.png', '#FF6600', '#FF8C00', '精选土特产');
-createBanner('banner2.png', '#4CAF50', '#8BC34A', '新鲜水果');
-createBanner('banner3.png', '#2196F3', '#03A9F4', '地道美味');
+createBanner('banner1.png', '#4A90A4', '#6BB0C4', '精选土特产');
+createBanner('banner2.png', '#52A88C', '#6BBF9E', '新鲜水果');
+createBanner('banner3.png', '#6BB0C4', '#8DC8D8', '地道美味');
 
 console.log('\nAll icons generated successfully!');
