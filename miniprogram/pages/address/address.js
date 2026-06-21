@@ -199,7 +199,8 @@ Page({
         await addAddress(addressData)
         wx.showToast({ title: '添加成功', icon: 'success' })
       } else {
-        await updateAddress(editId, addressData)
+        const userId = getApp().globalData.userId
+        await updateAddress(editId, addressData, userId)
         wx.showToast({ title: '修改成功', icon: 'success' })
       }
       this.setData({ showEdit: false })
@@ -211,13 +212,14 @@ Page({
 
   onDeleteTap(e) {
     const id = e.currentTarget.dataset.id
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '提示',
       content: '确定删除该地址吗？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await deleteAddress(id)
+            await deleteAddress(id, userId)
             wx.showToast({ title: '删除成功', icon: 'success' })
             this.loadAddresses()
           } catch (e) {

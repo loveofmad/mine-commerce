@@ -8,20 +8,20 @@ const addToCart = (data) => {
   return post('/api/cart', data)
 }
 
-const updateQuantity = (id, quantity) => {
-  return put(`/api/cart/${id}/quantity?quantity=${quantity}`)
+const updateQuantity = (id, quantity, userId) => {
+  return put(`/api/cart/${id}/quantity?quantity=${quantity}&userId=${userId}`)
 }
 
-const updateChecked = (id, checked) => {
-  return put(`/api/cart/${id}/checked?checked=${checked}`)
+const updateChecked = (id, checked, userId) => {
+  return put(`/api/cart/${id}/checked?checked=${checked}&userId=${userId}`)
 }
 
 const checkAll = (userId, checked) => {
   return put(`/api/cart/${userId}/checkAll?checked=${checked}`)
 }
 
-const removeCartItem = (id) => {
-  return del(`/api/cart/${id}`)
+const removeCartItem = (id, userId) => {
+  return del(`/api/cart/${id}?userId=${userId}`)
 }
 
 const clearCart = (userId) => {

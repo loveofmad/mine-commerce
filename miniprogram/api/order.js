@@ -12,32 +12,32 @@ const createOrder = (userId, addressId, orderItems, couponId, addressInfo, remar
   return post('/api/order', orderItems, params)
 }
 
-const getOrderDetail = (id) => {
-  return get(`/api/order/${id}`)
+const getOrderDetail = (id, userId) => {
+  return get(`/api/order/${id}`, { userId })
 }
 
 const getOrderList = (userId, params = {}) => {
   return get(`/api/order/list/${userId}`, params)
 }
 
-const getOrderItems = (orderId) => {
-  return get(`/api/order/${orderId}/items`)
+const getOrderItems = (orderId, userId) => {
+  return get(`/api/order/${orderId}/items`, { userId })
 }
 
-const cancelOrder = (id) => {
-  return put(`/api/order/${id}/cancel`)
+const cancelOrder = (id, userId) => {
+  return put(`/api/order/${id}/cancel`, null, { userId })
 }
 
-const payOrder = (id) => {
-  return put(`/api/order/${id}/pay`)
+const payOrder = (id, userId) => {
+  return put(`/api/order/${id}/pay`, null, { userId })
 }
 
-const confirmOrder = (id) => {
-  return put(`/api/order/${id}/confirm`)
+const confirmOrder = (id, userId) => {
+  return put(`/api/order/${id}/confirm`, null, { userId })
 }
 
-const deleteOrder = (id) => {
-  return del(`/api/order/${id}`)
+const deleteOrder = (id, userId) => {
+  return del(`/api/order/${id}`, null, { userId })
 }
 
 module.exports = { createOrder, getOrderDetail, getOrderList, getOrderItems, cancelOrder, payOrder, confirmOrder, deleteOrder }

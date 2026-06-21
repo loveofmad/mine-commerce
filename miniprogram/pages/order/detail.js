@@ -16,10 +16,11 @@ Page({
 
   async loadOrderDetail(id) {
     this.setData({ loading: true })
+    const userId = getApp().globalData.userId
     try {
       const [order, items] = await Promise.all([
-        getOrderDetail(id),
-        getOrderItems(id)
+        getOrderDetail(id, userId),
+        getOrderItems(id, userId)
       ])
       this.setData({
         order: {
@@ -38,13 +39,14 @@ Page({
 
   async onPayOrder() {
     const id = this.data.order.id
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '确认支付',
       content: '确认支付该订单？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await payOrder(id)
+            await payOrder(id, userId)
             wx.showToast({ title: '支付成功', icon: 'success' })
             this.loadOrderDetail(id)
           } catch (e) {
@@ -57,13 +59,14 @@ Page({
 
   async onCancelOrder() {
     const id = this.data.order.id
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '确认取消',
       content: '确定取消该订单吗？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await cancelOrder(id)
+            await cancelOrder(id, userId)
             wx.showToast({ title: '已取消', icon: 'success' })
             this.loadOrderDetail(id)
           } catch (e) {
@@ -76,13 +79,14 @@ Page({
 
   async onConfirmOrder() {
     const id = this.data.order.id
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '确认收货',
       content: '确认已收到商品？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await confirmOrder(id)
+            await confirmOrder(id, userId)
             wx.showToast({ title: '已确认收货', icon: 'success' })
             this.loadOrderDetail(id)
           } catch (e) {

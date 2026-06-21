@@ -58,8 +58,9 @@ Page({
     const index = e.currentTarget.dataset.index
     const item = this.data.cartList[index]
     const checked = item.checked ? 0 : 1
+    const userId = getApp().globalData.userId
     try {
-      await updateChecked(item.id, checked)
+      await updateChecked(item.id, checked, userId)
       this.setData({ [`cartList[${index}].checked`]: checked })
       this.calcTotal()
     } catch (e) {
@@ -83,8 +84,9 @@ Page({
     const index = e.currentTarget.dataset.index
     const item = this.data.cartList[index]
     if (item.quantity <= 1) return
+    const userId = getApp().globalData.userId
     try {
-      await updateQuantity(item.id, item.quantity - 1)
+      await updateQuantity(item.id, item.quantity - 1, userId)
       this.setData({ [`cartList[${index}].quantity`]: item.quantity - 1 })
       this.calcTotal()
     } catch (e) {
@@ -95,8 +97,9 @@ Page({
   async onQuantityPlus(e) {
     const index = e.currentTarget.dataset.index
     const item = this.data.cartList[index]
+    const userId = getApp().globalData.userId
     try {
-      await updateQuantity(item.id, item.quantity + 1)
+      await updateQuantity(item.id, item.quantity + 1, userId)
       this.setData({ [`cartList[${index}].quantity`]: item.quantity + 1 })
       this.calcTotal()
     } catch (e) {
@@ -107,13 +110,14 @@ Page({
   async onDeleteTap(e) {
     const index = e.currentTarget.dataset.index
     const item = this.data.cartList[index]
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '提示',
       content: '确定删除该商品吗？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await removeCartItem(item.id)
+            await removeCartItem(item.id, userId)
             const cartList = this.data.cartList.filter((_, i) => i !== index)
             this.setData({ cartList })
             this.calcTotal()

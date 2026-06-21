@@ -82,13 +82,14 @@ Page({
 
   async onPayOrder(e) {
     const id = e.currentTarget.dataset.id
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '确认支付',
       content: '确认支付该订单？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await payOrder(id)
+            await payOrder(id, userId)
             wx.showToast({ title: '支付成功', icon: 'success' })
             this.setData({ pageNum: 1, orderList: [], hasMore: true })
             this.loadOrders()
@@ -102,13 +103,14 @@ Page({
 
   async onCancelOrder(e) {
     const id = e.currentTarget.dataset.id
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '确认取消',
       content: '确定取消该订单吗？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await cancelOrder(id)
+            await cancelOrder(id, userId)
             wx.showToast({ title: '已取消', icon: 'success' })
             this.setData({ pageNum: 1, orderList: [], hasMore: true })
             this.loadOrders()
@@ -122,13 +124,14 @@ Page({
 
   async onConfirmOrder(e) {
     const id = e.currentTarget.dataset.id
+    const userId = getApp().globalData.userId
     wx.showModal({
       title: '确认收货',
       content: '确认已收到商品？',
       success: async (res) => {
         if (res.confirm) {
           try {
-            await confirmOrder(id)
+            await confirmOrder(id, userId)
             wx.showToast({ title: '已确认收货', icon: 'success' })
             this.setData({ pageNum: 1, orderList: [], hasMore: true })
             this.loadOrders()

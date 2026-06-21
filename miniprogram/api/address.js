@@ -8,12 +8,12 @@ const addAddress = (data) => {
   return post('/api/address', data)
 }
 
-const updateAddress = (id, data) => {
-  return put(`/api/address/${id}`, data)
+const updateAddress = (id, data, userId) => {
+  return put(`/api/address/${id}?userId=${userId}`, data)
 }
 
-const deleteAddress = (id) => {
-  return del(`/api/address/${id}`)
+const deleteAddress = (id, userId) => {
+  return del(`/api/address/${id}?userId=${userId}`)
 }
 
 module.exports = { getAddressList, addAddress, updateAddress, deleteAddress }
