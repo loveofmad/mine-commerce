@@ -39,7 +39,7 @@ Page({
       // 加载每个订单的商品信息
       const ordersWithItems = await Promise.all(list.map(async (order) => {
         try {
-          const items = await getOrderItems(order.id)
+          const items = await getOrderItems(order.id, app.globalData.userId)
           return {
             ...order,
             totalAmountText: formatPrice(order.totalAmount),

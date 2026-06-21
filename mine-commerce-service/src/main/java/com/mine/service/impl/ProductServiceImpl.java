@@ -29,6 +29,7 @@ public class ProductServiceImpl extends ServiceImpl<SpuMapper, Spu> implements P
         pageSize = Math.min(Math.max(pageSize, 1), 100);
         pageNum = Math.max(pageNum, 1);
         LambdaQueryWrapper<Spu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Spu::getStatus, 1);
         if (StringUtils.hasText(keyword)) {
             wrapper.and(w -> w
                     .like(Spu::getTitle, keyword)

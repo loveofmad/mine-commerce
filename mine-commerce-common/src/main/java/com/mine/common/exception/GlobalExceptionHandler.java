@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result<?> handleException(Exception e, HttpServletRequest request) {
-        log.error("系统异常：{}, 请求地址：{}", e.getClass().getSimpleName(), request.getRequestURI());
-        return Result.failed("系统异常，请稍后重试");
+        log.error("系统异常：{}, 请求地址：{}", e.getClass().getSimpleName(), request.getRequestURI(), e);
+        return Result.failed(500, e.getMessage() != null ? e.getMessage() : "系统异常");
     }
 }

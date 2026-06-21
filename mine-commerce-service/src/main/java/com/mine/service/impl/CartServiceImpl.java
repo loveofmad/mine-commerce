@@ -25,16 +25,12 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
         if (cart.getQuantity() > MAX_QUANTITY_PER_ITEM) {
             throw new BusinessException("单件商品最多购买" + MAX_QUANTITY_PER_ITEM + "件");
         }
-        LambdaQueryWrapper<Cart> countWrapper = new LambdaQueryWrapper<>();
-        countWrapper.eq(Cart::getUserId, cart.getUserId());
-        if (count(countWrapper) >= MAX_CART_ITEMS) {
-            throw new BusinessException("购物车最多容纳" + MAX_CART_ITEMS + "件商品");
-        }
         LambdaQueryWrapper<Cart> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Cart::getUserId, cart.getUserId())
                 .eq(Cart::getSkuId, cart.getSkuId());
-        Cart exist = getOne(wrapper);
-        if (exist != null) {
+        List<Cart> existList = list(wrapper);
+        if (existList != null && !existList.isEmpty()) {
+            Cart exist = existList.get(0);
             int newQty = exist.getQuantity() + cart.getQuantity();
             if (newQty > MAX_QUANTITY_PER_ITEM) {
                 throw new BusinessException("单件商品最多购买" + MAX_QUANTITY_PER_ITEM + "件");
