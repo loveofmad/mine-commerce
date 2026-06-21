@@ -98,6 +98,8 @@ Page({
   async onAddToCart() {
     if (!checkLogin()) return
     const app = getApp()
+    console.log('userId:', app.globalData.userId)
+    console.log('baseUrl:', app.globalData.baseUrl)
     const product = this.data.product
     const baseUrl = app.globalData.baseUrl
     
@@ -124,7 +126,8 @@ Page({
     }
     
     try {
-      await addToCart({
+      console.log('请求数据:', { userId: app.globalData.userId, spuId: product.id, skuId: sku.id, quantity: this.data.quantity })
+      const result = await addToCart({
         userId: app.globalData.userId,
         spuId: product.id,
         skuId: sku.id,
@@ -135,9 +138,11 @@ Page({
         quantity: this.data.quantity,
         checked: 1
       })
+      console.log('加入购物车成功:', result)
       wx.showToast({ title: '已加入购物车', icon: 'success' })
     } catch (e) {
-      wx.showToast({ title: '加入失败', icon: 'none' })
+      console.error('加入购物车失败:', e)
+      wx.showToast({ title: '加入失败: ' + (e.message || '未知错误'), icon: 'none' })
     }
   },
 
