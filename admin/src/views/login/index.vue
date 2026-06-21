@@ -62,8 +62,8 @@ async function handleLogin() {
       username: form.username,
       password: form.password
     })
-    userStore.setToken(res.data?.token || 'admin-token')
-    userStore.setUserInfo({ username: form.username })
+    userStore.setToken(res.data?.token)
+    userStore.setUserInfo(res.data?.admin || { username: form.username })
     ElMessage.success('登录成功')
     router.push('/')
   } catch (e) {
