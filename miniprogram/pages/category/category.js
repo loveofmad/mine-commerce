@@ -24,21 +24,19 @@ Page({
 
   async loadCategories() {
     try {
-      console.log('开始加载分类...')
       const res = await getCategoryList()
       const list = res || []
-      const categories = [{ id: 0, name: '全部', icon: '📋' }]
-      list.forEach(item => {
-        categories.push({
-          id: item.id,
-          name: item.name,
-          icon: item.icon || '📦'
-        })
+      const categories = list.map(item => ({
+        id: item.id,
+        name: item.name,
+        icon: item.icon || '📦'
+      }))
+      this.setData({
+        categories,
+        visibleCategories: categories.slice(0, 4)
       })
-      console.log('最终分类列表:', categories)
-      this.setData({ categories })
     } catch (e) {
-      console.error('加载分类失败', e)
+      console.error('首页加载分类失败', e)
     }
   },
 

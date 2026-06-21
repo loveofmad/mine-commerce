@@ -8,6 +8,8 @@ import com.mine.common.exception.BusinessException;
 import com.mine.mapper.AdminMapper;
 import com.mine.model.entity.Admin;
 import com.mine.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,15 +17,15 @@ import java.time.LocalDateTime;
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Admin login(String username, String password) {
         LambdaQueryWrapper<Admin> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Admin::getUsername, username);
         Admin admin = getOne(wrapper);
-        if (admin == null) {
-            throw new BusinessException("用户名或密码错误");
-        }
-        if (!admin.getPassword().equals(password)) {
+        if (admin == null || !passwordEncoder.matches(password, admin.getPassword())) {
             throw new BusinessException("用户名或密码错误");
         }
         if (admin.getStatus() != 1) {
@@ -55,6 +57,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         if (count(wrapper) > 0) {
             throw new BusinessException("用户名已存在");
         }
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setCreateTime(LocalDateTime.now());
         admin.setUpdateTime(LocalDateTime.now());
         admin.setDeleted(0);
@@ -63,6 +66,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     @Override
     public boolean updateAdmin(Admin admin) {
+        if (admin.getPassword() != null && !admin.getPassword().isEmpty()) {
+            admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        }
         admin.setUpdateTime(LocalDateTime.now());
         return updateById(admin);
     }

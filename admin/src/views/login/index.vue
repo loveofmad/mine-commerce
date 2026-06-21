@@ -24,7 +24,7 @@
         </el-form-item>
       </el-form>
       <div class="login-footer">
-        <span>默认账号: admin / admin123</span>
+        <span>请输入管理员账号密码</span>
       </div>
     </div>
   </div>
@@ -58,18 +58,16 @@ async function handleLogin() {
   if (!valid) return
   loading.value = true
   try {
-    const res = await request.post('/admin/auth/login', null, {
-      params: { username: form.username, password: form.password }
+    const res = await request.post('/admin/auth/login', {
+      username: form.username,
+      password: form.password
     })
     userStore.setToken(res.data?.token || 'admin-token')
     userStore.setUserInfo({ username: form.username })
     ElMessage.success('登录成功')
     router.push('/')
-  } catch {
-    userStore.setToken('admin-token')
-    userStore.setUserInfo({ username: form.username })
-    ElMessage.success('登录成功')
-    router.push('/')
+  } catch (e) {
+    ElMessage.error(e.response?.data?.message || '用户名或密码错误')
   } finally {
     loading.value = false
   }

@@ -8,6 +8,8 @@ import com.mine.common.exception.BusinessException;
 import com.mine.mapper.UserMapper;
 import com.mine.model.entity.User;
 import com.mine.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,21 +17,21 @@ import java.time.LocalDateTime;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User wxLogin(String code) {
-        // 使用code作为openid（简化版，实际需要调用微信API获取openid）
         String openid = "wx_" + code;
-        
-        // 查找或创建用户
+
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUsername, openid);
         User user = getOne(wrapper);
-        
+
         if (user == null) {
-            // 创建新用户
             user = new User();
             user.setUsername(openid);
-            user.setPassword("wx_login"); // 微信登录用户设置默认密码
+            user.setPassword(passwordEncoder.encode("wx_login"));
             user.setNickname("微信用户" + openid.substring(Math.max(0, openid.length() - 6)));
             user.setStatus(1);
             user.setCreateTime(LocalDateTime.now());
@@ -37,7 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             user.setDeleted(0);
             save(user);
         }
-        
+
         return user;
     }
 
@@ -50,7 +52,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.setPhone(phone);
         user.setNickname(username);
         user.setStatus(1);
@@ -66,10 +68,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUsername, username);
         User user = getOne(wrapper);
-        if (user == null) {
-            throw new BusinessException("用户名或密码错误");
-        }
-        if (!user.getPassword().equals(password)) {
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
             throw new BusinessException("用户名或密码错误");
         }
         if (user.getStatus() != 1) {
@@ -103,6 +102,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean updateUser(User user) {
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         user.setUpdateTime(LocalDateTime.now());
         return updateById(user);
     }

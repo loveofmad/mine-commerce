@@ -10,7 +10,6 @@ const buildUrl = (url, params) => {
 const request = (url, method = 'GET', data = {}, params = {}, header = {}) => {
   const baseUrl = getApp().globalData.baseUrl
   const fullUrl = baseUrl + buildUrl(url, params)
-  console.log('请求URL:', fullUrl)
   return new Promise((resolve, reject) => {
     wx.request({
       url: fullUrl,
@@ -21,8 +20,6 @@ const request = (url, method = 'GET', data = {}, params = {}, header = {}) => {
         ...header
       },
       success(res) {
-        console.log('响应状态码:', res.statusCode)
-        console.log('响应数据:', res.data)
         if (res.statusCode === 200) {
           const result = res.data
           if (result.code === 200 || result.code === 0) {
@@ -37,7 +34,6 @@ const request = (url, method = 'GET', data = {}, params = {}, header = {}) => {
         }
       },
       fail(err) {
-        console.error('请求失败:', err)
         wx.showToast({ title: '网络连接失败', icon: 'none' })
         reject(err)
       }

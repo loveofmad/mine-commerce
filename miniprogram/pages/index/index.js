@@ -87,16 +87,13 @@ Page({
     if (this.data.loading) return
     this.setData({ loading: true })
     try {
-      console.log('开始加载商品...')
       const res = await getProductList({
         pageNum: this.data.pageNum,
         pageSize: this.data.pageSize
       })
-      console.log('API返回:', res)
       const list = res.records || []
       const app = getApp()
       const baseUrl = app.globalData.baseUrl
-      console.log('商品列表:', list)
       this.setData({
         productList: [...this.data.productList, ...list.map(item => ({
           ...item,

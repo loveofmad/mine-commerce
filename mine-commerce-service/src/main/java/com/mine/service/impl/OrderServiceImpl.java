@@ -42,8 +42,36 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (items == null || items.isEmpty()) {
             throw new BusinessException("订单商品不能为空");
         }
+
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (OrderItem item : items) {
+            if (item.getSkuId() != null && item.getSkuId() > 0) {
+                Sku sku = skuMapper.selectById(item.getSkuId());
+                if (sku == null) {
+                    throw new BusinessException("商品规格不存在");
+                }
+                if (sku.getStock() < item.getQuantity()) {
+                    throw new BusinessException("商品库存不足: " + sku.getTitle());
+                }
+                item.setPrice(sku.getPrice());
+                item.setSkuImage(sku.getImage());
+                item.setSkuTitle(sku.getTitle());
+            } else if (item.getSpuId() != null) {
+                Spu spu = spuMapper.selectById(item.getSpuId());
+                if (spu == null) {
+                    throw new BusinessException("商品不存在");
+                }
+                if (spu.getStock() < item.getQuantity()) {
+                    throw new BusinessException("商品库存不足: " + spu.getTitle());
+                }
+                item.setPrice(spu.getPrice());
+                item.setSkuImage(spu.getMainImage());
+                item.setSkuTitle(spu.getTitle());
+            }
+            if (item.getSpuName() == null && item.getSpuId() != null) {
+                Spu spu = spuMapper.selectById(item.getSpuId());
+                if (spu != null) item.setSpuName(spu.getTitle());
+            }
             BigDecimal itemTotal = item.getPrice().multiply(new BigDecimal(item.getQuantity()));
             item.setTotalAmount(itemTotal);
             totalAmount = totalAmount.add(itemTotal);
@@ -124,55 +152,50 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (order.getStatus() != 0) {
             throw new BusinessException("订单状态不允许支付");
         }
+
+        List<OrderItem> items = listOrderItems(id);
+        for (OrderItem item : items) {
+            if (item.getSkuId() != null && item.getSkuId() > 0) {
+                int affected = skuMapper.deductStock(item.getSkuId(), item.getQuantity());
+                if (affected == 0) {
+                    throw new BusinessException("库存不足，支付失败: " + item.getSkuTitle());
+                }
+                skuMapper.increaseSales(item.getSkuId(), item.getQuantity());
+            } else if (item.getSpuId() != null) {
+                int affected = spuMapper.deductStock(item.getSpuId(), item.getQuantity());
+                if (affected == 0) {
+                    throw new BusinessException("库存不足，支付失败: " + item.getSpuName());
+                }
+                spuMapper.increaseSales(item.getSpuId(), item.getQuantity());
+            }
+        }
+
+        java.util.Set<Long> updatedSpuIds = new java.util.HashSet<>();
+        for (OrderItem item : items) {
+            if (item.getSkuId() != null && item.getSkuId() > 0) {
+                updatedSpuIds.add(item.getSpuId());
+            }
+        }
+        for (Long spuId : updatedSpuIds) {
+            LambdaQueryWrapper<Sku> skuWrapper = new LambdaQueryWrapper<>();
+            skuWrapper.eq(Sku::getSpuId, spuId);
+            List<Sku> skus = skuMapper.selectList(skuWrapper);
+            int totalStock = skus.stream().mapToInt(Sku::getStock).sum();
+            int totalSales = skus.stream().mapToInt(Sku::getSales).sum();
+            Spu spuUpdate = new Spu();
+            spuUpdate.setId(spuId);
+            spuUpdate.setStock(totalStock);
+            spuUpdate.setSales(totalSales);
+            spuUpdate.setUpdateTime(LocalDateTime.now());
+            spuMapper.updateById(spuUpdate);
+        }
+
         Order update = new Order();
         update.setId(id);
         update.setStatus(1);
         update.setPayTime(LocalDateTime.now());
         update.setUpdateTime(LocalDateTime.now());
-        boolean result = updateById(update);
-
-        if (result) {
-            List<OrderItem> items = listOrderItems(id);
-            java.util.Set<Long> updatedSpuIds = new java.util.HashSet<>();
-            for (OrderItem item : items) {
-                if (item.getSkuId() != null && item.getSkuId() > 0) {
-                    Sku sku = skuMapper.selectById(item.getSkuId());
-                    if (sku != null) {
-                        Sku skuUpdate = new Sku();
-                        skuUpdate.setId(sku.getId());
-                        skuUpdate.setStock(sku.getStock() - item.getQuantity());
-                        skuUpdate.setSales(sku.getSales() + item.getQuantity());
-                        skuUpdate.setUpdateTime(LocalDateTime.now());
-                        skuMapper.updateById(skuUpdate);
-                        updatedSpuIds.add(item.getSpuId());
-                    }
-                } else if (item.getSpuId() != null) {
-                    Spu spu = spuMapper.selectById(item.getSpuId());
-                    if (spu != null) {
-                        Spu spuUpdate = new Spu();
-                        spuUpdate.setId(spu.getId());
-                        spuUpdate.setStock(spu.getStock() - item.getQuantity());
-                        spuUpdate.setSales(spu.getSales() + item.getQuantity());
-                        spuUpdate.setUpdateTime(LocalDateTime.now());
-                        spuMapper.updateById(spuUpdate);
-                    }
-                }
-            }
-            for (Long spuId : updatedSpuIds) {
-                LambdaQueryWrapper<Sku> skuWrapper = new LambdaQueryWrapper<>();
-                skuWrapper.eq(Sku::getSpuId, spuId);
-                List<Sku> skus = skuMapper.selectList(skuWrapper);
-                int totalStock = skus.stream().mapToInt(Sku::getStock).sum();
-                int totalSales = skus.stream().mapToInt(Sku::getSales).sum();
-                Spu spuUpdate = new Spu();
-                spuUpdate.setId(spuId);
-                spuUpdate.setStock(totalStock);
-                spuUpdate.setSales(totalSales);
-                spuUpdate.setUpdateTime(LocalDateTime.now());
-                spuMapper.updateById(spuUpdate);
-            }
-        }
-        return result;
+        return updateById(update);
     }
 
     @Override

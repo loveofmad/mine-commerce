@@ -6,8 +6,11 @@ import com.mine.model.entity.Admin;
 import com.mine.service.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Api(tags = "后台管理员认证接口")
 @RestController
@@ -19,9 +22,12 @@ public class AdminController {
 
     @ApiOperation("管理员登录")
     @PostMapping("/login")
-    public Result<Admin> login(@RequestParam String username,
-                               @RequestParam String password) {
-        return Result.success(adminService.login(username, password));
+    public Result<Map<String, Object>> login(@RequestBody LoginDTO dto) {
+        Admin admin = adminService.login(dto.getUsername(), dto.getPassword());
+        Map<String, Object> data = new java.util.HashMap<>();
+        data.put("token", "admin-" + admin.getId());
+        data.put("admin", admin);
+        return Result.success(data);
     }
 
     @ApiOperation("获取管理员信息")
@@ -61,5 +67,11 @@ public class AdminController {
     public Result<Boolean> updateStatus(@PathVariable Long id,
                                         @RequestParam Integer status) {
         return Result.success(adminService.updateStatus(id, status));
+    }
+
+    @Data
+    static class LoginDTO {
+        private String username;
+        private String password;
     }
 }

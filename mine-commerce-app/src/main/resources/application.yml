@@ -4,12 +4,16 @@ server:
 spring:
   application:
     name: mine-commerce
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mine_commerce?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: jjh20020708.
+    password: ${DB_PASSWORD:jjh20020708.}
     druid:
       initial-size: 5
       min-idle: 5
@@ -22,13 +26,12 @@ spring:
       test-on-borrow: false
       test-on-return: false
       stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
+        enabled: false
       filter:
         stat:
           enabled: true
           slow-sql-millis: 1000
-          log-slow-sql: true
+          log-slow-sql: false
         wall:
           enabled: true
   redis:
@@ -59,10 +62,9 @@ mybatis-plus:
       logic-not-delete-value: 0
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 knife4j:
-  enable: true
+  enable: false
   openapi:
     title: 土特产商城API文档
     description: 企业级土特产商城微信小程序接口文档
@@ -73,5 +75,5 @@ upload:
 
 wx:
   mini:
-    app-id: your-app-id
-    app-secret: your-app-secret
+    app-id: ${WX_APP_ID:your-app-id}
+    app-secret: ${WX_APP_SECRET:your-app-secret}
