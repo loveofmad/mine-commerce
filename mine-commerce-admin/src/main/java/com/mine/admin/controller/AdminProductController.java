@@ -25,9 +25,11 @@ public class AdminProductController {
     public Result<IPage<Spu>> listSpu(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String sortField,
+            @RequestParam(required = false) String sortOrder,
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
-        return Result.success(productService.listSpuByPage(keyword, categoryId, pageNum, pageSize));
+        return Result.success(productService.listSpuByPage(keyword, categoryId, sortField, sortOrder, pageNum, pageSize));
     }
 
     @ApiOperation("获取商品详情")

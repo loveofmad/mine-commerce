@@ -136,7 +136,7 @@ Page({
   },
 
   onSearchTap() {
-    wx.navigateTo({ url: '/pages/category/category' })
+    wx.navigateTo({ url: '/pages/search/search' })
   },
 
   onViewAllCategory() {

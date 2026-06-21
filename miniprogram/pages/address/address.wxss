@@ -73,6 +73,10 @@
   height: 28rpx;
 }
 
+.action-emoji {
+  font-size: 28rpx;
+}
+
 .empty-tip {
   display: flex;
   flex-direction: column;

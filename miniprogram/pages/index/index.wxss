@@ -25,8 +25,13 @@
 .search-icon {
   width: 32rpx;
   height: 32rpx;
-  margin-right: 16rpx;
+  margin-right: 12rpx;
   opacity: 0.5;
+}
+
+.search-emoji {
+  font-size: 32rpx;
+  margin-right: 12rpx;
 }
 
 .search-placeholder {

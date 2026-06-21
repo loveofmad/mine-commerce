@@ -25,7 +25,7 @@ public class ProductServiceImpl extends ServiceImpl<SpuMapper, Spu> implements P
     private SkuMapper skuMapper;
 
     @Override
-    public IPage<Spu> listSpuByPage(String keyword, Long categoryId, int pageNum, int pageSize) {
+    public IPage<Spu> listSpuByPage(String keyword, Long categoryId, String sortField, String sortOrder, int pageNum, int pageSize) {
         LambdaQueryWrapper<Spu> wrapper = new LambdaQueryWrapper<>();
         if (StringUtils.hasText(keyword)) {
             wrapper.like(Spu::getTitle, keyword);
@@ -33,7 +33,16 @@ public class ProductServiceImpl extends ServiceImpl<SpuMapper, Spu> implements P
         if (categoryId != null) {
             wrapper.eq(Spu::getCategoryId, categoryId);
         }
-        wrapper.orderByDesc(Spu::getCreateTime);
+        boolean asc = !"desc".equalsIgnoreCase(sortOrder);
+        if ("create".equalsIgnoreCase(sortField)) {
+            if (asc) wrapper.orderByAsc(Spu::getCreateTime); else wrapper.orderByDesc(Spu::getCreateTime);
+        } else if ("sales".equalsIgnoreCase(sortField)) {
+            if (asc) wrapper.orderByAsc(Spu::getSales); else wrapper.orderByDesc(Spu::getSales);
+        } else if ("price".equalsIgnoreCase(sortField)) {
+            if (asc) wrapper.orderByAsc(Spu::getPrice); else wrapper.orderByDesc(Spu::getPrice);
+        } else {
+            wrapper.orderByAsc(Spu::getSort).orderByDesc(Spu::getCreateTime);
+        }
         return page(new Page<>(pageNum, pageSize), wrapper);
     }
 

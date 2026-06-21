@@ -17,6 +17,14 @@
         <el-select v-model="query.categoryId" placeholder="商品分类" clearable style="width: 160px; margin-left: 12px" @change="loadData">
           <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
         </el-select>
+        <el-select v-model="query.sortField" placeholder="排序方式" style="width: 160px; margin-left: 12px" @change="loadData">
+          <el-option label="按添加时间正序" value="create_asc" />
+          <el-option label="按添加时间倒序" value="create_desc" />
+          <el-option label="按排序值正序" value="sort_asc" />
+          <el-option label="按销量倒序" value="sales_desc" />
+          <el-option label="按价格升序" value="price_asc" />
+          <el-option label="按价格降序" value="price_desc" />
+        </el-select>
         <el-button type="primary" style="margin-left: 12px" @click="loadData">
           <el-icon><Search /></el-icon>搜索
         </el-button>
@@ -73,6 +81,12 @@
         <el-table-column label="销量" min-width="80" align="center">
           <template #default="{ row }">
             <span class="text-muted">{{ row.sales || 0 }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="排序" width="120" align="center">
+          <template #default="{ row }">
+            <el-input-number v-model="row.sort" :min="0" :max="9999" size="small" controls-position="right" style="width: 90px" @change="(val) => handleSortChange(row, val)" />
           </template>
         </el-table-column>
 
@@ -264,9 +278,9 @@ const dialogVisible = ref(false)
 const editingId = ref(null)
 const formRef = ref(null)
 const imageTab = ref('url')
-const query = reactive({ keyword: '', categoryId: '', pageNum: 1, pageSize: 10 })
+const query = reactive({ keyword: '', categoryId: '', sortField: 'create_desc', pageNum: 1, pageSize: 10 })
 
-const form = reactive({ title: '', subtitle: '', spec: '', categoryId: null, price: 0, stock: 0, mainImage: '', images: [], detail: '', status: 1 })
+const form = reactive({ title: '', subtitle: '', spec: '', categoryId: null, price: 0, stock: 0, mainImage: '', images: [], detail: '', status: 1, sort: 0 })
 const skuList = ref([])
 const rules = {
   title: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
@@ -278,7 +292,12 @@ const rules = {
 async function loadData() {
   loading.value = true
   try {
-    const res = await request.get('/admin/product/spu/list', { params: query })
+    const params = { ...query }
+    delete params.sortField
+    const [field, order] = query.sortField.split('_')
+    params.sortField = field
+    params.sortOrder = order
+    const res = await request.get('/admin/product/spu/list', { params })
     const records = res.data?.records || []
     total.value = res.data?.total || 0
     const recordsWithSku = await Promise.all(records.map(async (spu) => {
@@ -300,13 +319,14 @@ async function loadCategories() {
 function resetQuery() {
   query.keyword = ''
   query.categoryId = ''
+  query.sortField = 'create_desc'
   query.pageNum = 1
   loadData()
 }
 
 function resetForm() {
   editingId.value = null
-  Object.assign(form, { title: '', subtitle: '', spec: '', categoryId: null, price: 0, stock: 0, mainImage: '', images: [], detail: '', status: 1 })
+  Object.assign(form, { title: '', subtitle: '', spec: '', categoryId: null, price: 0, stock: 0, mainImage: '', images: [], detail: '', status: 1, sort: 0 })
   skuList.value = []
   imageTab.value = 'url'
 }
@@ -329,7 +349,8 @@ function handleEdit(row) {
     mainImage: row.mainImage || '',
     images,
     detail: row.detail || '',
-    status: row.status
+    status: row.status,
+    sort: row.sort || 0
   })
   loadSkuList(row.id)
   dialogVisible.value = true
@@ -390,6 +411,12 @@ function handleMultiUploadSuccess(response) {
 
 function removeImage(index) {
   form.images.splice(index, 1)
+}
+
+async function handleSortChange(row, val) {
+  try {
+    await request.put('/admin/product/spu', { id: row.id, sort: val })
+  } catch {}
 }
 
 async function handleSubmit() {

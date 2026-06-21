@@ -34,6 +34,8 @@ public class Spu implements Serializable {
 
     private Integer status;
 
+    private Integer sort;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

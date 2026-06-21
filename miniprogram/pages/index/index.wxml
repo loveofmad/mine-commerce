@@ -3,7 +3,7 @@
   <view class="header">
     <view class="search-bar" bindtap="onSearchTap">
       <view class="search-input">
-        <image class="search-icon" src="/static/icon-search.png" />
+        <text class="search-emoji">🔍</text>
         <text class="search-placeholder">搜索土特产</text>
       </view>
     </view>

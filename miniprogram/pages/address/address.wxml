@@ -16,7 +16,7 @@
           <text>编辑</text>
         </view>
         <view class="action-btn delete" bindtap="onDeleteTap" data-id="{{item.id}}">
-          <image class="action-icon" src="/static/icon-delete.png" />
+          <text class="action-emoji">🗑️</text>
           <text>删除</text>
         </view>
       </view>

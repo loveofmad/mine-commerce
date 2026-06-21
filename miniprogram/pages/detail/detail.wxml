@@ -57,7 +57,7 @@
   <!-- 底部操作栏 -->
   <view class="bottom-bar">
     <view class="bar-icon" bindtap="onGoCart">
-      <image class="bar-icon-img" src="/static/icon-cart.png" />
+      <text class="bar-emoji">🛒</text>
       <text class="bar-label">购物车</text>
     </view>
     <view class="bar-btn bar-btn-cart" bindtap="onAddToCart">加入购物车</view>
