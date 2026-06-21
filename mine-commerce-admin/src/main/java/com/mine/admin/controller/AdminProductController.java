@@ -1,5 +1,6 @@
 package com.mine.admin.controller;
 
+import com.mine.admin.config.LogOperation;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mine.common.result.Result;
 import com.mine.model.entity.Sku;
@@ -40,12 +41,14 @@ public class AdminProductController {
 
     @ApiOperation("添加商品")
     @PostMapping("/spu")
+    @LogOperation(module = "商品管理", action = "新增商品")
     public Result<Long> addSpu(@RequestBody Spu spu) {
         return Result.success(productService.addSpu(spu));
     }
 
     @ApiOperation("更新商品")
     @PutMapping("/spu")
+    @LogOperation(module = "商品管理", action = "更新商品")
     public Result<Boolean> updateSpu(@RequestBody Spu spu) {
         return Result.success(productService.updateSpu(spu));
     }

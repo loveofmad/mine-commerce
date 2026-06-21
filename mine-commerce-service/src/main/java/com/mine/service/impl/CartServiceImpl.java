@@ -2,6 +2,7 @@ package com.mine.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mine.common.exception.BusinessException;
 import com.mine.mapper.CartMapper;
 import com.mine.model.entity.Cart;
 import com.mine.service.CartService;
@@ -13,14 +14,32 @@ import java.util.List;
 @Service
 public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements CartService {
 
+    private static final int MAX_QUANTITY_PER_ITEM = 99;
+    private static final int MAX_CART_ITEMS = 50;
+
     @Override
     public boolean addToCart(Cart cart) {
+        if (cart.getQuantity() == null || cart.getQuantity() <= 0) {
+            throw new BusinessException("购买数量必须大于0");
+        }
+        if (cart.getQuantity() > MAX_QUANTITY_PER_ITEM) {
+            throw new BusinessException("单件商品最多购买" + MAX_QUANTITY_PER_ITEM + "件");
+        }
+        LambdaQueryWrapper<Cart> countWrapper = new LambdaQueryWrapper<>();
+        countWrapper.eq(Cart::getUserId, cart.getUserId());
+        if (count(countWrapper) >= MAX_CART_ITEMS) {
+            throw new BusinessException("购物车最多容纳" + MAX_CART_ITEMS + "件商品");
+        }
         LambdaQueryWrapper<Cart> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Cart::getUserId, cart.getUserId())
                 .eq(Cart::getSkuId, cart.getSkuId());
         Cart exist = getOne(wrapper);
         if (exist != null) {
-            exist.setQuantity(exist.getQuantity() + cart.getQuantity());
+            int newQty = exist.getQuantity() + cart.getQuantity();
+            if (newQty > MAX_QUANTITY_PER_ITEM) {
+                throw new BusinessException("单件商品最多购买" + MAX_QUANTITY_PER_ITEM + "件");
+            }
+            exist.setQuantity(newQty);
             exist.setUpdateTime(LocalDateTime.now());
             return updateById(exist);
         }
@@ -41,6 +60,12 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 
     @Override
     public boolean updateQuantity(Long id, Integer quantity) {
+        if (quantity == null || quantity <= 0) {
+            throw new BusinessException("购买数量必须大于0");
+        }
+        if (quantity > MAX_QUANTITY_PER_ITEM) {
+            throw new BusinessException("单件商品最多购买" + MAX_QUANTITY_PER_ITEM + "件");
+        }
         Cart cart = new Cart();
         cart.setId(id);
         cart.setQuantity(quantity);

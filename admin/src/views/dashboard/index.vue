@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard" v-loading="pageLoading">
     <el-row :gutter="20" class="stat-row">
       <el-col :span="6" v-for="(item, index) in stats" :key="item.title">
         <div class="stat-card">
@@ -131,6 +131,7 @@ const shortcuts = ref([
 ])
 
 const recentOrders = ref([])
+const pageLoading = ref(true)
 
 const salesTrendChart = ref(null)
 const orderStatusChart = ref(null)
@@ -255,7 +256,8 @@ onMounted(async () => {
     if (categoryRes.data) initCategorySales(categoryRes.data)
     if (orderRes.data) initOrderTrend(orderRes.data)
   } catch {}
-
+  
+  pageLoading.value = false
   window.addEventListener('resize', handleResize)
 })
 

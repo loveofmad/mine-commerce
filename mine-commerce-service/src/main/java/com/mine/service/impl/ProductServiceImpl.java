@@ -26,9 +26,14 @@ public class ProductServiceImpl extends ServiceImpl<SpuMapper, Spu> implements P
 
     @Override
     public IPage<Spu> listSpuByPage(String keyword, Long categoryId, String sortField, String sortOrder, int pageNum, int pageSize) {
+        pageSize = Math.min(Math.max(pageSize, 1), 100);
+        pageNum = Math.max(pageNum, 1);
         LambdaQueryWrapper<Spu> wrapper = new LambdaQueryWrapper<>();
         if (StringUtils.hasText(keyword)) {
-            wrapper.like(Spu::getTitle, keyword);
+            wrapper.and(w -> w
+                    .like(Spu::getTitle, keyword)
+                    .or().like(Spu::getSubtitle, keyword)
+                    .or().like(Spu::getDetail, keyword));
         }
         if (categoryId != null) {
             wrapper.eq(Spu::getCategoryId, categoryId);

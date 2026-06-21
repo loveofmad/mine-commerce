@@ -116,6 +116,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public IPage<Order> listOrdersByUserId(Long userId, Integer status, int pageNum, int pageSize) {
+        pageSize = Math.min(Math.max(pageSize, 1), 50);
+        pageNum = Math.max(pageNum, 1);
         LambdaQueryWrapper<Order> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Order::getUserId, userId);
         if (status != null) {
