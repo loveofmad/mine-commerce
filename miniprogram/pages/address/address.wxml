@@ -2,22 +2,30 @@
   <!-- 地址列表 -->
   <view class="address-list" wx:if="{{addressList.length > 0}}">
     <view class="address-item" wx:for="{{addressList}}" wx:key="id">
-      <view class="address-info" bindtap="onSelectTap" data-address="{{item}}">
-        <view class="address-header">
-          <text class="address-name">{{item.name}}</text>
-          <text class="address-phone">{{item.phone}}</text>
-          <view class="default-tag" wx:if="{{item.isDefault}}">默认</view>
+      <view class="address-content" bindtap="onSelectTap" data-address="{{item}}">
+        <view class="address-left">
+          <view class="address-avatar">
+            <text class="avatar-text">{{item.name[0]}}</text>
+          </view>
         </view>
-        <text class="address-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</text>
+        <view class="address-right">
+          <view class="address-header">
+            <text class="address-name">{{item.name}}</text>
+            <text class="address-phone">{{item.phone}}</text>
+            <view class="default-tag" wx:if="{{item.isDefault}}">默认</view>
+          </view>
+          <text class="address-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</text>
+        </view>
       </view>
       <view class="address-actions">
         <view class="action-btn" bindtap="onEditTap" data-address="{{item}}">
-          <image class="action-icon" src="/static/icon-settings.png" />
-          <text>编辑</text>
+          <text class="action-emoji">✎</text>
+          <text class="action-text">编辑</text>
         </view>
+        <view class="action-divider"></view>
         <view class="action-btn delete" bindtap="onDeleteTap" data-id="{{item.id}}">
-          <text class="action-emoji">🗑️</text>
-          <text>删除</text>
+          <text class="action-emoji">🗑</text>
+          <text class="action-text">删除</text>
         </view>
       </view>
     </view>
@@ -25,54 +33,68 @@
 
   <!-- 空状态 -->
   <view class="empty-tip" wx:if="{{!loading && addressList.length === 0}}">
-    <image class="empty-icon" src="/static/icon-location.png" />
-    <text>暂无收货地址</text>
+    <view class="empty-icon-wrap">
+      <text class="empty-icon-text">📍</text>
+    </view>
+    <text class="empty-title">暂无收货地址</text>
+    <text class="empty-desc">添加一个地址开始购物吧</text>
   </view>
 
   <!-- 添加按钮 -->
   <view class="add-btn" bindtap="onAddTap">
-    <text>+ 新增收货地址</text>
+    <text class="add-icon">+</text>
+    <text class="add-text">新增收货地址</text>
   </view>
 
   <!-- 编辑弹窗 -->
-  <view class="edit-mask" wx:if="{{showEdit}}" bindtap="onCloseEdit" />
-  <view class="edit-popup" wx:if="{{showEdit}}">
-    <view class="edit-title">{{editType === 'add' ? '新增地址' : '编辑地址'}}</view>
+  <view class="edit-mask" wx:if="{{showEdit}}" bindtap="onCloseEdit" catchtouchmove="preventMove" />
+  <view class="edit-popup {{showEdit ? 'show' : ''}}">
+    <view class="edit-header">
+      <text class="edit-close" bindtap="onCloseEdit">✕</text>
+      <text class="edit-title">{{editType === 'add' ? '新增地址' : '编辑地址'}}</text>
+      <view class="edit-placeholder"></view>
+    </view>
     <view class="edit-form">
       <view class="form-item">
+        <text class="form-icon">👤</text>
         <text class="form-label">收货人</text>
         <input class="form-input" placeholder="请输入收货人姓名" value="{{form.name}}" bindinput="onNameInput" />
       </view>
       <view class="form-item">
+        <text class="form-icon">📱</text>
         <text class="form-label">手机号</text>
         <input class="form-input" type="number" placeholder="请输入11位手机号" value="{{form.phone}}" bindinput="onPhoneInput" maxlength="11" />
       </view>
       <view class="form-item" bindtap="onChooseRegion">
+        <text class="form-icon">📍</text>
         <text class="form-label">所在地区</text>
-        <text class="form-input region-text">{{form.province || '请选择省'}} {{form.city || '请选择市'}} {{form.district || '请选择区'}}</text>
-        <image class="arrow-icon" src="/static/icon-arrow-right.png" />
+        <text class="form-input {{form.province ? '' : 'placeholder'}}">{{form.province || '请选择省'}} {{form.city || ''}} {{form.district || ''}}</text>
+        <text class="form-arrow">›</text>
       </view>
       <view class="form-item">
+        <text class="form-icon">🏠</text>
         <text class="form-label">详细地址</text>
         <input class="form-input" placeholder="楼栋号、门牌号等" value="{{form.detail}}" bindinput="onDetailInput" />
       </view>
       <view class="form-item">
+        <text class="form-icon">⭐</text>
         <text class="form-label">设为默认</text>
-        <switch checked="{{form.isDefault}}" bindchange="onDefaultChange" />
+        <switch checked="{{form.isDefault}}" bindchange="onDefaultChange" color="#E07A5F" />
       </view>
     </view>
     <view class="edit-footer">
       <view class="edit-btn cancel" bindtap="onCloseEdit">取消</view>
-      <view class="edit-btn confirm" bindtap="onSubmit">确定</view>
+      <view class="edit-btn confirm" bindtap="onSubmit">保存地址</view>
     </view>
   </view>
 
   <!-- 省市区选择器 -->
-  <view class="region-mask" wx:if="{{showRegionPicker}}" bindtap="onCloseRegionPicker" />
-  <view class="region-picker" wx:if="{{showRegionPicker}}">
+  <view class="region-mask" wx:if="{{showRegionPicker}}" bindtap="onCloseRegionPicker" catchtouchmove="preventMove" />
+  <view class="region-picker {{showRegionPicker ? 'show' : ''}}">
     <view class="region-header">
+      <text class="region-close" bindtap="onCloseRegionPicker">取消</text>
       <text class="region-title">选择地区</text>
-      <text class="region-close" bindtap="onCloseRegionPicker">关闭</text>
+      <view class="region-placeholder"></view>
     </view>
     <view class="region-tabs">
       <text class="region-tab {{currentStep === 0 ? 'active' : ''}}" bindtap="onChooseRegion">请选择</text>
@@ -80,22 +102,22 @@
       <text class="region-tab {{currentStep === 2 ? 'active' : ''}}" wx:if="{{selectedCity}}">{{selectedCity}}</text>
     </view>
     <scroll-view class="region-list" scroll-y>
-      <!-- 省份列表 -->
       <view wx:if="{{currentStep === 0}}">
         <view class="region-item {{selectedProvince === item.name ? 'active' : ''}}" wx:for="{{regionList}}" wx:key="name" bindtap="onProvinceTap" data-name="{{item.name}}">
-          <text>{{item.name}}</text>
+          <text class="region-name">{{item.name}}</text>
+          <text class="region-check" wx:if="{{selectedProvince === item.name}}">✓</text>
         </view>
       </view>
-      <!-- 城市列表 -->
       <view wx:if="{{currentStep === 1}}">
         <view class="region-item {{selectedCity === item.name ? 'active' : ''}}" wx:for="{{regionList}}" wx:key="name" bindtap="onCityTap" data-name="{{item.name}}">
-          <text>{{item.name}}</text>
+          <text class="region-name">{{item.name}}</text>
+          <text class="region-check" wx:if="{{selectedCity === item.name}}">✓</text>
         </view>
       </view>
-      <!-- 区县列表 -->
       <view wx:if="{{currentStep === 2}}">
         <view class="region-item {{selectedDistrict === item ? 'active' : ''}}" wx:for="{{regionList}}" wx:key="*this" bindtap="onDistrictTap" data-name="{{item}}">
-          <text>{{item}}</text>
+          <text class="region-name">{{item}}</text>
+          <text class="region-check" wx:if="{{selectedDistrict === item}}">✓</text>
         </view>
       </view>
     </scroll-view>

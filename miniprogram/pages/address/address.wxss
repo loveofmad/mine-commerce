@@ -1,20 +1,52 @@
 .page-address {
-  padding-bottom: 120rpx;
+  min-height: 100vh;
+  padding-bottom: 140rpx;
+  background: linear-gradient(180deg, #f0f4f8 0%, #e8ecf1 100%);
 }
 
+/* 地址列表 */
 .address-list {
-  padding: 20rpx;
+  padding: 20rpx 24rpx;
 }
 
 .address-item {
-  background-color: #fff;
-  border-radius: 12rpx;
-  padding: 24rpx;
+  background: #fff;
+  border-radius: 20rpx;
   margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(74, 144, 164, 0.08);
+  border: 1rpx solid rgba(74, 144, 164, 0.06);
 }
 
-.address-info {
-  margin-bottom: 16rpx;
+.address-content {
+  display: flex;
+  padding: 28rpx 24rpx 16rpx;
+}
+
+.address-left {
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.address-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E07A5F 0%, #E8967E 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-text {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: 700;
+}
+
+.address-right {
+  flex: 1;
+  min-width: 0;
 }
 
 .address-header {
@@ -24,95 +56,150 @@
 }
 
 .address-name {
-  font-size: 30rpx;
-  font-weight: bold;
-  margin-right: 20rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-right: 16rpx;
 }
 
 .address-phone {
-  font-size: 28rpx;
-  color: #666;
+  font-size: 26rpx;
+  color: #5D6D7E;
 }
 
 .default-tag {
-  background-color: #E07A5F;
+  background: linear-gradient(135deg, #E07A5F 0%, #E8967E 100%);
   color: #fff;
   font-size: 20rpx;
-  padding: 4rpx 12rpx;
-  border-radius: 6rpx;
-  margin-left: 16rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+  margin-left: 12rpx;
+  font-weight: 500;
 }
 
 .address-detail {
   font-size: 26rpx;
-  color: #666;
+  color: #5D6D7E;
+  line-height: 1.5;
 }
 
+/* 操作按钮 */
 .address-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 30rpx;
-  padding-top: 16rpx;
-  border-top: 1rpx solid #f0f0f0;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  border-top: 1rpx solid #F0F4F8;
 }
 
 .action-btn {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  font-size: 24rpx;
-  color: #666;
+  gap: 6rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
 }
 
-.action-btn.delete {
-  color: #ff4d4f;
-}
-
-.action-icon {
-  width: 28rpx;
-  height: 28rpx;
+.action-btn:active {
+  background: #F0F4F8;
 }
 
 .action-emoji {
-  font-size: 28rpx;
+  font-size: 26rpx;
 }
 
+.action-text {
+  font-size: 24rpx;
+  color: #5D6D7E;
+}
+
+.action-btn.delete .action-text {
+  color: #D44848;
+}
+
+.action-divider {
+  width: 1rpx;
+  height: 24rpx;
+  background: #E8ECF1;
+  margin: 0 12rpx;
+}
+
+/* 空状态 */
 .empty-tip {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 160rpx 0;
+}
+
+.empty-icon-wrap {
+  width: 160rpx;
+  height: 160rpx;
+  background: linear-gradient(135deg, #E8F4F8 0%, #D4ECEE 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  height: 400rpx;
-  color: #999;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(74, 144, 164, 0.12);
 }
 
-.empty-icon {
-  width: 120rpx;
-  height: 120rpx;
-  margin-bottom: 20rpx;
-  opacity: 0.5;
+.empty-icon-text {
+  font-size: 72rpx;
 }
 
+.empty-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2C3E50;
+  margin-bottom: 8rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #95A5A6;
+}
+
+/* 添加按钮 */
 .add-btn {
   position: fixed;
   bottom: 30rpx;
   left: 30rpx;
   right: 30rpx;
-  background-color: #E07A5F;
+  background: linear-gradient(135deg, #E07A5F 0%, #E8967E 100%);
   color: #fff;
-  text-align: center;
-  padding: 24rpx;
-  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26rpx;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 24rpx rgba(224, 122, 95, 0.35);
+}
+
+.add-btn:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+.add-icon {
+  font-size: 36rpx;
+  margin-right: 10rpx;
+  font-weight: 300;
+}
+
+.add-text {
   font-size: 32rpx;
 }
 
+/* 编辑弹窗 */
 .edit-mask {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 100;
 }
 
@@ -121,49 +208,80 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #fff;
-  border-radius: 24rpx 24rpx 0 0;
-  padding: 30rpx;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 0 30rpx 40rpx;
   z-index: 101;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.edit-popup.show {
+  transform: translateY(0);
+}
+
+.edit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #F0F4F8;
+}
+
+.edit-close {
+  font-size: 32rpx;
+  color: #95A5A6;
+  padding: 10rpx;
 }
 
 .edit-title {
   font-size: 32rpx;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 30rpx;
+  font-weight: 700;
+  color: #2C3E50;
+}
+
+.edit-placeholder {
+  width: 52rpx;
 }
 
 .edit-form {
-  margin-bottom: 30rpx;
+  margin: 10rpx 0 30rpx;
 }
 
 .form-item {
   display: flex;
   align-items: center;
-  padding: 20rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F0F4F8;
+}
+
+.form-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  width: 40rpx;
+  text-align: center;
 }
 
 .form-label {
-  width: 160rpx;
+  width: 140rpx;
   font-size: 28rpx;
-  color: #333;
+  color: #2C3E50;
+  font-weight: 500;
 }
 
 .form-input {
   flex: 1;
   font-size: 28rpx;
+  color: #2C3E50;
 }
 
-.region-text {
-  color: #999;
-  font-size: 26rpx;
+.form-input.placeholder {
+  color: #B0BEC5;
 }
 
-.arrow-icon {
-  width: 24rpx;
-  height: 24rpx;
+.form-arrow {
+  font-size: 36rpx;
+  color: #B0BEC5;
   margin-left: 10rpx;
 }
 
@@ -175,29 +293,36 @@
 .edit-btn {
   flex: 1;
   text-align: center;
-  padding: 20rpx;
-  border-radius: 12rpx;
-  font-size: 28rpx;
+  padding: 22rpx;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.edit-btn:active {
+  opacity: 0.85;
+  transform: scale(0.98);
 }
 
 .edit-btn.cancel {
-  background-color: #f5f5f5;
-  color: #666;
+  background: #F0F4F8;
+  color: #5D6D7E;
 }
 
 .edit-btn.confirm {
-  background-color: #E07A5F;
+  background: linear-gradient(135deg, #E07A5F 0%, #E8967E 100%);
   color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(224, 122, 95, 0.3);
 }
 
-/* 区域选择器样式 */
+/* 区域选择器 */
 .region-mask {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 200;
 }
 
@@ -207,63 +332,92 @@
   left: 0;
   right: 0;
   height: 70%;
-  background-color: #fff;
-  border-radius: 24rpx 24rpx 0 0;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
   z-index: 201;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.region-picker.show {
+  transform: translateY(0);
 }
 
 .region-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24rpx 30rpx;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.region-title {
-  font-size: 32rpx;
-  font-weight: bold;
+  padding: 28rpx 30rpx;
+  border-bottom: 1rpx solid #F0F4F8;
 }
 
 .region-close {
   font-size: 28rpx;
-  color: #E07A5F;
+  color: #95A5A6;
+  padding: 10rpx;
+}
+
+.region-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2C3E50;
+}
+
+.region-placeholder {
+  width: 60rpx;
 }
 
 .region-tabs {
   display: flex;
   padding: 20rpx 30rpx;
-  border-bottom: 1rpx solid #f0f0f0;
+  border-bottom: 1rpx solid #F0F4F8;
 }
 
 .region-tab {
   font-size: 26rpx;
-  color: #999;
+  color: #95A5A6;
   margin-right: 30rpx;
   padding-bottom: 10rpx;
 }
 
 .region-tab.active {
   color: #E07A5F;
+  font-weight: 600;
   border-bottom: 4rpx solid #E07A5F;
 }
 
 .region-list {
   flex: 1;
   padding: 0 30rpx;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .region-item {
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #f5f5f5;
-  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26rpx 0;
+  border-bottom: 1rpx solid #F0F4F8;
 }
 
 .region-item.active {
   color: #E07A5F;
+  font-weight: 500;
+}
+
+.region-name {
+  font-size: 28rpx;
+  color: #2C3E50;
+}
+
+.region-item.active .region-name {
+  color: #E07A5F;
+}
+
+.region-check {
+  font-size: 28rpx;
+  color: #E07A5F;
+  font-weight: 600;
 }
