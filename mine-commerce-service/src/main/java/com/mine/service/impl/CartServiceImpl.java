@@ -27,7 +27,8 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
         }
         LambdaQueryWrapper<Cart> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Cart::getUserId, cart.getUserId())
-                .eq(Cart::getSkuId, cart.getSkuId());
+                .eq(Cart::getSkuId, cart.getSkuId())
+                .eq(Cart::getSpuId, cart.getSpuId());
         List<Cart> existList = list(wrapper);
         if (existList != null && !existList.isEmpty()) {
             Cart exist = existList.get(0);
