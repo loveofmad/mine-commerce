@@ -20,7 +20,9 @@ Page({
 
   async loadCart() {
     try {
+      console.log('开始加载购物车, userId:', getApp().globalData.userId)
       const list = await getCartList(getApp().globalData.userId)
+      console.log('购物车数据:', list)
       const baseUrl = getApp().globalData.baseUrl
       const fixImage = (img) => img && img.startsWith('/') ? baseUrl + img : img
       const cartList = list.map(item => ({
