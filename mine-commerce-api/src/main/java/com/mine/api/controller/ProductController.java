@@ -27,7 +27,7 @@ public class ProductController {
             @RequestParam(required = false) Long categoryId,
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
-        return Result.success(productService.listSpuByPage(keyword, categoryId, null, null, pageNum, pageSize));
+        return Result.success(productService.listSpuByPage(keyword, categoryId, 1, null, null, pageNum, pageSize));
     }
 
     @ApiOperation("获取商品详情")

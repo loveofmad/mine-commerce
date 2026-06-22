@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService extends IService<Spu> {
 
-    IPage<Spu> listSpuByPage(String keyword, Long categoryId, String sortField, String sortOrder, int pageNum, int pageSize);
+    IPage<Spu> listSpuByPage(String keyword, Long categoryId, Integer status, String sortField, String sortOrder, int pageNum, int pageSize);
 
     Spu getSpuDetail(Long id);
 

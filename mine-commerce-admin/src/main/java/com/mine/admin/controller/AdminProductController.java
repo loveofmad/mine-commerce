@@ -30,7 +30,7 @@ public class AdminProductController {
             @RequestParam(required = false) String sortOrder,
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
-        return Result.success(productService.listSpuByPage(keyword, categoryId, sortField, sortOrder, pageNum, pageSize));
+        return Result.success(productService.listSpuByPage(keyword, categoryId, null, sortField, sortOrder, pageNum, pageSize));
     }
 
     @ApiOperation("获取商品详情")

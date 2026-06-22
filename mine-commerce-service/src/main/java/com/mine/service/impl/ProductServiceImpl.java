@@ -25,11 +25,13 @@ public class ProductServiceImpl extends ServiceImpl<SpuMapper, Spu> implements P
     private SkuMapper skuMapper;
 
     @Override
-    public IPage<Spu> listSpuByPage(String keyword, Long categoryId, String sortField, String sortOrder, int pageNum, int pageSize) {
+    public IPage<Spu> listSpuByPage(String keyword, Long categoryId, Integer status, String sortField, String sortOrder, int pageNum, int pageSize) {
         pageSize = Math.min(Math.max(pageSize, 1), 100);
         pageNum = Math.max(pageNum, 1);
         LambdaQueryWrapper<Spu> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Spu::getStatus, 1);
+        if (status != null) {
+            wrapper.eq(Spu::getStatus, status);
+        }
         if (StringUtils.hasText(keyword)) {
             wrapper.and(w -> w
                     .like(Spu::getTitle, keyword)
