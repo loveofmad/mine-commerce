@@ -51,6 +51,15 @@
 
 .cart-header {
   padding: 20rpx 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-edit {
+  font-size: 28rpx;
+  color: #4A90A4;
+  font-weight: 500;
 }
 
 .cart-title {

@@ -140,6 +140,11 @@ Page({
     wx.switchTab({ url: '/pages/index/index' })
   },
 
+  onProductTap(e) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: `/pages/detail/detail?id=${id}` })
+  },
+
   onCheckout() {
     if (!checkLogin()) return
     if (this.data.totalCount === 0) {

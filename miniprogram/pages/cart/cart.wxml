@@ -13,6 +13,7 @@
   <view class="cart-list" wx:if="{{cartList.length > 0}}">
     <view class="cart-header">
       <text class="cart-title">购物车 ({{cartList.length}})</text>
+      <text class="cart-edit" bindtap="onEditTap">{{isEdit ? '完成' : '编辑'}}</text>
     </view>
     <view class="cart-item" wx:for="{{cartList}}" wx:key="id">
       <view class="item-check" bindtap="onCheckTap" data-index="{{index}}">
@@ -20,10 +21,10 @@
           <text class="check-mark" wx:if="{{item.checked}}">✓</text>
         </view>
       </view>
-      <view class="item-image-wrap">
+      <view class="item-image-wrap" bindtap="onProductTap" data-id="{{item.spuId}}">
         <image class="item-image" src="{{item.skuImage}}" mode="aspectFill" />
       </view>
-      <view class="item-info">
+      <view class="item-info" bindtap="onProductTap" data-id="{{item.spuId}}">
         <text class="item-title text-ellipsis">{{item.spuName}}</text>
         <view class="item-sku-wrap">
           <text class="item-sku">{{item.skuTitle}}</text>
