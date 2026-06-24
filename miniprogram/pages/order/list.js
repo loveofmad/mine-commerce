@@ -37,6 +37,8 @@ Page({
       const list = res.records || []
       
       // 加载每个订单的商品信息
+      const baseUrl = app.globalData.baseUrl
+      const fixImage = (img) => img && img.startsWith('/') ? baseUrl + img : img
       const ordersWithItems = await Promise.all(list.map(async (order) => {
         try {
           const items = await getOrderItems(order.id, app.globalData.userId)
@@ -44,7 +46,7 @@ Page({
             ...order,
             totalAmountText: formatPrice(order.totalAmount),
             payAmountText: formatPrice(order.payAmount),
-            items: items || []
+            items: (items || []).map(item => ({ ...item, skuImage: fixImage(item.skuImage) }))
           }
         } catch (e) {
           return {

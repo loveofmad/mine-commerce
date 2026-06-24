@@ -17,6 +17,8 @@ Page({
   async loadOrderDetail(id) {
     this.setData({ loading: true })
     const userId = getApp().globalData.userId
+    const baseUrl = getApp().globalData.baseUrl
+    const fixImage = (img) => img && img.startsWith('/') ? baseUrl + img : img
     try {
       const [order, items] = await Promise.all([
         getOrderDetail(id, userId),
@@ -28,7 +30,7 @@ Page({
           totalAmountText: formatPrice(order.totalAmount),
           payAmountText: formatPrice(order.payAmount)
         },
-        orderItems: items || []
+        orderItems: (items || []).map(item => ({ ...item, skuImage: fixImage(item.skuImage) }))
       })
     } catch (e) {
       wx.showToast({ title: '加载失败', icon: 'none' })
