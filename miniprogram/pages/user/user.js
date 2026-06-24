@@ -39,11 +39,11 @@ Page({
       success: (res) => {
         if (res.confirm) {
           const app = getApp()
-          const baseUrl = app.globalData.baseUrl
           const userInfo = { id: 1, username: 'user1', nickname: '测试用户1', phone: '13800138001' }
           app.globalData.userId = 1
           app.globalData.userInfo = userInfo
-          setUserInfo(userInfo)
+          wx.setStorageSync('token', 'user-demo-token')
+          wx.setStorageSync('userInfo', userInfo)
           this.setData({
             isLoggedIn: true,
             userInfo

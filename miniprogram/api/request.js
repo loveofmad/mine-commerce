@@ -8,8 +8,10 @@ const buildUrl = (url, params) => {
 }
 
 const request = (url, method = 'GET', data = {}, params = {}, header = {}) => {
-  const baseUrl = getApp().globalData.baseUrl
+  const app = getApp()
+  const baseUrl = app.globalData.baseUrl
   const fullUrl = baseUrl + buildUrl(url, params)
+  const token = wx.getStorageSync('token')
   return new Promise((resolve, reject) => {
     wx.request({
       url: fullUrl,
@@ -17,6 +19,7 @@ const request = (url, method = 'GET', data = {}, params = {}, header = {}) => {
       data,
       header: {
         'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : '',
         ...header
       },
       success(res) {
@@ -28,6 +31,10 @@ const request = (url, method = 'GET', data = {}, params = {}, header = {}) => {
             wx.showToast({ title: result.message || '请求失败', icon: 'none' })
             reject(result)
           }
+        } else if (res.statusCode === 401) {
+          wx.removeStorageSync('token')
+          wx.showToast({ title: '登录已过期，请重新登录', icon: 'none' })
+          reject(res)
         } else {
           wx.showToast({ title: '网络错误', icon: 'none' })
           reject(res)

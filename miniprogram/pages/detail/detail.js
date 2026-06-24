@@ -98,8 +98,6 @@ Page({
   async onAddToCart() {
     if (!checkLogin()) return
     const app = getApp()
-    console.log('userId:', app.globalData.userId)
-    console.log('baseUrl:', app.globalData.baseUrl)
     const product = this.data.product
     const baseUrl = app.globalData.baseUrl
     
@@ -126,8 +124,7 @@ Page({
     }
     
     try {
-      console.log('请求数据:', { userId: app.globalData.userId, spuId: product.id, skuId: sku.id, quantity: this.data.quantity })
-      const result = await addToCart({
+      await addToCart({
         userId: app.globalData.userId,
         spuId: product.id,
         skuId: sku.id,

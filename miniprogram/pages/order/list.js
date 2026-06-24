@@ -73,6 +73,11 @@ Page({
     this.loadOrders()
   },
 
+  onPullDownRefresh() {
+    this.setData({ pageNum: 1, orderList: [], hasMore: true })
+    this.loadOrders().then(() => wx.stopPullDownRefresh())
+  },
+
   onReachBottom() {
     if (this.data.hasMore && !this.data.loading) {
       this.setData({ pageNum: this.data.pageNum + 1 })

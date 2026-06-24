@@ -107,7 +107,8 @@ Page({
     }
 
     try {
-      const order = await createOrder(app.globalData.userId, 0, orderItems, null, addressInfo, this.data.remark)
+      const addressId = this.data.address ? this.data.address.id : 0
+    const order = await createOrder(app.globalData.userId, addressId, orderItems, null, addressInfo, this.data.remark)
       wx.showToast({ title: '下单成功', icon: 'success' })
       setTimeout(() => {
         wx.redirectTo({ url: `/pages/order/detail?id=${order.id}` })

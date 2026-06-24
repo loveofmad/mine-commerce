@@ -4,7 +4,7 @@ const { formatPrice } = require('../../utils/util')
 
 Page({
   data: {
-    categories: [{ id: 0, name: '全部', icon: '/static/icon-fruit.png' }],
+    categories: [{ id: 0, name: '全部', icon: '📋' }],
     currentCategoryId: 0,
     productList: [],
     keyword: '',

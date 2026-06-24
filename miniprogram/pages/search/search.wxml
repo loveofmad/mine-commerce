@@ -16,8 +16,9 @@
       <text class="clear-history" bindtap="onClearHistory">清空</text>
     </view>
     <view class="history-tags">
-      <view class="history-tag" wx:for="{{historyList}}" wx:key="*this" bindtap="onHistoryTap" data-keyword="{{item}}">
-        <text>{{item}}</text>
+      <view class="history-tag" wx:for="{{historyList}}" wx:key="*this">
+        <text class="tag-text" bindtap="onHistoryTap" data-keyword="{{item}}">{{item}}</text>
+        <text class="tag-delete" catchtap="onDeleteHistory" data-index="{{index}}">✕</text>
       </view>
     </view>
   </view>

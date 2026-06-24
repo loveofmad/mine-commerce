@@ -73,6 +73,13 @@ Page({
     })
   },
 
+  onDeleteHistory(e) {
+    const index = e.currentTarget.dataset.index
+    const history = this.data.historyList.filter((_, i) => i !== index)
+    wx.setStorageSync(HISTORY_KEY, history)
+    this.setData({ historyList: history })
+  },
+
   async doSearch() {
     if (this.data.loading) return
     this.setData({ loading: true })

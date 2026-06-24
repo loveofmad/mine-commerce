@@ -85,6 +85,19 @@
   padding: 12rpx 28rpx;
   font-size: 26rpx;
   color: #5D6D7E;
+  display: flex;
+  align-items: center;
+}
+
+.tag-text {
+  color: #5D6D7E;
+}
+
+.tag-delete {
+  font-size: 22rpx;
+  color: #B0BEC5;
+  margin-left: 10rpx;
+  padding: 4rpx;
 }
 
 .history-tag:active {
