@@ -54,6 +54,9 @@
     <rich-text class="detail-content" nodes="{{product.detail}}" />
   </view>
 
+  <!-- 加入购物车飞入动画 -->
+  <view class="fly-ball {{showFlyBall ? 'fly-active' : ''}}" style="left: {{flyBallX}}px; top: {{flyBallY}}px;"></view>
+
   <!-- 底部操作栏 -->
   <view class="bottom-bar">
     <view class="bar-icon" bindtap="onGoCart">

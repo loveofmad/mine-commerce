@@ -11,7 +11,10 @@ Page({
     currentImage: 0,
     images: [],
     displayPrice: '',
-    displayStock: 0
+    displayStock: 0,
+    showFlyBall: false,
+    flyBallX: 0,
+    flyBallY: 0
   },
 
   onLoad(options) {
@@ -99,7 +102,6 @@ Page({
     if (!checkLogin()) return
     const app = getApp()
     const product = this.data.product
-    const baseUrl = app.globalData.baseUrl
     
     // 如果有SKU列表，需要选择规格
     if (this.data.skuList.length > 0 && !this.data.selectedSku) {
@@ -113,13 +115,15 @@ Page({
       return
     }
 
+    // 触发飞入动画
+    this.setData({ showFlyBall: true, flyBallX: wx.getSystemInfoSync().windowWidth / 2 - 15, flyBallY: 300 })
+    setTimeout(() => { this.setData({ showFlyBall: false }) }, 600)
+
     const sku = this.data.selectedSku || { id: 0, title: product.title, price: product.price, image: product.mainImage }
-    
-    // 处理图片URL：相对路径拼接baseUrl
     const fixImageUrl = (url) => {
       if (!url) return ''
       if (url.startsWith('http')) return url
-      if (url.startsWith('/')) return baseUrl + url
+      if (url.startsWith('/')) return app.globalData.baseUrl + url
       return url
     }
     
@@ -135,7 +139,6 @@ Page({
         quantity: this.data.quantity,
         checked: 1
       })
-      console.log('加入购物车成功:', result)
       wx.showToast({ title: '已加入购物车', icon: 'success' })
     } catch (e) {
       console.error('加入购物车失败:', e)

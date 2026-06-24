@@ -3,6 +3,38 @@
   background: #f0f4f8;
 }
 
+/* 飞入购物车动画 */
+.fly-ball {
+  position: fixed;
+  width: 30rpx;
+  height: 30rpx;
+  background: linear-gradient(135deg, #E07A5F 0%, #E8967E 100%);
+  border-radius: 50%;
+  z-index: 999;
+  opacity: 0;
+  transform: scale(0);
+  transition: none;
+}
+
+.fly-active {
+  animation: flyToCart 0.6s ease-in forwards;
+}
+
+@keyframes flyToCart {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) translate(var(--fly-x), var(--fly-y));
+  }
+}
+
 /* 轮播图 */
 .swiper-wrapper {
   position: relative;
