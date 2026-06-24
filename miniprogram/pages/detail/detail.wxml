@@ -21,12 +21,6 @@
     <text class="detail-subtitle text-gray">{{product.subtitle}}</text>
   </view>
 
-  <!-- 规格属性显示 -->
-  <view class="detail-section" wx:if="{{product.spec}}">
-    <view class="section-title">规格</view>
-    <text class="spec-text">{{product.spec}}</text>
-  </view>
-
   <!-- SKU规格选择 -->
   <view class="detail-section" wx:if="{{skuList.length > 0}}">
     <view class="section-title">选择规格</view>
