@@ -1,6 +1,7 @@
 package com.mine.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.mine.admin.config.LogOperation;
 import com.mine.common.result.Result;
 import com.mine.model.entity.User;
 import com.mine.service.UserService;
@@ -33,6 +34,7 @@ public class AdminUserController {
 
     @ApiOperation("更新用户状态")
     @PutMapping("/{id}/status")
+    @LogOperation(module = "用户管理", action = "更新用户状态")
     public Result<Boolean> updateStatus(@PathVariable Long id,
                                         @RequestParam Integer status) {
         return Result.success(userService.updateStatus(id, status));
@@ -40,6 +42,7 @@ public class AdminUserController {
 
     @ApiOperation("更新用户信息")
     @PutMapping
+    @LogOperation(module = "用户管理", action = "更新用户信息")
     public Result<Boolean> updateUser(@RequestBody User user) {
         return Result.success(userService.updateUser(user));
     }

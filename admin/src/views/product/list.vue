@@ -29,9 +29,13 @@
           <el-icon><Search /></el-icon>搜索
         </el-button>
         <el-button @click="resetQuery">重置</el-button>
+        <el-button type="success" plain :disabled="selectedRows.length === 0" @click="batchUpdateStatus(1)">批量上架</el-button>
+        <el-button type="warning" plain :disabled="selectedRows.length === 0" @click="batchUpdateStatus(0)">批量下架</el-button>
+        <el-button type="danger" plain :disabled="selectedRows.length === 0" @click="batchDelete">批量删除</el-button>
       </div>
 
-      <el-table :data="tableData" v-loading="loading" stripe style="width: 100%">
+      <el-table :data="tableData" v-loading="loading" stripe style="width: 100%" @selection-change="handleSelectionChange" ref="tableRef">
+        <el-table-column type="selection" width="50" />
         <el-table-column label="商品信息" min-width="300">
           <template #default="{ row }">
             <div class="product-info-cell">
@@ -277,7 +281,9 @@ const categories = ref([])
 const dialogVisible = ref(false)
 const editingId = ref(null)
 const formRef = ref(null)
+const tableRef = ref(null)
 const imageTab = ref('url')
+const selectedRows = ref([])
 const query = reactive({ keyword: '', categoryId: '', sortField: 'create_desc', pageNum: 1, pageSize: 10 })
 
 const form = reactive({ title: '', subtitle: '', spec: '', categoryId: null, price: 0, stock: 0, mainImage: '', images: [], detail: '', status: 1, sort: 0 })
@@ -448,6 +454,37 @@ async function handleSubmit() {
 async function handleDelete(row) {
   await ElMessageBox.confirm('确定删除该商品吗？', '提示', { type: 'warning' })
   try { await request.delete(`/admin/product/spu/${row.id}`); ElMessage.success('删除成功'); loadData() } catch {}
+}
+
+function handleSelectionChange(rows) {
+  selectedRows.value = rows
+}
+
+async function batchUpdateStatus(status) {
+  const ids = selectedRows.value.map(r => r.id)
+  const label = status === 1 ? '上架' : '下架'
+  await ElMessageBox.confirm(`确定批量${label} ${ids.length} 个商品吗？`, '提示', { type: 'info' })
+  try {
+    for (const id of ids) {
+      await request.put(`/admin/product/spu/${id}/status`, null, { params: { status } })
+    }
+    ElMessage.success(`批量${label}成功`)
+    selectedRows.value = []
+    loadData()
+  } catch {}
+}
+
+async function batchDelete() {
+  const ids = selectedRows.value.map(r => r.id)
+  await ElMessageBox.confirm(`确定删除 ${ids.length} 个商品吗？此操作不可恢复`, '警告', { type: 'warning' })
+  try {
+    for (const id of ids) {
+      await request.delete(`/admin/product/spu/${id}`)
+    }
+    ElMessage.success('批量删除成功')
+    selectedRows.value = []
+    loadData()
+  } catch {}
 }
 
 onMounted(() => { loadData(); loadCategories() })

@@ -1,5 +1,6 @@
 package com.mine.admin.controller;
 
+import com.mine.admin.config.LogOperation;
 import com.mine.common.result.Result;
 import com.mine.model.entity.Category;
 import com.mine.service.CategoryService;
@@ -32,12 +33,14 @@ public class AdminCategoryController {
 
     @ApiOperation("添加分类")
     @PostMapping
+    @LogOperation(module = "分类管理", action = "新增分类")
     public Result<Boolean> addCategory(@RequestBody Category category) {
         return Result.success(categoryService.addCategory(category));
     }
 
     @ApiOperation("更新分类")
     @PutMapping("/{id}")
+    @LogOperation(module = "分类管理", action = "更新分类")
     public Result<Boolean> updateCategory(@PathVariable Long id, @RequestBody Category category) {
         category.setId(id);
         return Result.success(categoryService.updateCategory(category));
@@ -45,6 +48,7 @@ public class AdminCategoryController {
 
     @ApiOperation("删除分类")
     @DeleteMapping("/{id}")
+    @LogOperation(module = "分类管理", action = "删除分类")
     public Result<Boolean> deleteCategory(@PathVariable Long id) {
         return Result.success(categoryService.deleteCategory(id));
     }

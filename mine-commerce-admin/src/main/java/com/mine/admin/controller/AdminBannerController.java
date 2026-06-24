@@ -1,6 +1,7 @@
 package com.mine.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.mine.admin.config.LogOperation;
 import com.mine.common.result.Result;
 import com.mine.model.entity.Banner;
 import com.mine.service.BannerService;
@@ -33,12 +34,14 @@ public class AdminBannerController {
 
     @ApiOperation("添加轮播图")
     @PostMapping
+    @LogOperation(module = "轮播图管理", action = "新增轮播图")
     public Result<Boolean> addBanner(@RequestBody Banner banner) {
         return Result.success(bannerService.addBanner(banner));
     }
 
     @ApiOperation("更新轮播图")
     @PutMapping("/{id}")
+    @LogOperation(module = "轮播图管理", action = "更新轮播图")
     public Result<Boolean> updateBanner(@PathVariable Long id, @RequestBody Banner banner) {
         banner.setId(id);
         return Result.success(bannerService.updateBanner(banner));
@@ -46,12 +49,14 @@ public class AdminBannerController {
 
     @ApiOperation("删除轮播图")
     @DeleteMapping("/{id}")
+    @LogOperation(module = "轮播图管理", action = "删除轮播图")
     public Result<Boolean> deleteBanner(@PathVariable Long id) {
         return Result.success(bannerService.deleteBanner(id));
     }
 
     @ApiOperation("更新轮播图状态")
     @PutMapping("/{id}/status")
+    @LogOperation(module = "轮播图管理", action = "更新轮播图状态")
     public Result<Boolean> updateStatus(@PathVariable Long id, @RequestParam Integer status) {
         return Result.success(bannerService.updateStatus(id, status));
     }

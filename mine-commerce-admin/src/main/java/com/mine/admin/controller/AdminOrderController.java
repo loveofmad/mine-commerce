@@ -1,6 +1,7 @@
 package com.mine.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.mine.admin.config.LogOperation;
 import com.mine.common.result.Result;
 import com.mine.model.entity.Order;
 import com.mine.model.entity.OrderItem;
@@ -42,12 +43,14 @@ public class AdminOrderController {
 
     @ApiOperation("发货")
     @PutMapping("/{id}/deliver")
+    @LogOperation(module = "订单管理", action = "发货")
     public Result<Boolean> deliverOrder(@PathVariable Long id) {
         return Result.success(orderService.deliverOrder(id));
     }
 
     @ApiOperation("删除订单")
     @DeleteMapping("/{id}")
+    @LogOperation(module = "订单管理", action = "删除订单")
     public Result<Boolean> deleteOrder(@PathVariable Long id) {
         return Result.success(orderService.deleteOrder(id));
     }
